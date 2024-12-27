@@ -5,14 +5,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.4</version>
+		<version>3.4.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>ca.xpertproject.tools</groupId>
+	<groupId>ca.xpertproject.apps.businessmanager</groupId>
 	<artifactId>MyBusiness</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>MyBusiness</name>
-	<description>Event tickets buying</description>
+	<description>Business manager</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -36,10 +36,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-mail</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 		<dependency>
@@ -53,21 +49,20 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>false</optional>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>false</optional>
 		</dependency>
 		<dependency>
     		<groupId>net.sourceforge.barbecue</groupId>
     		<artifactId>barbecue</artifactId>
 		    <version>1.5-beta1</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
