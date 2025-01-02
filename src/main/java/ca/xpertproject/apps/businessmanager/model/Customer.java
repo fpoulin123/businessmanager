@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,37 +23,45 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
+
+@Builder
 public class Customer {
 	
 	@Id
 	@GeneratedValue(generator = "customer_id_seq")
 	@SequenceGenerator(name="customer_id_seq", sequenceName = "customer_id_seq", allocationSize = 1)
-	Long id;
+	@Column(name="id")
+	public Long id;
 	
 	@Column(name="firstname")
-	String firstName;
+	public String firstName;
 	
 	@Column(name="lastname")
-	String lastName;
+	public String lastName;
 	
-	String address;
+	@Column(name="address")
+	public String address;
 	
-	String city;
+	@Column(name="city")
+	public String city;
 	
 	@Column(name="phonenumber")
-	String phoneNumber;
+	public String phoneNumber;
 	
-	String email;
+	@Column(name="email")
+	public String email;
 	
-	String course;
+	@Column(name="course")
+	public String course;
 	
-	String picture;
+	@Column(name="picture")
+	public String picture;
 	
 	@Column(name="barcodevalue")
-	String barcodeValue;
+	public String barcodeValue;
 	
 	@Column(name="inscriptiondate")
-	Date inscriptionDate;
+	public Date inscriptionDate;
 	
 
 }

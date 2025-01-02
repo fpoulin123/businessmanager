@@ -147,6 +147,10 @@
 
 	<main class="container">
 	<div class="bg-body-tertiary p-5 rounded">
+		<button class="btn btn-lg btn-primary" role="button" th:onclick="createCustomer()">Create customer</button>
+		
+	</div>
+	<div class="bg-body-tertiary p-5 rounded">
 		<span>FILTERS</span>
 		<div>
       		<label>Course: </label>
@@ -168,6 +172,7 @@
 	     	<th>Address</th>
 	     	<th>City</th>
 	     	<th>Phone number</th>
+			<th>E-mail</th>
 	     	<th>Course</th>
 	     	<th>Inscription date</th>
 	     </thead>
@@ -179,6 +184,7 @@
 		<td data-th-text="${ customer.address }"></td>
 		<td data-th-text="${ customer.city }"></td>
 		<td data-th-text="${ customer.phoneNumber }"></td>
+		<td data-th-text="${ customer.email }"></td>
 		<td data-th-text="${ customer.course }"></td>
 		<td data-th-text="${ customer.inscriptionDate }"></td>
 		<td><button class="btn btn-lg btn-primary" role="button" th:onclick="viewCustomer([[${ customer.id }]])">View</button></td>
@@ -217,5 +223,8 @@
 		location="./customer?id=" + id;
 	}
   
+	function createCustomer(){
+		location="./createCustomer";
+	}
   </script>
 </html>
