@@ -128,10 +128,13 @@
 	    <div class="collapse navbar-collapse" id="navbarCollapse">
 	      <ul class="navbar-nav me-auto mb-2 mb-md-0">
 	        <li class="nav-item">
-	          <a class="nav-link active" aria-current="page" href="/mybusiness/home">Home</a>
+	          <a class="nav-link active" aria-current="page" href="/mybusiness/home">Accueil</a>
 	        </li>
 	        <li class="nav-item">
-	          <a class="nav-link" href="/mybusiness/allCustomers">Customers</a>
+	          <a class="nav-link" href="/mybusiness/allCustomers">Clients</a>
+	        </li>
+	        <li class="nav-item">
+	          <a class="nav-link" href="/mybusiness/allPayments">Paiements</a>
 	        </li>
 	<!--         <li class="nav-item"> -->
 	<!--           <a class="nav-link disabled" aria-disabled="true">Disabled</a> -->
@@ -147,15 +150,15 @@
 
 	<main class="container">
 	<div class="bg-body-tertiary p-5 rounded">
-		<button class="btn btn-lg btn-primary" role="button" th:onclick="createCustomer()">Create customer</button>
+		<button class="btn btn-lg btn-primary" role="button" th:onclick="createCustomer()">Nouveau client</button>
 		
 	</div>
 	<div class="bg-body-tertiary p-5 rounded">
-		<span>FILTERS</span>
+		<span>Filtres</span>
 		<div>
-      		<label>Course: </label>
+      		<label>Cours: </label>
       		<select id="filterCourse" onchange="filterCourse();">
-      			<option value="ALL">ALL</option>
+      			<option value="ALL">TOUS</option>
       			<option value="TAEKWONDO">TAE KWON DO</option>
       			<option value="KICKBOXING">KICK BOXING</option>
       			<option value="TAEKIBODO">TAE KI BO DO</option>
@@ -166,15 +169,15 @@
 	  <div class="bg-body-tertiary p-5 rounded">
 	    <table>
 	     <thead>
-	     	<th>Id</th>
-	     	<th>Firstname</th>
-	     	<th>Lastname</th>
-	     	<th>Address</th>
-	     	<th>City</th>
-	     	<th>Phone number</th>
+	     	<th>Numéro</th>
+	     	<th>Prénom</th>
+	     	<th>Nom</th>
+	     	<th>Adresse</th>
+	     	<th>Ville</th>
+	     	<th>Téléphone</th>
 			<th>E-mail</th>
-	     	<th>Course</th>
-	     	<th>Inscription date</th>
+	     	<th>Cours</th>
+	     	<th>Date inscription</th>
 	     </thead>
 <tbody data-th-each="customer : ${ customers }">
 	<tr>
@@ -186,7 +189,7 @@
 		<td data-th-text="${ customer.phoneNumber }"></td>
 		<td data-th-text="${ customer.email }"></td>
 		<td data-th-text="${ customer.course }"></td>
-		<td data-th-text="${ customer.inscriptionDate }"></td>
+		<td data-th-text="${#dates.format(customer.inscriptionDate, 'yyyy-MM-dd')}"></td>
 		<td><button class="btn btn-lg btn-primary" role="button" th:onclick="viewCustomer([[${ customer.id }]])">View</button></td>
 	
 	</tr>

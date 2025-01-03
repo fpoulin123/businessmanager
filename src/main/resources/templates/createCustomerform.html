@@ -129,10 +129,13 @@
 	    <div class="collapse navbar-collapse" id="navbarCollapse">
 	      <ul class="navbar-nav me-auto mb-2 mb-md-0">
 	        <li class="nav-item">
-	          <a class="nav-link active" aria-current="page" href="/mybusiness/home">Home</a>
+	          <a class="nav-link active" aria-current="page" href="/mybusiness/home">Accueil</a>
 	        </li>
 	        <li class="nav-item">
-	          <a class="nav-link" href="/mybusiness/allCustomers">Customers</a>
+	          <a class="nav-link" href="/mybusiness/allCustomers">Clients</a>
+	        </li>
+	        <li class="nav-item">
+	          <a class="nav-link" href="/mybusiness/allPayments">Paiments</a>
 	        </li>
 	<!--         <li class="nav-item"> -->
 	<!--           <a class="nav-link disabled" aria-disabled="true">Disabled</a> -->
@@ -151,36 +154,36 @@
   <form action="./createCustomer" method="post" name="customerform" id="cusomerform">
 <!--     <img class="mb-4" src="./img/metlogo.svg" alt="" width="297" height="107"> -->
     <p class="errorMsg" data-th-text="${ errorMessage }"></p>
-    <h1 class="h3 mb-3 fw-normal">New customer</h1>
+    <h1 class="h3 mb-3 fw-normal">Création client</h1>
 
 	<div class="form-floating">
       <input type="text" class="form-control" id="floatingFirstname" name="firstname" placeholder="First name">
-      <label for="floatingInput">First name</label>
+      <label for="floatingInput">Prénom</label>
     </div>
     
     <div class="form-floating">
       <input type="text" class="form-control" id="floatingLastname" name="lastname" placeholder="Last name">
-      <label for="floatingInput">Last name</label>
+      <label for="floatingInput">Nom</label>
     </div>
     
     <div class="form-floating">
       <input type="text" class="form-control" id="floatingLastname" name="address" placeholder="Address">
-      <label for="floatingInput">Address</label>
+      <label for="floatingInput">Adresse</label>
     </div>
     
     <div class="form-floating">
       <input type="text" class="form-control" id="floatingLastname" name="city" placeholder="City">
-      <label for="floatingInput">City</label>
+      <label for="floatingInput">Ville</label>
     </div>
     
     <div class="form-floating">
       <input type="text" class="form-control" id="floatingPhonenimber" name="phonenumber" placeholder="Phone number">
-      <label for="floatingInput">Phone number</label>
+      <label for="floatingInput">Téléphone</label>
     </div>
 
     <div class="form-floating">
       <input type="email" class="form-control" id="floatingEmail" name="email" placeholder="name@example.com">
-      <label for="floatingInput">Email address</label>
+      <label for="floatingInput">Email</label>
     </div>
     
     <div class="form-floating">
@@ -190,7 +193,7 @@
   			<option value="KICKBOXING">KICK BOXING</option>
   			<option value="TAEKIBODO">TAE KI BO DO</option>
   		</select>
-      <label for="floatingCourse">Course</label>
+      <label for="floatingCourse">Cours</label>
     </div>
     
     
@@ -199,7 +202,7 @@
       <label for="floatingInscriptiondate">Inscription date</label>
     </div>
 
-    <button class="btn btn-primary w-100 py-2" type="submit">Create</button>
+    <button class="btn btn-primary w-100 py-2" type="submit">Créer</button>
     <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2024</p>
   </form>
 </main>

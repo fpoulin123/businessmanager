@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ca.xpertproject.apps.businessmanager</groupId>
-	<artifactId>MyBusiness</artifactId>
+	<artifactId>businessmanager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>MyBusiness</name>
+	<name>businessmanager</name>
 	<description>Business manager</description>
 	<url/>
 	<licenses>
