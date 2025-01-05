@@ -166,6 +166,10 @@
       <label>Numéro client : </label>
       <span data-th-text="${ subscription.customer.id }"></span>
     </div>
+    <div>
+      <label>Nom client : </label>
+      <span data-th-text="${ subscription.customer.firstName }"></span>&nbsp;<span data-th-text="${ subscription.customer.lastName }"></span>
+    </div>
     
     <div>
       <label>Durée : </label>
@@ -194,7 +198,17 @@
     
     <div>
       <label>Date effective : </label>
-      <span th:text="${#dates.format(subscription.subscriptionDate, 'yyyy-MM-dd')}"></span>
+      <span th:text="${#dates.format(subscription.subscriptionDate, 'dd-MM-yyyy')}"></span>
+    </div>
+    
+    <div>
+      <label>Date expiration : </label>
+      <span th:text="${#dates.format(expirationDate, 'dd-MM-yyyy')}"></span>
+    </div>
+    
+    <div>
+      <label>Abonnement valid : </label>
+      <span th:text="${ subscriptionValid }"></span>
     </div>
     
     <button class="btn btn-primary w-100 py-2" th:onclick="modifySubscription([[${ subscription.id }]])">Modifier</button>

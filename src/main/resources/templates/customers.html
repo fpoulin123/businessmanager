@@ -164,7 +164,7 @@
 	     	<th>Ville</th>
 	     	<th>Téléphone</th>
 			<th>E-mail</th>
-	     	<th>Date inscription</th>
+	     	<th>Actions</th>
 	     </thead>
 <tbody data-th-each="customer : ${ customers }">
 	<tr>
@@ -175,7 +175,9 @@
 		<td data-th-text="${ customer.city }"></td>
 		<td data-th-text="${ customer.phoneNumber }"></td>
 		<td data-th-text="${ customer.email }"></td>
-		<td><button class="btn btn-lg btn-primary" role="button" th:onclick="viewCustomer([[${ customer.id }]])">View</button></td>
+		<td>
+			<button class="btn btn-lg btn-primary" role="button" th:onclick="viewCustomer([[${ customer.id }]])">View</button>
+			<button class="btn btn-lg btn-primary" role="button" th:onclick="addSubscription([[${ customer.id }]])">Abonnement</button></td>
 	
 	</tr>
 </tbody>
@@ -186,29 +188,13 @@
 
     </body>
     <script th:inline="javascript">
-  
-  	var course=[[${course}]];
-  	
-  	console.log("Course : " + course);
-  	
-  	setCourseFilterValue(course);
-  	
-  	function setCourseFilterValue(courseValue){
-  		var selectElt = document.querySelector('#filterCourse');
-  	  	console.log("Actual : " + selectElt.value);
-  	  	selectElt.value=courseValue;
-  	}
-  	
-  
-  	function filterCourse(){
-  		selectElement = document.querySelector('#filterCourse');
-      	course = selectElement.value;
-  		location="./customers?course=" + course;
-  		
-  	}
-  	
+   	
   	function viewCustomer(id){
 		location="./customer?id=" + id;
+	}
+	
+	function addSubscription(customerid){
+		location="./addSubscription?customerid="+customerid;
 	}
   
 	function createCustomer(){

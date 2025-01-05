@@ -141,7 +141,7 @@
 	          <a class="nav-link" href="/mybusiness/allCustomers">Clients</a>
 	        </li>
 	        <li class="nav-item">
-	          <a class="nav-link" href="/mybusiness/allPayments">Paiements</a>
+	          <a class="nav-link" href="/mybusiness/allSubscriptions">Abonnements</a>
 	        </li>
 	<!--         <li class="nav-item"> -->
 	<!--           <a class="nav-link disabled" aria-disabled="true">Disabled</a> -->
@@ -157,13 +157,13 @@
 
 	
 	<main class="form-signin w-100 m-auto">
-  <form action="./addSupscruption" method="post" name="subscriptionForm" id="subscriptionForm">
+  <form action="./addSubscription" method="post" name="subscriptionForm" id="subscriptionForm">
 <!--     <img class="mb-4" src="./img/metlogo.svg" alt="" width="297" height="107"> -->
     <p class="errorMsg" data-th-text="${ errorMessage }"></p>
     <h1 class="h3 mb-3 fw-normal">Nouvel abonnement</h1>
 
 	<div class="form-floating">
-      <input type="text" class="form-control" id="floatingCustomerId" name="customerid" placeholder="customerid">
+      <input type="text" class="form-control" id="floatingCustomerId" name="customerid" placeholder="customerid" th:value="${ customerid }">
       <label for="floatingInput">Numéro client</label>
     </div>
     

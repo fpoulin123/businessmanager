@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ca.xpertproject.apps.businessmanager.model.Customer;
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
+import ca.xpertproject.apps.businessmanager.model.GenericBuilder;
 import ca.xpertproject.apps.businessmanager.model.Subscription;
 import ca.xpertproject.apps.businessmanager.model.SubscriptionRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -46,11 +47,35 @@ public class SubscriptionController {
 		
 		model.addAttribute("subscription", subscription);
 		
+		long subscriptionDateTime = subscription.getSubscriptionDate().getTime();
+		
+		int duration = subscription.getDuration();
+		
+		long durationLong = Integer.toUnsignedLong(duration);
+					
+		long dayInMillis = 24*3600*1000;
+		
+		long durationDateTime = durationLong*dayInMillis;
+		
+		System.out.println("Duration : " + duration);
+		
+		long expirationDateTime = subscriptionDateTime + durationDateTime;
+		
+		Date expirationDate = new Date(expirationDateTime);
+		
+		boolean subscriptionValid = expirationDate.after(new Date());
+		
+		model.addAttribute("expirationDate", expirationDate);
+		
+		model.addAttribute("subscriptionValid", subscriptionValid);
+		
 		return "subscription";
 	}
 	
 	@GetMapping("/addSubscription")
-	public String getAddSubscription() {
+	public String getAddSubscription(@RequestParam(required = false) Long customerid, Model model) {
+		
+		model.addAttribute("customerid", customerid);
 		
 		return "createSubscriptionform";
 	}
@@ -71,18 +96,18 @@ public class SubscriptionController {
 		
 		Customer customer = customerRepository.findById(Long.parseLong(body.get("customerid")));
 		
-		Subscription subscription = Subscription.builder()
-				.customer(customer)
-				.duration(Integer.parseInt(body.get("duration")))
-				.taekwondo(taekwondo)
-				.kickboxing(kickboxing)
-				.taekibodo(taekibodo)
-				.amount(Double.parseDouble(body.get("amount")))
-				.subscriptionDate(subscriptionDate)
+		Subscription subscription = GenericBuilder.of(Subscription::new)
+				.with(Subscription::setCustomer, customer)
+				.with(Subscription::setDuration,Integer.parseInt(body.get("duration")))
+				.with(Subscription::setTaekwondo,taekwondo)
+				.with(Subscription::setKickboxing,kickboxing)
+				.with(Subscription::setTaekibodo, taekibodo)
+				.with(Subscription::setAmount,Double.parseDouble(body.get("amount")))
+				.with(Subscription::setSubscriptionDate,subscriptionDate)
 				.build();
-		
+				
 		subscription = subscriptionRepository.save(subscription);
-		
+				
 		return "redirect:./subscription?id=" + subscription.id;
 	}
 	
@@ -98,7 +123,7 @@ public class SubscriptionController {
 	@PostMapping("/modifySubscription")
 	public String modifySubscription(@RequestParam Map<String, String> body, HttpServletResponse response) throws ParseException {
 		
-		//body.forEach((k,v)-> System.out.println(k + ":" + v));
+		body.forEach((k,v)-> System.out.println(k + ":" + v));
 		
 		boolean taekwondo = "on".equals(body.get("taekwondo"))?true:false;
 		boolean kickboxing = "on".equals(body.get("kickboxing"))?true:false;
@@ -115,15 +140,15 @@ public class SubscriptionController {
 				
 		Customer customer = customerRepository.findById(Long.parseLong(body.get("customerid")));
 				
-		subscription=Subscription.builder()
-				.id(subscription.getId())
-				.customer(customer)
-				.duration(Integer.parseInt(body.get("product")))
-				.taekwondo(taekwondo)
-				.kickboxing(kickboxing)
-				.taekibodo(taekibodo)
-				.amount(Double.parseDouble(body.get("amount")))
-				.subscriptionDate(subscriptionDate)
+		subscription = GenericBuilder.of(Subscription::new)
+				.with(Subscription::setId, subscription.getId())
+				.with(Subscription::setCustomer, customer)
+				.with(Subscription::setDuration,Integer.parseInt(body.get("duration")))
+				.with(Subscription::setTaekwondo,taekwondo)
+				.with(Subscription::setKickboxing,kickboxing)
+				.with(Subscription::setTaekibodo, taekibodo)
+				.with(Subscription::setAmount,Double.parseDouble(body.get("amount")))
+				.with(Subscription::setSubscriptionDate,subscriptionDate)
 				.build();
 		
 		subscription = subscriptionRepository.save(subscription);

@@ -162,13 +162,14 @@
     <p class="errorMsg" data-th-text="${ errorMessage }"></p>
     <h1 class="h3 mb-3 fw-normal">Edition abonnement</h1>
 	<input type="hidden" class="form-control" id="floatingId" name="id" th:value="${ subscription.id }">
-	<div class="form-floating">
-      <input type="text" class="form-control" id="floatingFirstname" name="customerId" placeholder="Numero client" th:value="${ subscription.customer.id }">
-      <label for="floatingInput">Numéro client</label>
+	<input type="hidden" class="form-control" id="floatingCustomerId" name="customerid" th:value="${ subscription.customerId }">
+	<div>
+      <label>Nom client : </label>
+      <span data-th-text="${ subscription.customer.firstName }"></span>&nbsp;<span data-th-text="${ subscription.customer.lastName }"></span>
     </div>
     
     <div class="form-floating">
-      <input type="text" class="form-control" id="floatingLastname" name="product" placeholder="Durée" th:value="${ subscription.duration }">
+      <input type="text" class="form-control" id="floatingLastname" name="duration" placeholder="Durée" th:value="${ subscription.duration }">
       <label for="floatingInput">Durée</label>
     </div>
     
@@ -188,12 +189,12 @@
 
     <div class="form-floating">
       <input type="text" class="form-control" id="floatingAmount" name="amount" placeholder="Montant" th:value="${ subscription.amount }">
-      <label for="floatingInput">Email</label>
+      <label for="floatingInput">Montant</label>
     </div>
         
     <div class="form-floating">
       <input type="date" class="form-control" id="floatingInscriptiondate" name="subscriptionDate" placeholder="Date abonnement" th:value="${#dates.format(subscription.subscriptionDate, 'yyyy-MM-dd')}">
-      <label for="floatingInscriptiondate">Date paiement</label>
+      <label for="floatingInscriptiondate">Date effective</label>
     </div>
 
     <button class="btn btn-primary w-100 py-2" type="submit">Enregistrer</button>
