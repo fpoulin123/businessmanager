@@ -134,10 +134,13 @@
 	    <div class="collapse navbar-collapse" id="navbarCollapse">
 	      <ul class="navbar-nav me-auto mb-2 mb-md-0">
 	        <li class="nav-item">
-	          <a class="nav-link active" aria-current="page" href="/mybusiness/home">Home</a>
+	          <a class="nav-link active" aria-current="page" href="/mybusiness/home">Accueil</a>
 	        </li>
 	        <li class="nav-item">
-	          <a class="nav-link" href="/mybusiness/allCustomers">Customers</a>
+	          <a class="nav-link" href="/mybusiness/allCustomers">Clients</a>
+	        </li>
+	        <li class="nav-item">
+	          <a class="nav-link" href="/mybusiness/allSubscriptions">Abonnements</a>
 	        </li>
 	<!--         <li class="nav-item"> -->
 	<!--           <a class="nav-link disabled" aria-disabled="true">Disabled</a> -->
@@ -156,74 +159,53 @@
   
 <!--     <img class="mb-4" src="./img/metlogo.svg" alt="" width="297" height="107"> -->
     <p class="errorMsg" data-th-text="${ errorMessage }"></p>
-    <h1 class="h3 mb-3 fw-normal">Customer</h1>
+    <h1 class="h3 mb-3 fw-normal">Client</h1>
     
     <div>
-      <img th:src="${ customer.picturePath }" style="width:200px; height:300px; border: solid 1px gray; background: url(./img/membermissing.jpg);">
       
-    </div>
-    
-
-	<div>
-      
-      <label>First name : </label>
-      <span data-th-text="${ customer.firstName }"></span>
+      <label>Numéro client : </label>
+      <span data-th-text="${ subscription.customer.id }"></span>
     </div>
     
     <div>
-      <label>Last name : </label>
-      <span data-th-text="${ customer.lastName }"></span>
+      <label>Durée : </label>
+      <span data-th-text="${ subscription.duration }"></span>
     </div>
     
     <div>
-      <label>Address : </label>
-      <span data-th-text="${ customer.address }"></span>
+      <label>Taekwondo : </label>
+      <span data-th-text="${ subscription.taekwondo }"></span>
     </div>
     
     <div>
-      <label>City : </label>
-      <span data-th-text="${ customer.city }"></span>
+      <label>Kickboxing : </label>
+      <span data-th-text="${ subscription.kickboxing }"></span>
     </div>
     
     <div>
-      <label>Phone number : </label>
-      <span data-th-text="${ customer.phoneNumber }"></span>
+      <label>Taekibodo : </label>
+      <span data-th-text="${ subscription.taekibodo }"></span>
     </div>
 
     <div>
-      <label>Email address : </label>
-      <span data-th-text="${ customer.email }"></span>
+      <label>Montant : </label>
+      <span data-th-text="${ subscription.amount }"></span>
     </div>
     
     <div>
-      <label>Course : </label>
-      <span data-th-text="${ customer.course }"></span>
+      <label>Date effective : </label>
+      <span th:text="${#dates.format(subscription.subscriptionDate, 'yyyy-MM-dd')}"></span>
     </div>
     
-    
-    <div>
-      <label>Inscription date : </label>
-      <span data-th-text="${ customer.inscriptionDate }"></span>
-    </div>
-    
-    <div>
-      <label>Barcode value : </label>
-      <span data-th-text="${ customer.barcodeValue }"></span>
-    </div>
-    
-    <div>
-    	<img th:src="${ barcodePath }">
-    </div>
-
-    <button class="btn btn-primary w-100 py-2" th:onclick="modifyCustomer([[${ customer.id }]])">Modify</button>
+    <button class="btn btn-primary w-100 py-2" th:onclick="modifySubscription([[${ subscription.id }]])">Modifier</button>
     
   
 </main>
 
 	<script src="./js/bootstrap.bundle.min.js"></script>
 	<script type="text/javascript">
-		function modifyCustomer(id){
-			location="./modifyCustomer?id=" + id;
+		function modifySubscription(id){
+			location="./modifySubscription?id=" + id;
 		}
 
 	</script>

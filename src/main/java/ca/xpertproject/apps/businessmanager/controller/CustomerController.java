@@ -90,13 +90,10 @@ public class CustomerController {
 				.city(body.get("city"))
 				.phoneNumber(body.get("phonenumber"))
 				.email(body.get("email"))
-				.course(body.get("course"))
 				.picture(body.get("picture"))
 				.barcodeValue(body.get("barcodeValue"))
-				.inscriptionDate(inscriptionDate).build();
-				
-				
-				
+				.build();
+
 				customerRepository.save(customer);
 		
 		
@@ -104,16 +101,7 @@ public class CustomerController {
 	}
 	
 	@PostMapping(value="/updateCustomer")
-	public String updateeCustomer(@RequestParam Map<String, String> body, HttpServletResponse response) throws ParseException {
-		
-		Iterator<Entry<String, String>> mapItr = body.entrySet().iterator();
-		while (mapItr.hasNext()) {
-			Map.Entry<java.lang.String, java.lang.String> entry = (Map.Entry<java.lang.String, java.lang.String>) mapItr
-					.next();
-			
-			System.out.println(entry.getKey() + ":" + entry.getValue());
-			
-		}
+	public String updateCustomer(@RequestParam Map<String, String> body, HttpServletResponse response) throws ParseException {
 		
 		String inscriptionDateValue = body.get("inscriptiondate");
 		Date inscriptionDate = null;
@@ -124,21 +112,25 @@ public class CustomerController {
 		
 		Customer customer = customerRepository.findById(Long.parseLong(body.get("id")));
 		
-		String barcodeValueLeft = inscriptionDateValue.replace("-","");
-		Long barcodeValueLong = Long.parseLong(barcodeValueLeft)*1000000;
-		barcodeValueLong = barcodeValueLong + customer.getId();
-			
+		String barcodeValue = customer.getBarcodeValue();
+		if(barcodeValue==null||barcodeValue.isEmpty()) {
+			String left = new SimpleDateFormat("yyyyMMdd").format(new Date());
+			Long leftLong = Long.parseLong(left);
+			Long barcodeValueLong = leftLong * 1000000;
+			barcodeValueLong = barcodeValueLong + customer.getId();
+			barcodeValue = barcodeValueLong.toString();			
+		}
+				
 		customer = Customer.builder()
 				.id(customer.id)
 				.firstName(body.get("firstname"))
 				.lastName(body.get("lastname"))
 				.address(body.get("address"))
 				.city(body.get("city"))
-				.course(customer.getCourse())
-				.barcodeValue(barcodeValueLong.toString())
+				.barcodeValue(barcodeValue)
 				.phoneNumber(body.get("phonenumber"))
 				.email(body.get("email"))
-				.inscriptionDate(inscriptionDate).build();
+				.build();
 		
 				customerRepository.save(customer);
 		

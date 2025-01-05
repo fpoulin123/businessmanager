@@ -134,7 +134,7 @@
 	          <a class="nav-link" href="/mybusiness/allCustomers">Clients</a>
 	        </li>
 	        <li class="nav-item">
-	          <a class="nav-link" href="/mybusiness/allPayments">Paiements</a>
+	          <a class="nav-link" href="/mybusiness/allSubscriptions">Abonnements</a>
 	        </li>
 	<!--         <li class="nav-item"> -->
 	<!--           <a class="nav-link disabled" aria-disabled="true">Disabled</a> -->
@@ -153,19 +153,7 @@
 		<button class="btn btn-lg btn-primary" role="button" th:onclick="createCustomer()">Nouveau client</button>
 		
 	</div>
-	<div class="bg-body-tertiary p-5 rounded">
-		<span>Filtres</span>
-		<div>
-      		<label>Cours: </label>
-      		<select id="filterCourse" onchange="filterCourse();">
-      			<option value="ALL">TOUS</option>
-      			<option value="TAEKWONDO">TAE KWON DO</option>
-      			<option value="KICKBOXING">KICK BOXING</option>
-      			<option value="TAEKIBODO">TAE KI BO DO</option>
-      		</select> 
-      		
-   		</div>
-	</div>
+	
 	  <div class="bg-body-tertiary p-5 rounded">
 	    <table>
 	     <thead>
@@ -176,7 +164,6 @@
 	     	<th>Ville</th>
 	     	<th>Téléphone</th>
 			<th>E-mail</th>
-	     	<th>Cours</th>
 	     	<th>Date inscription</th>
 	     </thead>
 <tbody data-th-each="customer : ${ customers }">
@@ -188,8 +175,6 @@
 		<td data-th-text="${ customer.city }"></td>
 		<td data-th-text="${ customer.phoneNumber }"></td>
 		<td data-th-text="${ customer.email }"></td>
-		<td data-th-text="${ customer.course }"></td>
-		<td data-th-text="${#dates.format(customer.inscriptionDate, 'yyyy-MM-dd')}"></td>
 		<td><button class="btn btn-lg btn-primary" role="button" th:onclick="viewCustomer([[${ customer.id }]])">View</button></td>
 	
 	</tr>

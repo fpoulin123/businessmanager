@@ -8,6 +8,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -24,20 +27,23 @@ import lombok.Setter;
 @AllArgsConstructor
 
 @Entity
-@Table(name="payment")
-public class Payment {
+@Table(name="subscription")
+public class Subscription {
 
 	@Id
-	@GeneratedValue(generator = "payment_id_seq")
-	@SequenceGenerator(name="payment_id_seq", sequenceName = "payment_id_seq", allocationSize = 1)
+	@GeneratedValue(generator = "subscription_id_seq")
+	@SequenceGenerator(name="subscription_id_seq", sequenceName = "subscription_id_seq", allocationSize = 1)
 	@Column(name="id")
 	public Long id;
 	
-	@Column(name="customer_id")
+	@Column(name="customer_id",insertable = false, updatable = false)
 	public Long customerId;
 	
-	@Column(name="product")	
-	public Integer product;
+	@ManyToOne
+	public Customer customer;
+	
+	@Column(name="duration")	
+	public Integer duration;
 	
 	@Column(name="taekwondo")
 	public boolean taekwondo;
@@ -51,10 +57,7 @@ public class Payment {
 	@Column(name="amount")
 	public Double amount;
 	
-	@Column(name="payed_amount")
-	public Double payedAmount;
-	
-	@Column(name="payment_date")
-	public Date paymentDate;
+	@Column(name="subscription_date")
+	public Date subscriptionDate;
 	
 }

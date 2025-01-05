@@ -140,7 +140,7 @@
 	          <a class="nav-link" href="/mybusiness/allCustomers">Clients</a>
 	        </li>
 	        <li class="nav-item">
-	          <a class="nav-link" href="/mybusiness/allPaiments">Paiments</a>
+	          <a class="nav-link" href="/mybusiness/allSubscriptions">Abonnements</a>
 	        </li>
 	<!--         <li class="nav-item"> -->
 	<!--           <a class="nav-link disabled" aria-disabled="true">Disabled</a> -->
@@ -198,16 +198,10 @@
       <span data-th-text="${ customer.email }"></span>
     </div>
     
-    <div>
-      <label>Cours : </label>
-      <span data-th-text="${ customer.course }"></span>
-    </div>
-    
-    
-    <div>
-      <label>Date inscription : </label>
-      <span th:text="${#dates.format(customer.inscriptionDate, 'yyyy-MM-dd')}"></span>
-    </div>
+<!--     <div> -->
+<!--       <label>Date inscription : </label> -->
+<!--       <span th:text="${#dates.format(customer.inscriptionDate, 'yyyy-MM-dd')}"></span> -->
+<!--     </div> -->
     
     <div>
       <label>Numéro code barre : </label>

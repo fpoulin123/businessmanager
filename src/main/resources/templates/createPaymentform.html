@@ -157,10 +157,10 @@
 
 	
 	<main class="form-signin w-100 m-auto">
-  <form action="./addPayment" method="post" name="paymentForm" id="paymentForm">
+  <form action="./addSupscruption" method="post" name="subscriptionForm" id="subscriptionForm">
 <!--     <img class="mb-4" src="./img/metlogo.svg" alt="" width="297" height="107"> -->
     <p class="errorMsg" data-th-text="${ errorMessage }"></p>
-    <h1 class="h3 mb-3 fw-normal">Nouveau paiement</h1>
+    <h1 class="h3 mb-3 fw-normal">Nouvel abonnement</h1>
 
 	<div class="form-floating">
       <input type="text" class="form-control" id="floatingCustomerId" name="customerid" placeholder="customerid">
@@ -168,7 +168,7 @@
     </div>
     
     <div class="form-floating">
-      <input type="text" class="form-control" id="floatingProduct" name="product" placeholder="Product">
+      <input type="text" class="form-control" id="floatingDuration" name="duration" placeholder="Duration">
       <label for="floatingInput">Durée</label>
     </div>
     
@@ -191,12 +191,8 @@
     </div>
     
     <div class="form-floating">
-      <input type="text" class="form-control" id="floatingpayedAmount" name="payedAmount" placeholder="payedAmount">
-      <label for="floatingInput">Montant payé</label>
-    </div>
-    <div class="form-floating">
-      <input type="date" class="form-control" id="floatingPaymentDate" name="paymentDate" placeholder="paymentDate">
-      <label for="floatingPaymentDate">Date de paiement</label>
+      <input type="date" class="form-control" id="floatingSubscriptionDate" name="subscriptionDate" placeholder="subscriptionDate">
+      <label for="floatingSubscriptionDate">Date effective</label>
     </div>
 
     <button class="btn btn-primary w-100 py-2" type="submit">Créer</button>

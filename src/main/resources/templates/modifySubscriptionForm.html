@@ -107,6 +107,12 @@
       	border: solid gray 1px;
       
       }
+      
+      label.checkboxlbl{
+      	position:relative;
+      	padding: 0px;
+      
+      }
     </style>
 
     
@@ -129,10 +135,13 @@
 	    <div class="collapse navbar-collapse" id="navbarCollapse">
 	      <ul class="navbar-nav me-auto mb-2 mb-md-0">
 	        <li class="nav-item">
-	          <a class="nav-link active" aria-current="page" href="/mybusiness/home">Home</a>
+	          <a class="nav-link active" aria-current="page" href="/mybusiness/home">Accueil</a>
 	        </li>
 	        <li class="nav-item">
-	          <a class="nav-link" href="/mybusiness/allCustomers">Customers</a>
+	          <a class="nav-link" href="/mybusiness/allCustomers">Clients</a>
+	        </li>
+	        <li class="nav-item">
+	          <a class="nav-link" href="/mybusiness/allSubscriptions">Abonnements</a>
 	        </li>
 	<!--         <li class="nav-item"> -->
 	<!--           <a class="nav-link disabled" aria-disabled="true">Disabled</a> -->
@@ -148,10 +157,86 @@
 
 	
 	<main class="form-signin w-100 m-auto">
-  	HOME
-    </main>
+  <form action="./modifySubscription" method="post" name="subscriptionForm" id="subscriptionForm">
+<!--     <img class="mb-4" src="./img/metlogo.svg" alt="" width="297" height="107"> -->
+    <p class="errorMsg" data-th-text="${ errorMessage }"></p>
+    <h1 class="h3 mb-3 fw-normal">Edition abonnement</h1>
+	<input type="hidden" class="form-control" id="floatingId" name="id" th:value="${ subscription.id }">
+	<div class="form-floating">
+      <input type="text" class="form-control" id="floatingFirstname" name="customerId" placeholder="Numero client" th:value="${ subscription.customer.id }">
+      <label for="floatingInput">Numéro client</label>
+    </div>
+    
+    <div class="form-floating">
+      <input type="text" class="form-control" id="floatingLastname" name="product" placeholder="Durée" th:value="${ subscription.duration }">
+      <label for="floatingInput">Durée</label>
+    </div>
+    
+    <div class="form-floating">
+      <input type="checkbox" id="floatingTaekwondo" name="taekwondo" placeholder="taekwondo">
+      <label class="checkboxlbl">Taekwondo</label>
+    </div>
+    
+    <div class="form-floating">
+      <input type="checkbox" id="floatingKickboxing" name="kickboxing" placeholder="kickboxing">
+      <label class="checkboxlbl">Kickboxing</label>
+    </div>
+    <div class="form-floating">
+      <input type="checkbox" id="floatingTaekibodo" name="taekibodo" placeholder="taekibodo">
+      <label class="checkboxlbl">Taekibodo</label>
+    </div>
+
+    <div class="form-floating">
+      <input type="text" class="form-control" id="floatingAmount" name="amount" placeholder="Montant" th:value="${ subscription.amount }">
+      <label for="floatingInput">Email</label>
+    </div>
+        
+    <div class="form-floating">
+      <input type="date" class="form-control" id="floatingInscriptiondate" name="subscriptionDate" placeholder="Date abonnement" th:value="${#dates.format(subscription.subscriptionDate, 'yyyy-MM-dd')}">
+      <label for="floatingInscriptiondate">Date paiement</label>
+    </div>
+
+    <button class="btn btn-primary w-100 py-2" type="submit">Enregistrer</button>
+    <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2024</p>
+  </form>
+</main>
 
 	<script src="./js/bootstrap.bundle.min.js"></script>
+	
+	<script type="text/javascript">
+	
+	var taekwondo=[[${subscription.taekwondo}]];
+	var kickboxing=[[${subscription.kickboxing}]];
+	var taekibodo=[[${subscription.taekibodo}]];
+	
+	console.log("taekwondo: " + taekwondo);
+	console.log("kickboxing: " + kickboxing);
+	console.log("taekibodo: " + taekibodo);
+	
+	var taekwondoChk = document.querySelector('#floatingTaekwondo');
+	var kickboxingChk = document.querySelector('#floatingKickboxing');
+	var taekibodoChk = document.querySelector('#floatingTaekibodo');
+	
+	if(taekwondo){
+		taekwondoChk.checked=true;
+	}else{
+		taekwondoChk.checked=false;
+	}
+	
+	if(kickboxing){
+		kickboxingChk.checked=true;
+	}else{
+		kickboxingChk.checked=false;
+	}
+	
+	if(taekibodo){
+		taekibodoChk.checked=true;
+	}else{
+		taekibodoChk.checked=false;
+	}
+	
+	
+	</script>
 
     </body>
     

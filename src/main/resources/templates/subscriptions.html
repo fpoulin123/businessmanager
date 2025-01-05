@@ -112,7 +112,6 @@
     
     <!-- Custom styles for this template -->
     <link href="./css/navbar-static.css" rel="stylesheet">
-    <link href="./css/sign-in.css" rel="stylesheet">
   </head>
   
   
@@ -129,10 +128,13 @@
 	    <div class="collapse navbar-collapse" id="navbarCollapse">
 	      <ul class="navbar-nav me-auto mb-2 mb-md-0">
 	        <li class="nav-item">
-	          <a class="nav-link active" aria-current="page" href="/mybusiness/home">Home</a>
+	          <a class="nav-link active" aria-current="page" href="/mybusiness/home">Accueil</a>
 	        </li>
 	        <li class="nav-item">
-	          <a class="nav-link" href="/mybusiness/allCustomers">Customers</a>
+	          <a class="nav-link" href="/mybusiness/allCustomers">Clients</a>
+	        </li>
+	         <li class="nav-item">
+	          <a class="nav-link" href="/mybusiness/allSubscriptions">Abonnements</a>
 	        </li>
 	<!--         <li class="nav-item"> -->
 	<!--           <a class="nav-link disabled" aria-disabled="true">Disabled</a> -->
@@ -146,56 +148,53 @@
 	  </div>
 	</nav>
 
+	<main class="container">
+	<div class="bg-body-tertiary p-5 rounded">
+		<button class="btn btn-lg btn-primary" role="button" th:onclick="addAbonnement()">Nouvel abonnement</button>
+		
+	</div>
 	
-	<main class="form-signin w-100 m-auto">
-  <form action="./updateCustomer" method="post" name="customerform" id="cusomerform" enctype="application/x-www-form-urlencoded">
-<!--     <img class="mb-4" src="./img/metlogo.svg" alt="" width="297" height="107"> -->
-    <p class="errorMsg" data-th-text="${ errorMessage }"></p>
-    <h1 class="h3 mb-3 fw-normal">Modify customer</h1>
-	<input type="hidden" class="form-control" id="floatingId" name="id" th:value="${ customer.id }">
-	<div class="form-floating">
-      <input type="text" class="form-control" id="floatingFirstname" name="firstname" placeholder="First name" th:value="${ customer.firstName }">
-      <label for="floatingInput">First name</label>
-    </div>
-    
-    <div class="form-floating">
-      <input type="text" class="form-control" id="floatingLastname" name="lastname" placeholder="Last name" th:value="${ customer.lastName }">
-      <label for="floatingInput">Last name</label>
-    </div>
-    
-    <div class="form-floating">
-      <input type="text" class="form-control" id="floatingLastname" name="address" placeholder="Address" th:value="${ customer.address }">
-      <label for="floatingInput">Address</label>
-    </div>
-    
-    <div class="form-floating">
-      <input type="text" class="form-control" id="floatingLastname" name="city" placeholder="City" th:value="${ customer.city }">
-      <label for="floatingInput">City</label>
-    </div>
-    
-    <div class="form-floating">
-      <input type="text" class="form-control" id="floatingPhonenimber" name="phonenumber" placeholder="Phone number" th:value="${ customer.phoneNumber }">
-      <label for="floatingInput">Phone number</label>
-    </div>
-
-    <div class="form-floating">
-      <input type="email" class="form-control" id="floatingEmail" name="email" placeholder="name@example.com" th:value="${ customer.email }">
-      <label for="floatingInput">Email address</label>
-    </div>
-    
-    
-    <div class="form-floating">
-      <input type="date" class="form-control" id="floatingInscriptiondate" name="inscriptiondate" placeholder="Inscription date" th:value="${ customer.inscriptionDate }">
-      <label for="floatingInscriptiondate">Inscription date</label>
-    </div>
-
-    <button class="btn btn-primary w-100 py-2" type="submit">Update</button>
-    <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2024</p>
-  </form>
-</main>
-
+	  <div class="bg-body-tertiary p-5 rounded">
+	    <table>
+	     <thead>
+	     	<th>Id</th>
+	     	<th>Numéro client</th>
+	     	<th>Durée</th>
+	     	<th>Taekwondo</th>
+	     	<th>Kickboxing</th>
+	     	<th>Taekibodo</th>
+			<th>Montant</th>
+	     	<th>Date effective</th>
+	     </thead>
+<tbody data-th-each="subscription : ${ subscriptions }">
+	<tr>
+		<td data-th-text="${ subscription.id }"></td>
+		<td data-th-text="${ subscription.customer.id }"></td>
+		<td data-th-text="${ subscription.duration }"></td>
+		<td data-th-text="${ subscription.taekwondo }"></td>
+		<td data-th-text="${ subscription.kickboxing }"></td>
+		<td data-th-text="${ subscription.taekibodo }"></td>
+		<td data-th-text="${ subscription.amount }"></td>
+		<td data-th-text="${#dates.format(subscription.subscriptionDate, 'yyyy-MM-dd')}"></td>
+		<td><button class="btn btn-lg btn-primary" role="button" th:onclick="viewSubscription([[${ subscription.id }]])">View</button></td>
+	
+	</tr>
+</tbody>
+</table>
+	  </div>
+	</main>
 	<script src="./js/bootstrap.bundle.min.js"></script>
 
     </body>
-    
+    <script th:inline="javascript">
+  
+  	 	
+  	function viewSubscription(id){
+		location="./subscription?id=" + id;
+	}
+  
+	function addSubscription(){
+		location="./addSubscription";
+	}
+  </script>
 </html>
