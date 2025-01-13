@@ -2,6 +2,7 @@ package ca.xpertproject.apps.businessmanager.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -37,8 +38,26 @@ public class CustomerController {
 		
 		model.addAttribute("customers", customers);
 		
-		model.addAttribute("course", "");
+		return "customers";
 		
+	}
+	
+	@GetMapping("/customers")
+	public String getCustomersByName(@RequestParam(required = false) String name, @RequestParam(required = false) String firstname, Model model) {
+		List<Customer> customers = new ArrayList<Customer>();
+		if(name!=null&&!name.isEmpty()) {
+			customers = customerRepository.findByName(name);
+		}
+		
+		if(firstname!=null&&!firstname.isEmpty()) {
+			customers = customerRepository.findByFirstName(firstname);
+		}
+		
+		
+		Comparator<Object> idComp = new CustomerIdComparator();
+		Collections.sort(customers, idComp);
+		
+		model.addAttribute("customers", customers);
 		
 		return "customers";
 		

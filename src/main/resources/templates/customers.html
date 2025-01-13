@@ -128,7 +128,7 @@
 	    <div class="collapse navbar-collapse" id="navbarCollapse">
 	      <ul class="navbar-nav me-auto mb-2 mb-md-0">
 	        <li class="nav-item">
-	          <a class="nav-link active" aria-current="page" href="/mybusiness/home">Accueil</a>
+	          <a class="nav-link active" aria-current="page" href="/mybusiness/">Accueil</a>
 	        </li>
 	        <li class="nav-item">
 	          <a class="nav-link" href="/mybusiness/allCustomers">Clients</a>
@@ -151,8 +151,18 @@
 	<main class="container">
 	<div class="bg-body-tertiary p-5 rounded">
 		<button class="btn btn-lg btn-primary" role="button" th:onclick="createCustomer()">Nouveau client</button>
-		
 	</div>
+	<div class="form-floating" style="padding-left:20px; background-color: inherit;" >
+	      <span>Rechercher par </span>
+		  <div class="form-floating" >
+		  	<input type="text" style="width:200px;" class="form-control" id="floatingLastname" name="lastname" onchange="searchByName()" placeholder="Last name">
+	      	<label for="floatingLastname">Nom</label>
+		  </div>
+		  <div class="form-floating" >
+		  	<input type="text" style="width:200px;" class="form-control" id="floatingFirstname" name="firstname" onchange="searchByFirstName()" placeholder="First name">
+		  	<label for="floatingFirstname">Prénom</label>
+		  </div>
+	    </div>
 	
 	  <div class="bg-body-tertiary p-5 rounded">
 	    <table>
@@ -200,5 +210,19 @@
 	function createCustomer(){
 		location="./createCustomer";
 	}
+	
+	function searchByName(){
+		var lastname = document.getElementById("floatingLastname").value;
+		if(lastname.length>=3){
+			location="./customers?name="+lastname;
+		}
+	}
+	
+	function searchByFirstName(){
+			var firstname = document.getElementById("floatingFirstname").value;
+			if(firstname.length>=3){
+				location="./customers?firstname="+firstname;
+			}
+		}
   </script>
 </html>
