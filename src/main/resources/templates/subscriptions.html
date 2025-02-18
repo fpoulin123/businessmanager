@@ -107,11 +107,14 @@
       	border: solid gray 1px;
       
       }
+      
+
     </style>
 
     
     <!-- Custom styles for this template -->
     <link href="./css/navbar-static.css" rel="stylesheet">
+    <link href="./css/custom.css" rel="stylesheet">
   </head>
   
   
@@ -166,23 +169,26 @@
 	     	<th>Kickboxing</th>
 	     	<th>Taekibodo</th>
 			<th>Montant</th>
-	     	<th>Date effective</th>
+	     	<th style="min-width: 100px;" >Date effective</th>
+	     	<th style="min-width: 100px;" >Date expiration
 	     	<th>Valide</th>
+	     	<th>Actions</th>
 	     </thead>
 <tbody data-th-each="subscription : ${ subscriptions }">
 	<tr>
 		<td data-th-text="${ subscription.id }"></td>
-		<td data-th-text="${ subscription.customer.id }"></td>
-		<td data-th-text="${ subscription.customer.firstName }"></td>
-		<td data-th-text="${ subscription.customer.lastName }"></td>
+		<td data-th-text="${ subscription.customerId }"></td>
+		<td data-th-text="${ subscription.customerFirstname }"></td>
+		<td data-th-text="${ subscription.customerLastname }"></td>
 		<td data-th-text="${ subscription.duration }"></td>
-		<td data-th-text="${ subscription.taekwondo }"></td>
-		<td data-th-text="${ subscription.kickboxing }"></td>
-		<td data-th-text="${ subscription.taekibodo }"></td>
+		<td th:class="'checked-' + ${ subscription.taekwondo }"></td>
+		<td th:class="'checked-' + ${ subscription.kickboxing }"></td>
+		<td th:class="'checked-' + ${ subscription.taekibodo }"></td>
 		<td data-th-text="${ subscription.amount }"></td>
 		<td data-th-text="${#dates.format(subscription.subscriptionDate, 'dd-MM-yyyy')}"></td>
-		<td data-th-text="${ subscription.isValid }"></td>
-		<td><button class="btn btn-lg btn-primary" role="button" th:onclick="viewSubscription([[${ subscription.id }]])">View</button></td>
+		<td data-th-text="${#dates.format(subscription.expirationDate, 'dd-MM-yyyy')}"></td>
+		<td th:class="'checked-'+${ subscription.isValid }"></td>
+		<td><button class="btn btn-lg btn-primary btn-view" role="button" th:onclick="viewSubscription([[${ subscription.id }]])"></button></td>
 	
 	</tr>
 </tbody>

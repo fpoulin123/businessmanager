@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,8 @@ import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
 import ca.xpertproject.apps.businessmanager.model.GenericBuilder;
 import ca.xpertproject.apps.businessmanager.model.Subscription;
 import ca.xpertproject.apps.businessmanager.model.SubscriptionRepository;
+import ca.xpertproject.apps.businessmanager.objects.SubscriptionExt;
+import ca.xpertproject.apps.businessmanager.objects.mappers.SubscriptionMapper;
 import jakarta.servlet.http.HttpServletResponse;
 
 
@@ -35,7 +39,9 @@ public class SubscriptionController {
 		
 		List<Subscription> subscriptions = subscriptionRepository.findAll();
 		
-		model.addAttribute("subscriptions", subscriptions);
+		List<SubscriptionExt> subscriptionExtList = subscriptions.stream().map(sub-> new SubscriptionMapper().convert(sub)).collect(Collectors.toList());
+		
+		model.addAttribute("subscriptions", subscriptionExtList);
 		
 		return "subscriptions";
 	}

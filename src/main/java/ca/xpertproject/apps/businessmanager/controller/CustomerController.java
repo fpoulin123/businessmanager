@@ -124,18 +124,20 @@ public class CustomerController {
 		if(barcodeValue==null||barcodeValue.isEmpty()) {
 			String left = new SimpleDateFormat("yyyyMMdd").format(new Date());
 			Long leftLong = Long.parseLong(left);
-			Long barcodeValueLong = leftLong * 1000000;
+			Long barcodeValueLong = leftLong * 10000;
 			barcodeValueLong = barcodeValueLong + customer.getId();
 			barcodeValue = barcodeValueLong.toString();			
 		}
 		
 		customer = GenericBuilder.of(Customer::new)
+				.with(Customer::setId, customer.getId())
 				.with(Customer::setFirstName, body.get("firstname"))
 				.with(Customer::setLastName,body.get("lastname"))
 				.with(Customer::setAddress,body.get("address"))
 				.with(Customer::setCity,body.get("city"))
 				.with(Customer::setPhoneNumber,body.get("phonenumber"))
 				.with(Customer::setEmail,body.get("email"))
+				.with(Customer::setBarcodeValue, barcodeValue)
 				.build();
 		
 				customerRepository.save(customer);

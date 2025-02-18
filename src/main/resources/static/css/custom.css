@@ -1,0 +1,57 @@
+      td.checked-true{
+      	width: 40px;
+      	background-image: url("../img/ok.svg");
+      	background-repeat: no-repeat;
+      	background-position: center;
+      	background-size: 30px;
+      
+      }
+      
+      td.checked-false{
+      	width: 40px;
+      	background-image: url("../img/nok.svg");
+      	background-repeat: no-repeat;
+      	background-position: center;
+      	background-size: 30px;
+      
+      }
+      
+      div.checked-true{
+      	display: inline-block;
+      	width: 40px;
+      	height: 40px;
+      	background-image: url("../img/ok.svg");
+      	background-repeat: no-repeat;
+      	background-position: center;
+      	background-size: 30px;
+      
+      }
+      
+      div.checked-false{
+      	display: inline-block;
+      	width: 40px;
+      	height: 40px;
+      	background-image: url("../img/nok.svg");
+      	background-repeat: no-repeat;
+      	background-position: center;
+      	background-size: 30px;
+      
+      }
+      
+      button.btn-view{
+      	width: 40px;
+      	height: 40px;
+      	background-image: url("../img/view.svg");
+      	background-repeat: no-repeat;
+      	background-position: center;
+      	background-size: 30px;
+      }
+      
+      button.btn-edit{
+      	width: 40px;
+      	height: 40px;
+      	background-image: url("../img/edit.svg");
+      	background-repeat: no-repeat;
+      	background-position: center;
+      	background-size: 30px;
+      }
