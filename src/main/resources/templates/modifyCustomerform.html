@@ -155,7 +155,7 @@
 <!--     <img class="mb-4" src="./img/metlogo.svg" alt="" width="297" height="107"> -->
     <p class="errorMsg" data-th-text="${ errorMessage }"></p>
     <h1 class="h3 mb-3 fw-normal">Edition client</h1>
-	<input type="hidden" class="form-control" id="floatingId" name="id" th:value="${ customer.id }">
+	<input type="hidden" class="form-control" id="id" name="id" th:value="${ customer.id }">
 	<div class="form-floating">
       <input type="text" class="form-control" id="floatingFirstname" name="firstname" placeholder="First name" th:value="${ customer.firstName }">
       <label for="floatingInput">Prénom</label>
@@ -187,11 +187,19 @@
     </div>
 
     <button class="btn btn-primary w-100 py-2" type="submit">Enregistrer</button>
+    <button class="btn btn-primary w-100 py-2" onclick="backToCustomerView">Annuler</button>
     <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2024</p>
   </form>
 </main>
 
 	<script src="./js/bootstrap.bundle.min.js"></script>
+	<script type="text/javascript">
+		function backToCustomerView(){
+
+			var id = document.getElementById("id").value;
+			location = "/customer?id=" + id;
+		}
+	</script>
 
     </body>
     

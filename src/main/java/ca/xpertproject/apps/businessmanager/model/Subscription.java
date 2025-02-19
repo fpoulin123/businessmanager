@@ -28,8 +28,8 @@ public class Subscription {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Subscription(Long id, Long customerId, Customer customer, Integer duration, boolean taekwondo,
-			boolean kickboxing, boolean taekibodo, Double amount, Date subscriptionDate) {
+	public Subscription(Long id, Long customerId, Customer customer, Integer duration, Boolean taekwondo,
+			Boolean kickboxing, Boolean taekibodo, Double amount, Date subscriptionDate) {
 		super();
 		this.id = id;
 		this.customerId = customerId;
@@ -41,8 +41,6 @@ public class Subscription {
 		this.amount = amount;
 		this.subscriptionDate = subscriptionDate;
 	}
-
-
 
 	@Id
 	@GeneratedValue(generator = "subscription_id_seq")
@@ -60,13 +58,13 @@ public class Subscription {
 	public Integer duration;
 	
 	@Column(name="taekwondo")
-	public boolean taekwondo;
+	public Boolean taekwondo;
 
 	@Column(name="kickboxing")
-	public boolean kickboxing;
+	public Boolean kickboxing;
 	
 	@Column(name="taekibodo")
-	public boolean taekibodo;
+	public Boolean taekibodo;
 	
 	@Column(name="amount")
 	public Double amount;
@@ -122,37 +120,37 @@ public class Subscription {
 
 
 
-	public boolean isTaekwondo() {
+	public Boolean isTaekwondo() {
 		return taekwondo;
 	}
 
 
 
-	public void setTaekwondo(boolean taekwondo) {
+	public void setTaekwondo(Boolean taekwondo) {
 		this.taekwondo = taekwondo;
 	}
 
 
 
-	public boolean isKickboxing() {
+	public Boolean isKickboxing() {
 		return kickboxing;
 	}
 
 
 
-	public void setKickboxing(boolean kickboxing) {
+	public void setKickboxing(Boolean kickboxing) {
 		this.kickboxing = kickboxing;
 	}
 
 
 
-	public boolean isTaekibodo() {
+	public Boolean isTaekibodo() {
 		return taekibodo;
 	}
 
 
 
-	public void setTaekibodo(boolean taekibodo) {
+	public void setTaekibodo(Boolean taekibodo) {
 		this.taekibodo = taekibodo;
 	}
 
@@ -179,29 +177,6 @@ public class Subscription {
 	public void setSubscriptionDate(Date subscriptionDate) {
 		this.subscriptionDate = subscriptionDate;
 	}
-
-	public boolean isValid() {
-		
-		long subscriptionDateTime = this.getSubscriptionDate().getTime();
-		
-		int duration = this.getDuration();
-		
-		long durationLong = Integer.toUnsignedLong(duration);
-					
-		long dayInMillis = 24*3600*1000;
-		
-		long durationDateTime = durationLong*dayInMillis;
-		
-		System.out.println("Duration : " + duration);
-		
-		long expirationDateTime = subscriptionDateTime + durationDateTime;
-		
-		Date expirationDate = new Date(expirationDateTime);
-		
-		return expirationDate.after(new Date());
-		
-	}
-
 
 	public String toString() {
 		

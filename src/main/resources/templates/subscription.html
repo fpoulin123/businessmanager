@@ -118,6 +118,7 @@
     <!-- Custom styles for this template -->
     <link href="./css/navbar-static.css" rel="stylesheet">
     <link href="./css/sign-in.css" rel="stylesheet">
+    <link href="./css/custom.css" rel="stylesheet">
   </head>
   
   
@@ -159,7 +160,7 @@
   
 <!--     <img class="mb-4" src="./img/metlogo.svg" alt="" width="297" height="107"> -->
     <p class="errorMsg" data-th-text="${ errorMessage }"></p>
-    <h1 class="h3 mb-3 fw-normal">Client</h1>
+    <h1 class="h3 mb-3 fw-normal">Abonnement</h1>
     
     <div>
       
@@ -178,17 +179,17 @@
     
     <div>
       <label>Taekwondo : </label>
-      <span data-th-text="${ subscription.taekwondo }"></span>
+      <div th:class="'checked-' + ${ subscription.taekwondo }"></div>
     </div>
     
     <div>
       <label>Kickboxing : </label>
-      <span data-th-text="${ subscription.kickboxing }"></span>
+      <div th:class="'checked-' + ${ subscription.kickboxing }"></div>
     </div>
     
     <div>
       <label>Taekibodo : </label>
-      <span data-th-text="${ subscription.taekibodo }"></span>
+      <div th:class="'checked-' + ${ subscription.taekibodo }"></div>
     </div>
 
     <div>
