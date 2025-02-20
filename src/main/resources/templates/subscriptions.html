@@ -122,34 +122,7 @@
 
 
     
-	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-	  <div class="container-fluid">
-	    <a class="navbar-brand" href="#">My Business</a>
-	    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-	      <span class="navbar-toggler-icon"></span>
-	    </button>
-	    <div class="collapse navbar-collapse" id="navbarCollapse">
-	      <ul class="navbar-nav me-auto mb-2 mb-md-0">
-	        <li class="nav-item">
-	          <a class="nav-link active" aria-current="page" href="/mybusiness/">Accueil</a>
-	        </li>
-	        <li class="nav-item">
-	          <a class="nav-link" href="/mybusiness/allCustomers">Clients</a>
-	        </li>
-	         <li class="nav-item">
-	          <a class="nav-link" href="/mybusiness/allSubscriptions">Abonnements</a>
-	        </li>
-	<!--         <li class="nav-item"> -->
-	<!--           <a class="nav-link disabled" aria-disabled="true">Disabled</a> -->
-	<!--         </li> -->
-	      </ul>
-	<!--       <form class="d-flex" role="search"> -->
-	<!--         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
-	<!--         <button class="btn btn-outline-success" type="submit">Search</button> -->
-	<!--       </form> -->
-	    </div>
-	  </div>
-	</nav>
+	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" id="navbar"></nav>
 
 	<main class="container">
 	<div class="bg-body-tertiary p-5 rounded">
@@ -160,8 +133,8 @@
 	  <div class="bg-body-tertiary p-5 rounded">
 	    <table>
 	     <thead>
-	     	<th>Id</th>
-	     	<th>Numéro client</th>
+<!-- 	     	<th>Id</th> -->
+<!-- 	     	<th>Numéro client</th> -->
 	     	<th>Prénom</th>
 	     	<th>Nom</th>
 	     	<th>Durée</th>
@@ -176,8 +149,8 @@
 	     </thead>
 <tbody data-th-each="subscription : ${ subscriptions }">
 	<tr>
-		<td data-th-text="${ subscription.id }"></td>
-		<td data-th-text="${ subscription.customerId }"></td>
+<!-- 		<td data-th-text="${ subscription.id }"></td> -->
+<!-- 		<td data-th-text="${ subscription.customerId }"></td> -->
 		<td data-th-text="${ subscription.customerFirstname }"></td>
 		<td data-th-text="${ subscription.customerLastname }"></td>
 		<td data-th-text="${ subscription.duration }"></td>
@@ -196,6 +169,10 @@
 	  </div>
 	</main>
 	<script src="./js/bootstrap.bundle.min.js"></script>
+	
+	<script type="text/javascript" src="./js/jquery.js"></script>
+	<script src="./js/sign.js"></script>
+	<script src="./js/inject.js"></script>
 
     </body>
     <script th:inline="javascript">

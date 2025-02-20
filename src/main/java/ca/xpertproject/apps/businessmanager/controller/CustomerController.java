@@ -12,14 +12,18 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants.MEMBER_LOGGED_COOKIE_NAME;
 import ca.xpertproject.apps.businessmanager.model.Customer;
 import ca.xpertproject.apps.businessmanager.model.CustomerIdComparator;
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
 import ca.xpertproject.apps.businessmanager.model.GenericBuilder;
+import ca.xpertproject.apps.businessmanager.model.MemberRepository;
+import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
@@ -28,8 +32,15 @@ public class CustomerController {
 	@Autowired
 	CustomerRepository customerRepository;
 	
+	@Autowired
+	MemberRepository memberRepository;
+	
+	MemberUtils memberUtils = new MemberUtils();
+	
 	@GetMapping("/allCustomers")
-	public String getCustomers(Model model) {
+	public String getCustomers(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model) {
+		
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		List<Customer> customers = customerRepository.findAll();
 		
@@ -43,7 +54,9 @@ public class CustomerController {
 	}
 	
 	@GetMapping("/customers")
-	public String getCustomersByName(@RequestParam(required = false) String name, @RequestParam(required = false) String firstname, Model model) {
+	public String getCustomersByName(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false) String name, @RequestParam(required = false) String firstname, Model model) {
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		
 		List<Customer> customers = new ArrayList<Customer>();
 		if(name!=null&&!name.isEmpty()) {
 			customers = customerRepository.findByName(name);
@@ -64,8 +77,8 @@ public class CustomerController {
 	}
 	
 	@GetMapping("/customer")
-	public String getCustomer(@RequestParam(required = true) Long id, Model model) {
-		
+	public String getCustomer(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = true) Long id, Model model) {
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		Customer customer = customerRepository.findById(id);
 		
 		model.addAttribute("customer", customer);
@@ -74,8 +87,8 @@ public class CustomerController {
 	}
 	
 	@GetMapping("/modifyCustomer")
-	public String getModifyCustomer(@RequestParam(required = true) Long id, Model model) {
-		
+	public String getModifyCustomer(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = true) Long id, Model model) {
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		Customer customer = customerRepository.findById(id);
 				
 		model.addAttribute("customer", customer);
@@ -84,14 +97,14 @@ public class CustomerController {
 	}
 	
 	@GetMapping("/createCustomer")
-	public String getCreateCustomer() {
-	
+	public String getCreateCustomer(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model) {
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		return "createCustomerform";
 	}
 	
 	@PostMapping(value="/createCustomer")
-	public String createCustomer(@RequestParam Map<String, String> body, HttpServletResponse response) throws ParseException {
-		
+	public String createCustomer(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model) throws ParseException {
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		Customer customer = GenericBuilder.of(Customer::new)
 				.with(Customer::setFirstName, body.get("firstname"))
 				.with(Customer::setLastName,body.get("lastname"))
@@ -109,7 +122,9 @@ public class CustomerController {
 	}
 	
 	@PostMapping(value="/updateCustomer")
-	public String updateCustomer(@RequestParam Map<String, String> body, HttpServletResponse response) throws ParseException {
+	public String updateCustomer(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model) throws ParseException {
+		
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		String inscriptionDateValue = body.get("inscriptiondate");
 		Date inscriptionDate = null;

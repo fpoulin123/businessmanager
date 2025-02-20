@@ -107,11 +107,6 @@
       	border: solid gray 1px;
       
       }
-      
-      main.form-signin div{
-      	padding-top:10px;
-      	padding-bottom: 10px;      
-      }
     </style>
 
     
@@ -127,81 +122,18 @@
 
     
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" id="navbar"></nav>
-
 	
 	<main class="form-signin w-100 m-auto">
-  
-<!--     <img class="mb-4" src="./img/metlogo.svg" alt="" width="297" height="107"> -->
-    <p class="errorMsg" data-th-text="${ errorMessage }"></p>
-    <h1 class="h3 mb-3 fw-normal">Client</h1>
-    
-    <div>
-      <img th:src="${ customer.picture}" style="width:200px; height:300px; border: solid 1px gray; background: url(./img/membermissing.jpg);">
-      
-    </div>
-    
-
-	<div>
-      
-      <label>Prénom : </label>
-      <span data-th-text="${ customer.firstName }"></span>
-    </div>
-    
-    <div>
-      <label>Nom : </label>
-      <span data-th-text="${ customer.lastName }"></span>
-    </div>
-    
-    <div>
-      <label>Adresse : </label>
-      <span data-th-text="${ customer.address }"></span>
-    </div>
-    
-    <div>
-      <label>Ville : </label>
-      <span data-th-text="${ customer.city }"></span>
-    </div>
-    
-    <div>
-      <label>Téléphone : </label>
-      <span data-th-text="${ customer.phoneNumber }"></span>
-    </div>
-
-    <div>
-      <label>Email : </label>
-      <span data-th-text="${ customer.email }"></span>
-    </div>
-    
-<!--     <div> -->
-<!--       <label>Date inscription : </label> -->
-<!--       <span th:text="${#dates.format(customer.inscriptionDate, 'yyyy-MM-dd')}"></span> -->
-<!--     </div> -->
-    
-    <div>
-      <label>Numéro code barre : </label>
-      <span data-th-text="${ customer.barcodeValue }"></span>
-    </div>
-    
-    <div>
-    	<img th:src="${ barcodePath }">
-    </div>
-
-    <button class="btn btn-primary w-100 py-2" th:onclick="modifyCustomer([[${ customer.id }]])">Modifier</button>
-    
-  
-</main>
+ 	<p>Vous n'avez pas accès a cette resource. Merci de vous authentifier avec un compte ayant les droits adéquats. Merci.</p>
+    </main>
 
 	<script src="./js/bootstrap.bundle.min.js"></script>
-	<script type="text/javascript">
-		function modifyCustomer(id){
-			location="./modifyCustomer?id=" + id;
-		}
-
-	</script>
 	
 	<script type="text/javascript" src="./js/jquery.js"></script>
 	<script src="./js/sign.js"></script>
 	<script src="./js/inject.js"></script>
+
+
     </body>
     
 </html>

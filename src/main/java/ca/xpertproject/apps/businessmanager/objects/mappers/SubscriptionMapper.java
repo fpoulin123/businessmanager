@@ -47,9 +47,7 @@ public class SubscriptionMapper {
 		if(subscription.getDuration()==null) {
 			return null;
 		}
-		
-		System.out.println("Subscription : " + subscription.getId());
-		
+				
 		long subscriptionDateTime = subscription.getSubscriptionDate().getTime();
 		
 		long durationLong = Integer.toUnsignedLong(subscription.getDuration());
