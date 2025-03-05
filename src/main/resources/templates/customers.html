@@ -129,9 +129,7 @@
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" id="navbar"></nav>
 
 	<main class="container">
-	<div class="bg-body-tertiary p-5 rounded">
-		
-		
+	<div class="bg-body-tertiary p-3 rounded">
 		<div class="form-floating" style="padding-left:20px; background-color: inherit;" >
 	      <span>Rechercher par </span>
 		  <div class="form-floating filter" >
@@ -146,23 +144,28 @@
 		  	<button class="btn btn-lg btn-primary" role="button" th:onclick="createCustomer()">Nouveau client</button>
 		  </div>
 	    </div>
+	    <div class="pagesNavigator">
+	    	<button th:if="${ prevPage!=null }" class="navPage previousPage" role="button" th:onclick="previousPage()"></button>
+	    	<div class="navPage" th:text="${ currentPage }"></div>/<div class="navPage" th:text="${ pages }"></div>
+	    	<button th:if="${ nextPage!=null }" class="navPage nextPage" role="button" th:onclick="nextPage()"></button>
+	    </div>
 	</div>
 	
 	
-	  <div class="bg-body-tertiary p-5 rounded">
+	  <div class="bg-body-tertiary p-3 rounded">
 	    <table>
 	     <thead>
-	     	<th>Numéro</th>
-	     	<th>Prénom</th>
-	     	<th>Nom</th>
-	     	<th>Adresse</th>
-	     	<th>Ville</th>
-	     	<th>Téléphone</th>
-			<th>E-mail</th>
+	     	<th style="width:5%">#</th>
+	     	<th style="width:20%">Prénom</th>
+	     	<th style="width:20%">Nom</th>
+	     	<th style="width:30%">Adresse</th>
+	     	<th style="width:10%">Ville</th>
+	     	<th style="width:10%">Téléphone</th>
+			<th style="width:10%">E-mail</th>
 	     	<th class="width100">Actions</th>
 	     </thead>
-<tbody data-th-each="customer : ${ customers }">
-	<tr>
+<tbody>
+	<tr data-th-each="customer : ${ customers }">
 		<td data-th-text="${ customer.id }"></td>
 		<td data-th-text="${ customer.firstName }"></td>
 		<td data-th-text="${ customer.lastName }"></td>
@@ -178,6 +181,13 @@
 	</tr>
 </tbody>
 </table>
+	  </div>
+	  <div class="bg-body-tertiary p-3 rounded">
+	  <div class="pagesNavigator">
+	    	<button th:if="${ prevPage!=null }" class="navPage previousPage" role="button" th:onclick="previousPage()"></button>
+	    	<div class="navPage" th:text="${ currentPage }"></div>/<div class="navPage" th:text="${ pages }"></div>
+	    	<button th:if="${ nextPage!=null }" class="navPage nextPage" role="button" th:onclick="nextPage()"></button>
+	    </div>
 	  </div>
 	</main>
 	<script src="./js/bootstrap.bundle.min.js"></script>
@@ -208,10 +218,21 @@
 	}
 	
 	function searchByFirstName(){
-			var firstname = document.getElementById("floatingFirstname").value;
-			if(firstname.length>=3){
-				location="./customers?firstname="+firstname;
-			}
+		var firstname = document.getElementById("floatingFirstname").value;
+		if(firstname.length>=3){
+			location="./customers?firstname="+firstname;
 		}
+	}
+	
+	function previousPage(){
+		
+		location = "allCustomers?page=[[${prevPage}]]";
+	}
+	
+	function nextPage(){
+		
+		location = "allCustomers?page=[[${nextPage}]]";
+		
+	}
   </script>
 </html>

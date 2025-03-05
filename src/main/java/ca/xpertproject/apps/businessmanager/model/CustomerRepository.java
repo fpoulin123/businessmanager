@@ -19,13 +19,13 @@ public interface CustomerRepository extends Repository<Customer, Long> {
 
 	
 	@Query(
-            value = "select * from customer c where c.lastname ILIKE %:name%",
+            value = "select * from customer c where c.lastname ilike %:name%;",
             nativeQuery = true
     )
     List<Customer> findByName(String name);
 	
 	@Query(
-            value = "select * from customer c where c.firstname ILIKE %:firstname%",
+            value = "select * from customer c where c.firstname ilike %:firstname%",
             nativeQuery = true
     )
     List<Customer> findByFirstName(String firstname);

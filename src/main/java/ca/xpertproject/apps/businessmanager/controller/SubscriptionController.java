@@ -45,13 +45,29 @@ public class SubscriptionController {
 	MemberUtils memberUtils = new MemberUtils();
 	
 	@GetMapping("/allSubscriptions")
-	public String getAllPayments(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model) {
+	public String getAllSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model) {
 		
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		List<Subscription> subscriptions = subscriptionRepository.findAll();
 		
 		List<SubscriptionExt> subscriptionExtList = subscriptions.stream().map(sub-> new SubscriptionMapper().convert(sub)).collect(Collectors.toList());
+		
+		model.addAttribute("subscriptions", subscriptionExtList);
+		
+		return "subscriptions";
+	}
+	
+	@GetMapping("/validSubscriptions")
+	public String getValidSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model) {
+		
+		System.out.println("Get all valid subscriptions.");
+		
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		
+		List<Subscription> subscriptions = subscriptionRepository.findAll();
+		
+		List<SubscriptionExt> subscriptionExtList = subscriptions.stream().map(sub-> new SubscriptionMapper().convert(sub)).filter(t -> t.getIsValid()).collect(Collectors.toList());
 		
 		model.addAttribute("subscriptions", subscriptionExtList);
 		

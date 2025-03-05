@@ -106,7 +106,49 @@
 	
 	}
 	
+	button.navPage{
+		height:30px;
+		width: 30px;
+		border: none;
+		background-color: transparent;
+	   	background-repeat: no-repeat;
+	   	background-position: center;
+	   	background-size: 17px;
+	}
+	
+	div.navPage{
+		height:30px;
+		width: 60px;
+		vertical-align: middle;
+		text-align: center;
+	}
+	
+	.navPage{
+		display: inline-block;
+	}
+	
+	button.previousPage{
+
+	   	background-image: url("../img/leftArw.svg");
+
+	}
+	
+	button.nextPage{
+
+	   	background-image: url("../img/rightArw.svg");
+
+	}
+	
 	div.form-floating{
 		margin-bottom: 15px;
 	
+	}
+	
+	div.p-5{
+		padding: 1rem !important;
+	}
+	
+	div.pagesNavigator{
+		width:100%;
+		text-align: center;
 	}
