@@ -74,6 +74,22 @@ public class SubscriptionController {
 		return "subscriptions";
 	}
 	
+	@GetMapping("/subscriptions")
+	public String getSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = true) Long customerId, Model model) {
+		
+		System.out.println("Get subscriptions for customer " + customerId);
+		
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		
+		List<Subscription> subscriptions = subscriptionRepository.findAll();
+		
+		List<SubscriptionExt> subscriptionExtList = subscriptions.stream().map(sub-> new SubscriptionMapper().convert(sub)).filter(t -> customerId.equals(t.getCustomerId())).collect(Collectors.toList());
+		
+		model.addAttribute("subscriptions", subscriptionExtList);
+		
+		return "subscriptions";
+	}
+	
 	@GetMapping("/subscription")
 	public String getSubscription(@CookieValue(value =MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = true) Long id, Model model) {
 		
