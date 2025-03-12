@@ -167,7 +167,7 @@
 
     <div>
       <label>Montant : </label>
-      <span data-th-text="${ subscription.amount }"></span>
+      <span data-th-text="${ #numbers.formatDecimal( subscription.amount ,1,2,'POINT' )}"></span><span>&nbsp;CAD</span>
     </div>
     
     <div>
@@ -185,9 +185,47 @@
       <div th:class="'checked-' + ${ subscriptionValid }"></div>
     </div>
     
-    <button class="btn btn-primary w-100 py-2" th:onclick="modifySubscription([[${ subscription.id }]])">Modifier</button>
+    <button class="btn btn-primary py-2" th:onclick="modifySubscription([[${ subscription.id }]])">Modifier</button>
+    <button class="btn btn-primary py-2" th:onclick="addPayment([[${ subscription.id }]])">Ajout paiement</button>
+    
     
   
+</main>
+<main class="container">
+`	<div class="bg-body-tertiary p-3 rounded">
+	    <table style="margin:auto;">
+	     <thead>
+<!-- 	     	<th>Id</th> -->
+<!-- 	     	<th>Numéro client</th> -->
+	     	<th>Numéro</th>
+	     	<th>Abonnement</th>
+	     	<th>Montant</th>
+	     	<th>Date de paiement</th>
+	     	<th>Actions</th>
+	     </thead>
+		<tbody data-th-each="payment : ${ payments }">
+			<tr>
+				<td data-th-text="${ payment.id }"></td>
+				<td data-th-text="${ payment.subscriptionId }"></td>
+				<td data-th-text="${ payment.amount }"></td>
+				<td data-th-text="${#dates.format(payment.paymentDate, 'dd-MM-yyyy')}"></td>
+				<td><button class="btn btn-lg btn-primary btn-view" role="button" th:onclick="viewPayment([[${ payment.id }]])"></button></td>
+			
+			</tr>
+		</tbody>
+		
+		</table>
+	  </div>
+	  <div class="bg-body-tertiary p-3 rounded">
+	  <div >
+	  	<label>Total des paiements:&nbsp;</label><span th:text="${ #numbers.formatDecimal( totalPayed,1,2,'POINT' )}"></span><span>&nbsp;CAD</span>
+	  </div>
+	  <div>
+	  	<label>Balance:&nbsp;</label><span th:text="${ #numbers.formatDecimal( leftToPay,1,2,'POINT' )}"></span><span>&nbsp;CAD</span>
+	  </div>
+	  </div>
+	  
+
 </main>
 
 	<script src="./js/bootstrap.bundle.min.js"></script>
@@ -198,6 +236,10 @@
 	<script type="text/javascript">
 		function modifySubscription(id){
 			location="./modifySubscription?id=" + id;
+		}
+		
+		function addPayment(id){
+			location="./addPayment?subscriptionId=" + id;
 		}
 
 	</script>

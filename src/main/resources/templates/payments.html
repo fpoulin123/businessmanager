@@ -108,16 +108,12 @@
       
       }
       
-      main.form-signin div{
-      	padding-top:10px;
-      	padding-bottom: 10px;      
-      }
+
     </style>
 
     
     <!-- Custom styles for this template -->
     <link href="./css/navbar-static.css" rel="stylesheet">
-    <link href="./css/sign-in.css" rel="stylesheet">
     <link href="./css/custom.css" rel="stylesheet">
   </head>
   
@@ -128,90 +124,45 @@
     
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" id="navbar"></nav>
 
+	<main class="container">
 	
-	<main class="form-signin w-100 m-auto">
-  
-<!--     <img class="mb-4" src="./img/metlogo.svg" alt="" width="297" height="107"> -->
-    <p class="errorMsg" data-th-text="${ errorMessage }"></p>
-    <h1 class="h3 mb-3 fw-normal">Client</h1>
-    
-    <div>
-      <img th:src="${ customer.picture}" style="width:200px; height:300px; border: solid 1px gray; background: url(./img/membermissing.jpg);">
-      
-    </div>
-    
-
-	<div>
-      
-      <label>Prénom : </label>
-      <span data-th-text="${ customer.firstName }"></span>
-    </div>
-    
-    <div>
-      <label>Nom : </label>
-      <span data-th-text="${ customer.lastName }"></span>
-    </div>
-    
-    <div>
-      <label>Adresse : </label>
-      <span data-th-text="${ customer.address }"></span>
-    </div>
-    
-    <div>
-      <label>Ville : </label>
-      <span data-th-text="${ customer.city }"></span>
-    </div>
-    
-    <div>
-      <label>Téléphone : </label>
-      <span data-th-text="${ customer.phoneNumber }"></span>
-    </div>
-
-    <div>
-      <label>Email : </label>
-      <span data-th-text="${ customer.email }"></span>
-    </div>
-    
-<!--     <div> -->
-<!--       <label>Date inscription : </label> -->
-<!--       <span th:text="${#dates.format(customer.inscriptionDate, 'yyyy-MM-dd')}"></span> -->
-<!--     </div> -->
-    
-    <div>
-      <label>Numéro code barre : </label>
-      <span data-th-text="${ customer.barcodeValue }"></span>
-    </div>
-    
-    <div>
-    	<img th:src="${ barcodePath }">
-    </div>
-
-    <button class="btn btn-primary py-2" th:onclick="modifyCustomer([[${ customer.id }]])">Modifier</button>
-    <button class="btn btn-primary py-2" th:onclick="showSubscriptions([[${ customer.id }]])">Abonnements</button>
-    <button class="btn btn-primary py-2" th:onclick="newSubscription([[${ customer.id }]])">Abonnements</button>
-    
-  
-</main>
-
+	  <div class="bg-body-tertiary p-3 rounded">
+	    <table>
+	     <thead>
+<!-- 	     	<th>Id</th> -->
+<!-- 	     	<th>Numéro client</th> -->
+	     	<th>Numéro</th>
+	     	<th>Abonnement</th>
+	     	<th>Montant</th>
+	     	<th>Date de paiement</th>
+	     	<th>Actions</th>
+	     </thead>
+		<tbody data-th-each="payment : ${ payments }">
+			<tr>
+				<td data-th-text="${ payment.id }"></td>
+				<td data-th-text="${ payment.subscriptionId }"></td>
+				<td data-th-text="${ payment.amount }"></td>
+				<td data-th-text="${#dates.format(payment.paymentDate, 'dd-MM-yyyy')}"></td>
+				<td><button class="btn btn-lg btn-primary btn-view" role="button" th:onclick="viewPayment([[${ payment.id }]])"></button></td>
+			
+			</tr>
+		</tbody>
+	</table>
+	  </div>
+	</main>
 	<script src="./js/bootstrap.bundle.min.js"></script>
-	<script type="text/javascript">
-		function modifyCustomer(id){
-			location="./modifyCustomer?id=" + id;
-		}
-		
-		function showSubscriptions(id){
-			location="./subscriptions?customerId=" + id;
-		}
-		
-		function newSubscription(id){
-			location="./addSubscription? ?customerId=" + id;
-		}
-
-	</script>
 	
 	<script type="text/javascript" src="./js/jquery.js"></script>
 	<script src="./js/sign.js"></script>
 	<script src="./js/inject.js"></script>
+
     </body>
-    
+    <script th:inline="javascript">
+  
+  	 	
+  	function viewPayment(id){
+		location="./payment?id=" + id;
+	}
+
+  </script>
 </html>

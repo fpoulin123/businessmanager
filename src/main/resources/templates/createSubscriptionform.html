@@ -137,6 +137,14 @@
     <h1 class="h3 mb-3 fw-normal">Nouvel abonnement</h1>
 
 	<div class="form-floating">
+		<select >
+			<option th:each="option : ${customerList}" th:value="${option.id}" th:text="${option.fullname}"></option>
+		
+		</select>
+		<label for="floatingInput">Client</label>
+    </div>
+    
+    <div class="form-floating">
       <input type="text" class="form-control" id="floatingCustomerId" name="customerid" placeholder="customerid" th:value="${ customerid }">
       <label for="floatingInput">Numéro client</label>
     </div>

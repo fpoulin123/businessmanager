@@ -20,8 +20,11 @@ import ca.xpertproject.apps.businessmanager.model.Customer;
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
 import ca.xpertproject.apps.businessmanager.model.GenericBuilder;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
+import ca.xpertproject.apps.businessmanager.model.Payment;
+import ca.xpertproject.apps.businessmanager.model.PaymentRepository;
 import ca.xpertproject.apps.businessmanager.model.Subscription;
 import ca.xpertproject.apps.businessmanager.model.SubscriptionRepository;
+import ca.xpertproject.apps.businessmanager.objects.CustomerLight;
 import ca.xpertproject.apps.businessmanager.objects.SubscriptionExt;
 import ca.xpertproject.apps.businessmanager.objects.mappers.SubscriptionMapper;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
@@ -41,6 +44,9 @@ public class SubscriptionController {
 	
 	@Autowired
 	MemberRepository memberRepository;
+	
+	@Autowired
+	PaymentRepository paymentRepository;
 	
 	MemberUtils memberUtils = new MemberUtils();
 	
@@ -117,9 +123,24 @@ public class SubscriptionController {
 		
 		boolean subscriptionValid = expirationDate.after(new Date());
 		
+		List<Payment> payments = subscription.paymentList;
+		
 		model.addAttribute("expirationDate", expirationDate);
 		
 		model.addAttribute("subscriptionValid", subscriptionValid);
+		
+		model.addAttribute("payments", payments);
+		
+		Double totalAmountPayed = 0.0;
+		
+		for (Payment payment : payments) {
+			totalAmountPayed = totalAmountPayed + payment.amount;
+		}
+		
+		Double leftToPay = subscription.amount - totalAmountPayed;
+		
+		model.addAttribute("totalPayed", totalAmountPayed);
+		model.addAttribute("leftToPay", leftToPay);
 		
 		return "subscription";
 	}
@@ -129,9 +150,25 @@ public class SubscriptionController {
 		
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
+		List<CustomerLight> customerList = (List<CustomerLight>) customerRepository.findAll().stream().map(customer-> convertForList(customer)).collect(Collectors.toList());
+		
+		//customerList.forEach(c-> System.out.println(c.getFullname() + ": " + c.getId()));
+		
+		model.addAttribute("customerList", customerList);
+		
 		model.addAttribute("customerid", customerid);
 		
 		return "createSubscriptionform";
+	}
+	
+	public CustomerLight convertForList(Customer customer) {
+		CustomerLight customerLight = new CustomerLight();
+
+		customerLight.setFullname(customer.firstName + " " + customer.lastName);
+		
+		customerLight.setId(customer.getId());
+
+		return customerLight;
 	}
 	
 	@PostMapping("/addSubscription")

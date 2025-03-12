@@ -1,6 +1,7 @@
 package ca.xpertproject.apps.businessmanager.model;
 
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.annotations.Columns;
 
@@ -72,6 +73,8 @@ public class Subscription {
 	@Column(name="subscription_date")
 	public Date subscriptionDate;
 	
+	@OneToMany(mappedBy="subscriptionId")
+	public List<Payment> paymentList;
 	
 	
 	public Long getId() {
@@ -176,6 +179,16 @@ public class Subscription {
 
 	public void setSubscriptionDate(Date subscriptionDate) {
 		this.subscriptionDate = subscriptionDate;
+	}
+	
+	
+
+	public List<Payment> getPaymentList() {
+		return paymentList;
+	}
+
+	public void setPaymentList(List<Payment> paymentList) {
+		this.paymentList = paymentList;
 	}
 
 	public String toString() {
