@@ -31,5 +31,23 @@ public class MemberUtils {
 		
 		return hasAccess;
 	}
+	
+public boolean checkCookieMember(String loggedMember, MemberRepository memberRepository) {
+		
+		boolean hasAccess=false;
+		System.out.println("Checking member cooky present");
+		if(loggedMember!=null && !loggedMember.isEmpty() && !"guest".equals(loggedMember)) {
+			System.out.println("Member cooki=y value : " + loggedMember);
+			List<Member> memberOpt = memberRepository.findByEmail(loggedMember);
+			System.out.println("Member found : " +memberOpt.size());
+			if(!memberOpt.isEmpty()) {
+				System.out.println("Access granted for " + loggedMember);
+				Member member = memberOpt.get(0);
+				hasAccess = true;
+			}
+		}
+		
+		return hasAccess;
+	}
 
 }

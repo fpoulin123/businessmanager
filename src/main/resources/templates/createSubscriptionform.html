@@ -15,7 +15,8 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
-<link href="./css/bootstrap.min.css" rel="stylesheet">
+	<link href="./css/bootstrap.min.css" rel="stylesheet">
+	<link href="./css/jquery-ui.css" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -137,15 +138,13 @@
     <h1 class="h3 mb-3 fw-normal">Nouvel abonnement</h1>
 
 	<div class="form-floating">
-		<select >
-			<option th:each="option : ${customerList}" th:value="${option.id}" th:text="${option.fullname}"></option>
-		
-		</select>
+		<input type="text" class="form-control" id="floatingCustomerDisplay" name="customerDisplay" placeholder="customerDisplay">
+      
 		<label for="floatingInput">Client</label>
     </div>
     
     <div class="form-floating">
-      <input type="text" class="form-control" id="floatingCustomerId" name="customerid" placeholder="customerid" th:value="${ customerid }">
+      <input type="text" class="form-control" id="floatingCustomerId" name="customerid" placeholder="customerid" th:value="${ customerId }">
       <label for="floatingInput">Numéro client</label>
     </div>
     
@@ -185,8 +184,17 @@
 	<script src="./js/bootstrap.bundle.min.js"></script>
 
 	<script type="text/javascript" src="./js/jquery.js"></script>
+	<script src="./js/jquery-ui.js"></script>
 	<script src="./js/sign.js"></script>
 	<script src="./js/inject.js"></script>
+	
+	<script type="text/javascript">
+		$.getJSON("./getCustomerList", function(data){
+			$( "#floatingCustomerDisplay" ).autocomplete({
+				source: data
+			});
+		});
+	</script>
     </body>
     
 </html>

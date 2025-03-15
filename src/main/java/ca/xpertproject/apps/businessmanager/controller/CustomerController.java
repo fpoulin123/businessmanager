@@ -24,6 +24,7 @@ import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
 import ca.xpertproject.apps.businessmanager.model.GenericBuilder;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
+import ca.xpertproject.apps.businessmanager.utils.PageUtils;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
@@ -47,60 +48,13 @@ public class CustomerController {
 		Comparator<Object> idComp = new CustomerIdComparator();
 		Collections.sort(customers, idComp);
 		
-		
-		
-		if(page!=null) {
-			List<Customer> pagedCustomers = new ArrayList<Customer>();
-			int numByPage = 10;
-			int pageInt = Integer.parseInt(page);
-			int numCustomers = customers.size();
-			
-			int numPage = (int) numCustomers / numByPage;
-			
-			Double numCustomersDbl = Double.valueOf(numCustomers);
-			Double numByPageDbl = Double.valueOf(numByPage);
-			System.out.println("NUM PGAE : " + numPage);
-			Double rest = numCustomersDbl % numByPageDbl;
-			if(rest>0.0)numPage++;
-			System.out.println("NUM PGAE : " + numPage);
-			System.out.println("REST : " + rest);
-			
-			
-			int idxStart = (pageInt * numByPage) - numByPage;
-			int idxEnd = idxStart + numByPage;
-			
-			System.out.println("idxStart:" + idxStart);
-			System.out.println("idxEnd: " + idxEnd);
-			
-			for(int idx = idxStart;idx<idxEnd;idx++) {
-				if(idx>=numCustomers)break;
-				pagedCustomers.add(customers.get(idx));
-			}
-			
-			model.addAttribute("currentPage", pageInt);
-			model.addAttribute("pages", numPage);
-				
-			if(pageInt>1) {
-				model.addAttribute("prevPage", pageInt -1);
-			}
-			
-			if(pageInt<numPage) {
-				model.addAttribute("nextPage", pageInt + 1);
-			}
-			
-			
-			
-			
-			
-			
-			model.addAttribute("customers", pagedCustomers);
-		}else {
-			model.addAttribute("customers", customers);
-		}
+		PageUtils.getPagedItems(customers, model, page, "customers");
 		
 		return "customers";
 		
 	}
+	
+	
 	
 	@GetMapping("/customers")
 	public String getCustomersByName(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false) String name, @RequestParam(required = false) String firstname, Model model) {

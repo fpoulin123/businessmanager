@@ -2,12 +2,14 @@ package ca.xpertproject.apps.businessmanager.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import org.springframework.aop.aspectj.SingletonAspectInstanceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ca.xpertproject.apps.businessmanager.model.Customer;
+import ca.xpertproject.apps.businessmanager.model.CustomerLightFullNameComparator;
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
 import ca.xpertproject.apps.businessmanager.model.GenericBuilder;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
@@ -28,6 +31,7 @@ import ca.xpertproject.apps.businessmanager.objects.CustomerLight;
 import ca.xpertproject.apps.businessmanager.objects.SubscriptionExt;
 import ca.xpertproject.apps.businessmanager.objects.mappers.SubscriptionMapper;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
+import ca.xpertproject.apps.businessmanager.utils.PageUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants.MEMBER_LOGGED_COOKIE_NAME;
 
@@ -51,7 +55,7 @@ public class SubscriptionController {
 	MemberUtils memberUtils = new MemberUtils();
 	
 	@GetMapping("/allSubscriptions")
-	public String getAllSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model) {
+	public String getAllSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false, defaultValue = "1") String page, Model model) {
 		
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
@@ -59,7 +63,7 @@ public class SubscriptionController {
 		
 		List<SubscriptionExt> subscriptionExtList = subscriptions.stream().map(sub-> new SubscriptionMapper().convert(sub)).collect(Collectors.toList());
 		
-		model.addAttribute("subscriptions", subscriptionExtList);
+		PageUtils.getPagedItems(subscriptionExtList, model, page, "subscriptions");
 		
 		return "subscriptions";
 	}
@@ -146,25 +150,34 @@ public class SubscriptionController {
 	}
 	
 	@GetMapping("/addSubscription")
-	public String getAddSubscription(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false) Long customerid, Model model) {
+	public String getAddSubscription(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false) Long customerId, Model model) {
 		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		//if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		List<CustomerLight> customerList = (List<CustomerLight>) customerRepository.findAll().stream().map(customer-> convertForList(customer)).collect(Collectors.toList());
 		
-		//customerList.forEach(c-> System.out.println(c.getFullname() + ": " + c.getId()));
+		if(customerId!=null) {
+			
+			customerList = Collections.singletonList(convertForList(customerRepository.findById(customerId)));
+			
+		}
 		
-		model.addAttribute("customerList", customerList);
 		
-		model.addAttribute("customerid", customerid);
+		model.addAttribute("customerId", customerId);
 		
 		return "createSubscriptionform";
 	}
 	
+	
+	
 	public CustomerLight convertForList(Customer customer) {
 		CustomerLight customerLight = new CustomerLight();
+		
+		String fullName = customer.getFirstName() + " " + customer.getLastName();
+		
+		fullName = fullName.trim();
 
-		customerLight.setFullname(customer.firstName + " " + customer.lastName);
+		customerLight.setFullname(fullName);
 		
 		customerLight.setId(customer.getId());
 
