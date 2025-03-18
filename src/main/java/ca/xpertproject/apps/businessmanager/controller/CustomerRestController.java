@@ -17,6 +17,8 @@ import ca.xpertproject.apps.businessmanager.model.Customer;
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.model.StringComparator;
+import ca.xpertproject.apps.businessmanager.objects.CustomerLight;
+import ca.xpertproject.apps.businessmanager.objects.mappers.CustomerMapper;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
 
 
@@ -34,19 +36,15 @@ public class CustomerRestController {
 	
 	
 	@GetMapping("getCustomerList")
-	public List<String> getCustomerList(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember){
+	public List<CustomerLight> getCustomerList(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember){
 		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository))return Collections.EMPTY_LIST;
+		//if(!memberUtils.checkCookieMember(loggedMember, memberRepository))return Collections.EMPTY_LIST;
+
 		
-		List<Customer> customerList = customerRepository.findAll();
+		List<CustomerLight> customerList = (List<CustomerLight>) customerRepository.findAll().stream().map(customer-> CustomerMapper.convertForList(customer)).collect(Collectors.toList());
 		
-		System.out.println("SIZE: " + customerList.size());
 		
-		List<String> customerForAutoComplete = (List<String>) customerList.stream().map(customer-> convertForAC(customer)).collect(Collectors.toList());
-		
-		customerForAutoComplete.sort(new StringComparator());
-		
-		return customerForAutoComplete;
+		return customerList;
 	}
 
 	private String convertForAC(Customer customer) {

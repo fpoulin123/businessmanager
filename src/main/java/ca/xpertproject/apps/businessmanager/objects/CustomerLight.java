@@ -12,9 +12,9 @@ import lombok.Setter;
 
 public class CustomerLight {
 	
-	public String fullname;
+	public String label;
 	
-	public Long id;
+	public String value;
 	
 	
 

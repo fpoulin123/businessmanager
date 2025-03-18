@@ -125,7 +125,7 @@
   <body>
 
 
-    
+    <input type="hidden" id="currentPage" value="page_subscriptions"/>
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" id="navbar"></nav>
 
 	
@@ -234,6 +234,9 @@
 	<script src="./js/sign.js"></script>
 	<script src="./js/inject.js"></script>
 	<script type="text/javascript">
+	
+		injectNavbar();
+	
 		function modifySubscription(id){
 			location="./modifySubscription?id=" + id;
 		}

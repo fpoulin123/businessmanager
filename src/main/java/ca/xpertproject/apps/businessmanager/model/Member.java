@@ -41,6 +41,9 @@ public class Member {
 	
 	@Column(name="password")
 	String password;
+	
+	@Column(name="active")
+	Boolean active;
 
 	
 }

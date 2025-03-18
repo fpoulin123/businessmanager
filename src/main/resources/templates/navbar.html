@@ -7,16 +7,16 @@
 	    <div class="collapse navbar-collapse" id="navbarCollapse">
 	      <ul class="navbar-nav me-auto mb-2 mb-md-0">
 	        <li class="nav-item">
-	          <a class="nav-link active" aria-current="page" href="/mybusiness/home">Accueil</a>
+	          <a id="page_home" class="nav-link" aria-current="page" href="/mybusiness/home">Accueil</a>
 	        </li>
 	        <li class="nav-item">
-	          <a class="nav-link" href="/mybusiness/allCustomers">Clients</a>
+	          <a id="page_customers" class="nav-link" href="/mybusiness/allCustomers">Clients</a>
 	        </li>
 	        <li class="nav-item">
-	          <a class="nav-link" href="/mybusiness/allSubscriptions">Abonnements</a>
+	          <a id="page_subscriptions" class="nav-link" href="/mybusiness/allSubscriptions">Abonnements</a>
 	        </li>
 	        <li class="nav-item">
-	          <a class="nav-link" href="/mybusiness/allPayments">Paiements</a>
+	          <a id="page_payments" class="nav-link" href="/mybusiness/allPayments">Paiements</a>
 	        </li>
 	<!--         <li class="nav-item"> -->
 	<!--           <a class="nav-link disabled" aria-disabled="true">Disabled</a> -->
@@ -40,3 +40,10 @@
 	<!--       </form> -->
 	    </div>
 	  </div>
+	  <script type="text/javascript">
+	  
+	  	var currentPage = $("#currentPage").val();
+	  
+		setActiveLink(currentPage);
+	
+	  </script>

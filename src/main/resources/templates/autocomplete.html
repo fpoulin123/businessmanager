@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<link href="./css/jquery-ui.css" rel="stylesheet">
+</head>
+<body>
+	TEST FOR AUTO COMPLETE
+	
+	<label >Client</label>
+	<input type="text" id="customerSelect" name="customerDisplay" placeholder="customerDisplay">
+    <input type="text" id="customerId" name="customerId" placeholder="customerDisplay">
+    
+    <script src="./js/jquery.js"></script>
+	<script src="./js/jquery-ui.js"></script>
+	
+	<script type="text/javascript">
+		$.getJSON("./getCustomerList", function(data){
+			console.log("Number of items: " + data.length);
+			$( "#customerSelect" ).autocomplete({
+				source: data,
+				select: function(event, ui){
+					
+					 var label = ui.item.label;
+					 var value = ui.item.value;
+					 
+					 $( "#customerSelect" ).val(label);
+					 $( "#customerId" ).val(value);
+					 
+					 return false;
+				}
+			});
+		});
+	</script>
+	
+</body>
+</html>

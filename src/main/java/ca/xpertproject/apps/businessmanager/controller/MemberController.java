@@ -129,7 +129,12 @@ public class MemberController{
 		System.out.println("Input pswd : " + sentPassword + " - " + sha256hex);
 		
 		if(sha256hex.equals(member.getPassword())) {
-			System.out.println("AUTHENTICATED");
+			
+			if(!member.getActive()) {
+				AuthenticationException excp = new AuthenticationException("Inactive account. Please contact an administrator.");
+				
+				throw excp;
+			}
 			
 			Cookie loginCookie=new Cookie(MEMBER_LOGGED_COOKIE_NAME, member.getEmail());
             loginCookie.setMaxAge(3600*24);

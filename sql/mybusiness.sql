@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS alldata, customer, payment, subscription;
+
 CREATE SEQUENCE IF NOT EXISTS public.alldata_id_seq
     INCREMENT 1
     START 1
@@ -20,6 +22,13 @@ CREATE SEQUENCE IF NOT EXISTS public.member_id_seq
     CACHE 1;
 	
 CREATE SEQUENCE IF NOT EXISTS public.subscription_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+    
+CREATE SEQUENCE IF NOT EXISTS public.payment_id_seq
     INCREMENT 1
     START 1
     MINVALUE 1
@@ -103,6 +112,20 @@ CREATE TABLE IF NOT EXISTS public.subscription
 
 TABLESPACE pg_default;
 
+CREATE TABLE IF NOT EXISTS public.payment
+(
+    id bigint NOT NULL DEFAULT nextval('payment_id_seq'::regclass),
+    subscription_id bigint NOT NULL,
+    amount double precision NOT NULL,
+    payment_date date NOT NULL,
+    CONSTRAINT payment_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.payment
+    OWNER to postgres;
+
 ALTER TABLE IF EXISTS public.subscription
     OWNER to postgres;
 
@@ -128,4 +151,10 @@ ALTER SEQUENCE public.alldata_id_seq
     OWNED BY public.alldata.id;
 
 ALTER SEQUENCE public.alldata_id_seq
+    OWNER TO postgres;
+    
+ALTER SEQUENCE public.payment_id_seq
+    OWNED BY public.payment.id;
+
+ALTER SEQUENCE public.payment_id_seq
     OWNER TO postgres;

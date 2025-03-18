@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
-  <head><script src="../assets/js/color-modes.js"></script>
+  <head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -116,27 +116,66 @@
     <link href="./css/custom.css" rel="stylesheet">
     
   </head>
-  
+  <script src="./js/bootstrap.bundle.min.js"></script>
+	<script src="./js/sign.js"></script>
+	
+	<script type="text/javascript" src="./js/jquery.js"></script>
+	<script src="./js/inject.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
   
   <body>
 
 
-    
+    <input type="hidden" id="currentPage" value="page_home"/>
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" id="navbar">
 	  
 	</nav>
 
 	
-	<main class="form-signin w-100 m-auto">
-  	HOME
+	<main class="w-100 m-auto">
+  	DASHBOARD Activité
+  	
+  	<canvas id="myChart" style="width:100%;max-width:500px"></canvas>
     </main>
 
-	<script src="./js/bootstrap.bundle.min.js"></script>
-	<script src="./js/sign.js"></script>
-	
-	<script type="text/javascript" src="./js/jquery.js"></script>
-	<script src="./js/inject.js"></script>
-
+	<script type="text/javascript">
+		injectNavbar("page_home");
+		
+		$.getJSON("./paymentsData", function(json){
+			
+			var legend = ["Payé", "En attente"];
+			var title = "Payés - Encours";
+			createDoughnutChart(json, legend, title);
+		});
+		
+		
+		function createDoughnutChart(data, legend, title){
+			var xValues = legend;
+			var yValues = data;
+			const barColors = ["blue","purple"];
+			
+			
+			new Chart("myChart", {
+				  type: "doughnut",
+				  data: {
+				    labels: xValues,
+				    datasets: [{
+				      backgroundColor: barColors,
+				      data: yValues
+				    }]
+				  },
+				  options: {
+				    title: {
+				      display: true,
+				      text: title
+				    }
+				  }
+				});
+		}
+		
+		
+	</script>
 
     </body>
     

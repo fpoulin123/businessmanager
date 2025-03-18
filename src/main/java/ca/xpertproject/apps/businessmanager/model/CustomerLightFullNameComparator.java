@@ -11,7 +11,7 @@ public class CustomerLightFullNameComparator implements Comparator<Object>{
 		CustomerLight c1 = (CustomerLight) o1;
 		CustomerLight c2 = (CustomerLight) o2;
 		
-		return c1.getFullname().compareTo(c2.getFullname());
+		return c1.getLabel().compareTo(c2.getLabel());
 	}
 
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ca.xpertproject.apps.businessmanager.exception.AuthenticationException;
 import ca.xpertproject.apps.businessmanager.model.Customer;
 import ca.xpertproject.apps.businessmanager.model.CustomerLightFullNameComparator;
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
@@ -29,6 +30,7 @@ import ca.xpertproject.apps.businessmanager.model.Subscription;
 import ca.xpertproject.apps.businessmanager.model.SubscriptionRepository;
 import ca.xpertproject.apps.businessmanager.objects.CustomerLight;
 import ca.xpertproject.apps.businessmanager.objects.SubscriptionExt;
+import ca.xpertproject.apps.businessmanager.objects.mappers.CustomerMapper;
 import ca.xpertproject.apps.businessmanager.objects.mappers.SubscriptionMapper;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
 import ca.xpertproject.apps.businessmanager.utils.PageUtils;
@@ -55,7 +57,7 @@ public class SubscriptionController {
 	MemberUtils memberUtils = new MemberUtils();
 	
 	@GetMapping("/allSubscriptions")
-	public String getAllSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false, defaultValue = "1") String page, Model model) {
+	public String getAllSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false, defaultValue = "1") String page, Model model) throws AuthenticationException {
 		
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
@@ -69,7 +71,7 @@ public class SubscriptionController {
 	}
 	
 	@GetMapping("/validSubscriptions")
-	public String getValidSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model) {
+	public String getValidSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model) throws AuthenticationException {
 		
 		System.out.println("Get all valid subscriptions.");
 		
@@ -85,7 +87,7 @@ public class SubscriptionController {
 	}
 	
 	@GetMapping("/subscriptions")
-	public String getSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = true) Long customerId, Model model) {
+	public String getSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = true) Long customerId, Model model) throws AuthenticationException {
 		
 		System.out.println("Get subscriptions for customer " + customerId);
 		
@@ -97,11 +99,13 @@ public class SubscriptionController {
 		
 		model.addAttribute("subscriptions", subscriptionExtList);
 		
+		model.addAttribute("customerId", customerId);
+		
 		return "subscriptions";
 	}
 	
 	@GetMapping("/subscription")
-	public String getSubscription(@CookieValue(value =MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = true) Long id, Model model) {
+	public String getSubscription(@CookieValue(value =MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = true) Long id, Model model) throws AuthenticationException {
 		
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
@@ -150,16 +154,18 @@ public class SubscriptionController {
 	}
 	
 	@GetMapping("/addSubscription")
-	public String getAddSubscription(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false) Long customerId, Model model) {
+	public String getAddSubscription(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false) Long customerId, Model model) throws AuthenticationException {
 		
-		//if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
-		
-		List<CustomerLight> customerList = (List<CustomerLight>) customerRepository.findAll().stream().map(customer-> convertForList(customer)).collect(Collectors.toList());
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		if(customerId!=null) {
-			
-			customerList = Collections.singletonList(convertForList(customerRepository.findById(customerId)));
-			
+			Customer customer = customerRepository.findById(customerId);
+			String fullName = customer.getFirstName() + " " + customer.getLastName();
+			fullName= fullName.trim();
+			model.addAttribute("customerFullName", fullName);
+			model.addAttribute("customerLocked", true);
+		}else {
+			model.addAttribute("customerLocked", false);
 		}
 		
 		
@@ -167,25 +173,10 @@ public class SubscriptionController {
 		
 		return "createSubscriptionform";
 	}
-	
-	
-	
-	public CustomerLight convertForList(Customer customer) {
-		CustomerLight customerLight = new CustomerLight();
-		
-		String fullName = customer.getFirstName() + " " + customer.getLastName();
-		
-		fullName = fullName.trim();
 
-		customerLight.setFullname(fullName);
-		
-		customerLight.setId(customer.getId());
-
-		return customerLight;
-	}
 	
 	@PostMapping("/addSubscription")
-	public String addSubscription(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model) throws ParseException {
+	public String addSubscription(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model) throws ParseException, AuthenticationException {
 		
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
@@ -218,7 +209,7 @@ public class SubscriptionController {
 	}
 	
 	@GetMapping("/modifySubscription")
-	public String modifySubscriptiont(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required=true) Long id, Model model) {
+	public String modifySubscriptiont(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required=true) Long id, Model model) throws AuthenticationException {
 		
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
@@ -230,7 +221,7 @@ public class SubscriptionController {
 	}
 	
 	@PostMapping("/modifySubscription")
-	public String modifySubscription(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model) throws ParseException {
+	public String modifySubscription(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model) throws ParseException, AuthenticationException {
 		
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ca.xpertproject.apps.businessmanager.exception.AuthenticationException;
 import ca.xpertproject.apps.businessmanager.model.Customer;
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
@@ -27,9 +28,7 @@ public class GeneralController {
 	MemberRepository memberRepository;
 	
 	@GetMapping("/home")
-	public String getEvent(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model) {
-		
-		System.out.println("Logged member : " + loggedMember);
+	public String getEvent(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model) throws AuthenticationException {
 		
 		MemberUtils memberUtils = new MemberUtils();
 		
@@ -48,11 +47,17 @@ public class GeneralController {
 		
 		MemberUtils memberUtils = new MemberUtils();
 		
-		memberUtils.checkCookieMember(loggedMember, memberRepository, model);
+		try {
+			memberUtils.checkCookieMember(loggedMember, memberRepository, model);
+		} catch (AuthenticationException e) {
+			// TODO Auto-generated catch block
+			System.out.println("No member logged.");
+		}
 		
 		return "navbar";
 		
 	}
+	
 	
 	
 	

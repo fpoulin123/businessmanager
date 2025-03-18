@@ -121,7 +121,8 @@
   <body>
 
 
-    
+    <input type="hidden" id="currentPage" value="page_subscriptions"/>
+    <input type="hidden" id="customerId" th:value="${ customerId }" />
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" id="navbar"></nav>
 
 	<main class="container">
@@ -187,17 +188,23 @@
 
     </body>
     <script th:inline="javascript">
-  
+    injectNavbar();
   	 	
   	function viewSubscription(id){
 		location="./subscription?id=" + id;
 	}
   
 	function addSubscription(){
-		location="./addSubscription";
+		var customerId = $("#customerId").val();
+		if(customerId!=null&&customerId!=""){
+			location="./addSubscription?customerId="+customerId;
+		}else{
+			location="./addSubscription";
+		}
+		
 	}
 	
-function previousPage(){
+	function previousPage(){
 		
 		location = "allSubscriptions?page=[[${prevPage}]]";
 	}

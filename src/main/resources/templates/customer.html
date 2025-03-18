@@ -125,7 +125,7 @@
   <body>
 
 
-    
+    <input type="hidden" id="currentPage" value="page_customers"/>
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" id="navbar"></nav>
 
 	
@@ -185,13 +185,18 @@
     <div>
     	<img th:src="${ barcodePath }">
     </div>
-
-    <button class="btn btn-primary py-2" th:onclick="modifyCustomer([[${ customer.id }]])">Modifier</button>
-    <button class="btn btn-primary py-2" th:onclick="showSubscriptions([[${ customer.id }]])">Abonnements</button>
-    <button class="btn btn-primary py-2" th:onclick="newSubscription([[${ customer.id }]])">Abonnements</button>
-    
-  
-</main>
+    </main>
+    <main class="w-100 m-auto">
+	    <div style="text-align: center;">
+		    <button class="btn btn-primary py-2" th:onclick="modifyCustomer([[${ customer.id }]])">Modifier</button>
+		    <button class="btn btn-primary py-2" th:onclick="showSubscriptions([[${ customer.id }]])">Abonnements</button>
+		    <button class="btn btn-primary py-2" th:onclick="newSubscription([[${ customer.id }]])">Créer abonnements</button>
+		    
+	    </div>
+	
+	    
+	  
+	</main>
 
 	<script src="./js/bootstrap.bundle.min.js"></script>
 	<script type="text/javascript">
@@ -212,6 +217,10 @@
 	<script type="text/javascript" src="./js/jquery.js"></script>
 	<script src="./js/sign.js"></script>
 	<script src="./js/inject.js"></script>
+	
+	<script type="text/javascript">
+	injectNavbar();
+	</script>
     </body>
     
 </html>
