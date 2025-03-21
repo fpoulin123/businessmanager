@@ -30,6 +30,7 @@ public class SubscriptionExt {
 		this.subscriptionDate = subscriptionDate;
 		this.expirationDate = expirationDate;
 		this.isValid = isValid;
+		
 	}
 	
 	
@@ -56,6 +57,10 @@ public class SubscriptionExt {
 	private Date expirationDate;
 	
 	private Boolean isValid;
+	
+	private Double balance;
+	
+	private Boolean payed;
 
 	public Long getId() {
 		return id;
@@ -152,5 +157,23 @@ public class SubscriptionExt {
 	public void setIsValid(Boolean isValid) {
 		this.isValid = isValid;
 	}
+
+	public Double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(Double balance) {
+		this.balance = balance;
+	}
+
+	public Boolean getPayed() {
+		return payed;
+	}
+
+	public void setPayed(Boolean payed) {
+		this.payed = payed;
+	}
+	
+	
 
 }

@@ -32,9 +32,9 @@ public class GeneralController {
 		
 		MemberUtils memberUtils = new MemberUtils();
 		
-		memberUtils.checkCookieMember(loggedMember, memberRepository, model);
-		
-		model.asMap().entrySet().forEach(entry -> System.out.println(entry.getKey() + ": " + entry.getValue().toString()));
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model)) {
+			return "redirect:signin";
+		};
 				
 		return "home";
 		

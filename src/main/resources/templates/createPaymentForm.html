@@ -138,18 +138,18 @@
 
 	
     <div class="form-floating">
-      <input type="text" class="form-control" id="floatingSubscriptionId" name="subscriptionId" placeholder="subscriptionId" th:value="${ subscriptionId }">
+      <input type="text" class="form-control" id="floatingSubscriptionId" name="subscriptionId" placeholder="subscriptionId" th:value="${ subscriptionId }" required="required">
       <label for="floatingInput">Numéro abonnement</label>
     </div>
     
     <div class="form-floating">
-      <input type="text" class="form-control" id="floatingAmount" name="amount" placeholder="amount">
+      <input type="text" class="form-control" id="floatingAmount" name="amount" placeholder="amount" required>
       <label for="floatingInput">Montant</label>
     </div>
     
         
     <div class="form-floating">
-      <input type="date" class="form-control" id="floatingPaymentDate" name="paymentDate" placeholder="paymentDate">
+      <input type="date" class="form-control" id="floatingPaymentDate" name="paymentDate" placeholder="paymentDate" required>
       <label for="floatingPaymentDate">Date effective</label>
     </div>
 

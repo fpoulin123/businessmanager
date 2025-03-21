@@ -131,32 +131,32 @@
     <h1 class="h3 mb-3 fw-normal">Edition client</h1>
 	<input type="hidden" class="form-control" id="id" name="id" th:value="${ customer.id }">
 	<div class="form-floating">
-      <input type="text" class="form-control" id="floatingFirstname" name="firstname" placeholder="First name" th:value="${ customer.firstName }">
+      <input type="text" class="form-control" id="floatingFirstname" name="firstname" placeholder="First name" th:value="${ customer.firstName }" required="required">
       <label for="floatingInput">Prénom</label>
     </div>
     
     <div class="form-floating">
-      <input type="text" class="form-control" id="floatingLastname" name="lastname" placeholder="Last name" th:value="${ customer.lastName }">
+      <input type="text" class="form-control" id="floatingLastname" name="lastname" placeholder="Last name" th:value="${ customer.lastName }"  required="required">
       <label for="floatingInput">Nom</label>
     </div>
     
     <div class="form-floating">
-      <input type="text" class="form-control" id="floatingLastname" name="address" placeholder="Address" th:value="${ customer.address }">
+      <input type="text" class="form-control" id="floatingLastname" name="address" placeholder="Address" th:value="${ customer.address }" required="required">
       <label for="floatingInput">Adresse</label>
     </div>
     
     <div class="form-floating">
-      <input type="text" class="form-control" id="floatingLastname" name="city" placeholder="City" th:value="${ customer.city }">
+      <input type="text" class="form-control" id="floatingLastname" name="city" placeholder="City" th:value="${ customer.city }" required="required">
       <label for="floatingInput">Ville</label>
     </div>
     
     <div class="form-floating">
-      <input type="text" class="form-control" id="floatingPhonenumber" name="phonenumber" placeholder="Phone number" th:value="${ customer.phoneNumber }">
+      <input type="text" class="form-control" id="floatingPhonenumber" name="phonenumber" placeholder="Phone number" th:value="${ customer.phoneNumber }" required="required">
       <label for="floatingInput">Téléphone</label>
     </div>
 
     <div class="form-floating">
-      <input type="email" class="form-control" id="floatingEmail" name="email" placeholder="name@example.com" th:value="${ customer.email }">
+      <input type="email" class="form-control" id="floatingEmail" name="email" placeholder="name@example.com" th:value="${ customer.email }" required="required">
       <label for="floatingInput">Email</label>
     </div>
 

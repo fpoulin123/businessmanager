@@ -148,12 +148,12 @@
     </div>
     
     <div class="form-floating">
-      <input type="text" class="form-control" id="floatingCustomerId" name="customerid" placeholder="customerid" th:value="${ customerId }">
+      <input type="text" class="form-control" id="floatingCustomerId" name="customerid" placeholder="customerid" th:value="${ customerId }" required="required">
       <label for="floatingInput">Numéro client</label>
     </div>
     
     <div class="form-floating">
-      <select class="form-control" id="floatingDuration" name="duration" placeholder="Duration">
+      <select class="form-control" id="floatingDuration" name="duration" placeholder="Duration" required="required">
       	<option value="30">1 mois (30 jours)</option>
       	<option value="90">3 mois (90 jours)</option>
       	<option value="365">1 an (365 jours)</option>
@@ -175,12 +175,12 @@
       <label class="checkboxlbl">Taekibodo</label>
     </div>
     <div class="form-floating">
-      <input type="text" class="form-control" id="floatingAmount" name="amount" placeholder="amount">
+      <input type="text" class="form-control" id="floatingAmount" name="amount" placeholder="amount" required="required"> 
       <label for="floatingInput">Montant</label>
     </div>
     
     <div class="form-floating">
-      <input type="date" class="form-control" id="floatingSubscriptionDate" name="subscriptionDate" placeholder="subscriptionDate">
+      <input type="date" class="form-control" id="floatingSubscriptionDate" name="subscriptionDate" placeholder="subscriptionDate" required="required">
       <label for="floatingSubscriptionDate">Date effective</label>
     </div>
 
