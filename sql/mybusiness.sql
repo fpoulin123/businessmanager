@@ -70,10 +70,10 @@ CREATE TABLE IF NOT EXISTS public.customer
     lastname character varying(255) COLLATE pg_catalog."default" NOT NULL,
     address character varying(255) COLLATE pg_catalog."default" NOT NULL,
     city character varying(255) COLLATE pg_catalog."default" NOT NULL,
-    phonenumber character varying(50) COLLATE pg_catalog."default",
+    phonenumber character varying(50) COLLATE pg_catalog."default" NOT NULL,
     picture character varying(255) COLLATE pg_catalog."default",
     barcodevalue character varying(50) COLLATE pg_catalog."default",
-    email character varying(100) COLLATE pg_catalog."default",
+    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT customer_pkey PRIMARY KEY (id)
 )
 
@@ -89,6 +89,7 @@ CREATE TABLE IF NOT EXISTS public.member
     lastname character varying COLLATE pg_catalog."default" NOT NULL,
     email character varying COLLATE pg_catalog."default" NOT NULL,
     password character varying COLLATE pg_catalog."default" NOT NULL,
+    active boolean NOT NULL DEFAULT false,
     CONSTRAINT member_pkey PRIMARY KEY (id)
 )
 
@@ -105,8 +106,8 @@ CREATE TABLE IF NOT EXISTS public.subscription
     taekwondo boolean,
     kickboxing boolean,
     taekibodo boolean,
-    amount double precision,
-    subscription_date date,
+    amount double precision NOT NULL,
+    subscription_date date NOT NULL,
     CONSTRAINT subscription_pkey PRIMARY KEY (id)
 )
 

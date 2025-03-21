@@ -78,6 +78,7 @@ public class MemberController{
 		String lastname = body.get("lastname");
 		String email = body.get("email");
 		String password = body.get("password");
+		
 		System.out.println("Password : " + password);
 		
 		password = DigestUtils.sha256Hex(password);
@@ -87,7 +88,7 @@ public class MemberController{
 		newMember.setLastname(lastname);
 		newMember.setEmail(email);
 		newMember.setPassword(password);
-		
+		newMember.setActive(false);
 		memberRepository.save(newMember);
 		
 		return "signin";
