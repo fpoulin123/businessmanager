@@ -1,154 +1,146 @@
-   td.checked-true{
-   	width: 30px;
-   	background-image: url("../img/ok.svg");
-   	background-repeat: no-repeat;
-   	background-position: center;
-   	background-size: 20px;
-   
-   }
-   
-   td.checked-false{
-   	width: 30px;
-   	background-image: url("../img/nok.svg");
-   	background-repeat: no-repeat;
-   	background-position: center;
-   	background-size: 20px;
-   
-   }
-   
-   div.checked-true{
-   	display: inline-block;
-   	width: 30px;
-   	height: 30px;
-   	background-image: url("../img/ok.svg");
-   	background-repeat: no-repeat;
-   	background-position: center;
-   	background-size: 20px;
-   
-   }
-   
-   div.checked-false{
-   	display: inline-block;
-   	width: 30px;
-   	height: 30px;
-   	background-image: url("../img/nok.svg");
-   	background-repeat: no-repeat;
-   	background-position: center;
-   	background-size: 20px;
-   
-   }
-   
-   button.btn-view{
-   	width: 40px;
-   	height: 40px;
-   	background-image: url("../img/view.svg");
-   	background-repeat: no-repeat;
-   	background-position: center;
-   	background-size: 30px;
-   }
-   
-   button.btn-edit{
-   	width: 40px;
-   	height: 40px;
-   	background-image: url("../img/edit.svg");
-   	background-repeat: no-repeat;
-   	background-position: center;
-   	background-size: 30px;
-   }
-   
-   th.width100{
-   	min-width: 100px;
-   }
-   
-	li.auth-bloc{
-		margin-left: 10px;
-		vertical-align: middle;
-	}	
-	
-	li.auth-bloc div{
-		display: inline-block;
-	}
-	
-	li.auth-bloc button{
-		display: inline-block;
-	}
-	
-	div.loggedin{
-		height:30px;
-		color: #525252;
-    	background-color: #e2e2e2;
-    	padding: 5px 10px 5px 40px;
-    	border-radius: 20px;
-		
-	}
-	
-	button.logout{
-		height:30px;
-		width: 30px;
-		border-radius: 20px;
-	   	background-image: url("../img/logout.svg");
-	   	background-color: #e2e2e2;
-	   	background-repeat: no-repeat;
-	   	background-position: center;
-	   	background-size: 17px;
-	
-	}
-	
-	button.signin{
-		height:30px;
-		width: 30px;
-		border-radius: 20px;
-	   	background-image: url("../img/signin.svg");
-	   	background-color: #e2e2e2;
-	   	background-repeat: no-repeat;
-	   	background-position: center;
-	   	background-size: 17px;
-	
-	}
-	
-	button.navPage{
-		height:30px;
-		width: 30px;
-		border: none;
-		background-color: transparent;
-	   	background-repeat: no-repeat;
-	   	background-position: center;
-	   	background-size: 17px;
-	}
-	
-	div.navPage{
-		height:30px;
-		width: 60px;
-		vertical-align: middle;
-		text-align: center;
-	}
-	
-	.navPage{
-		display: inline-block;
-	}
-	
-	button.previousPage{
+td.checked-true {
+	width: 30px;
+	background-image: url("../img/ok.svg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 20px;
+}
 
-	   	background-image: url("../img/leftArw.svg");
+td.checked-false {
+	width: 30px;
+	background-image: url("../img/nok.svg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 20px;
+}
 
-	}
-	
-	button.nextPage{
+div.checked-true {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	background-image: url("../img/ok.svg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 20px;
+}
 
-	   	background-image: url("../img/rightArw.svg");
+div.checked-false {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	background-image: url("../img/nok.svg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 20px;
+}
 
-	}
-	
-	div.form-floating{
-		margin-bottom: 15px;
-	
-	}
-	
-	div.p-5{
-		padding: 1rem !important;
-	}
-	
-	div.pagesNavigator{
-		width:100%;
-		text-align: center;
-	}
+button.btn-view {
+	width: 40px;
+	height: 40px;
+	background-image: url("../img/view.svg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 30px;
+}
+
+button.btn-edit {
+	width: 40px;
+	height: 40px;
+	background-image: url("../img/edit.svg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 30px;
+}
+
+th.width100 {
+	min-width: 100px;
+}
+
+li.auth-bloc {
+	margin-left: 10px;
+	vertical-align: middle;
+}
+
+li.auth-bloc div {
+	display: inline-block;
+}
+
+li.auth-bloc button {
+	display: inline-block;
+}
+
+div.loggedin {
+	height: 30px;
+	color: #525252;
+	background-color: #e2e2e2;
+	padding: 5px 10px 5px 10px;
+	border-radius: 20px;
+}
+
+button.logout {
+	height: 30px;
+	width: 30px;
+	border-radius: 20px;
+	background-image: url("../img/logout.svg");
+	background-color: #e2e2e2;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 17px;
+}
+
+button.signin {
+	height: 30px;
+	width: 30px;
+	border-radius: 20px;
+	background-image: url("../img/signin.svg");
+	background-color: #e2e2e2;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 17px;
+}
+
+button.navPage {
+	height: 30px;
+	width: 30px;
+	border: none;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 17px;
+}
+
+div.navPage {
+	height: 30px;
+	width: 60px;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.navPage {
+	display: inline-block;
+}
+
+button.previousPage {
+	background-image: url("../img/leftArw.svg");
+}
+
+button.nextPage {
+	background-image: url("../img/rightArw.svg");
+}
+
+div.form-floating {
+	margin-bottom: 15px;
+}
+
+div.p-5 {
+	padding: 1rem !important;
+}
+
+div.pagesNavigator {
+	width: 100%;
+	text-align: center;
+}
+
+nav.h56 {
+	min-height: 56px;
+}
