@@ -128,7 +128,15 @@
 <!--     <img class="mb-4" src="./img/metlogo.svg" alt="" width="297" height="107"> -->
     <p class="errorMsg" data-th-text="${ errorMessage }"></p>
     <h1 class="h3 mb-3 fw-normal">Création client</h1>
-
+    <div>
+      <img id="customerPicture" style="width:200px; height:300px; border: solid 1px gray; background: url(./img/membermissing.jpg);">
+      
+    </div>
+	
+	<div class="form-floating">
+      <input type="file" class="form-control" id="flotingPicture" name="picture" placeholder="Picture" required="required">
+      <label for="floatingInput">Photo</label>
+    </div>
 	<div class="form-floating">
       <input type="text" class="form-control" id="floatingFirstname" name="firstname" placeholder="First name" required="required">
       <label for="floatingInput">Prénom</label>
@@ -172,6 +180,7 @@
 	
 	<script type="text/javascript">
 		injectNavbar();
+		
 		
 	</script>
 

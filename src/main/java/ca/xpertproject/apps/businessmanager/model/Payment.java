@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,7 +28,7 @@ public class Payment {
 	@SequenceGenerator(name="payment_id_seq", sequenceName = "payment_id_seq", allocationSize = 1)
 	public Long id;
 	
-	@Column(name="subscription_id")
+	@Column(name="subscription_id",insertable = false, updatable = false)
 	public Long subscriptionId;
 	
 	@Column(name="amount")
@@ -35,4 +36,8 @@ public class Payment {
 	
 	@Column(name="payment_date")
 	public Date paymentDate;
+	
+	@ManyToOne
+	public Subscription subscription;
+	
 }

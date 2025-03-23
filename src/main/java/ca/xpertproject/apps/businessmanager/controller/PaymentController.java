@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.model.Payment;
 import ca.xpertproject.apps.businessmanager.model.PaymentRepository;
+import ca.xpertproject.apps.businessmanager.objects.PaymentExt;
+import ca.xpertproject.apps.businessmanager.objects.mappers.PaymentMapper;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -42,7 +45,9 @@ public class PaymentController {
 		
 		List<Payment> payments = paymentRepository.findAll();
 		
-		model.addAttribute("payments", payments);
+		List<PaymentExt> paymentExtList = payments.stream().map(pay-> PaymentMapper.convert(pay)).collect(Collectors.toList());
+		
+		model.addAttribute("payments", paymentExtList);
 		
 		return "payments";
 	}
