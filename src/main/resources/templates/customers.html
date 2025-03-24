@@ -143,6 +143,9 @@
 		  <div class="form-floating filter" >
 		  	<button class="btn btn-lg btn-primary" role="button" th:onclick="createCustomer()">Nouveau client</button>
 		  </div>
+		  <div class="form-floating filter" >
+		  	<a href="./downloadCustomers">Export clients.csv</a>
+		  </div>
 	    </div>
 	    <div class="pagesNavigator">
 	    	<button th:if="${ prevPage!=null }" class="navPage previousPage" role="button" th:onclick="previousPage()"></button>

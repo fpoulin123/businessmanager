@@ -128,6 +128,9 @@
 	<main class="container">
 	<div class="bg-body-tertiary p-3 rounded">
 		<button class="btn btn-lg btn-primary" role="button" th:onclick="addSubscription()">Nouvel abonnement</button>
+		
+		<a href="./downloadSubscriptions">Export abonnements.csv</a>
+		
 		<div class="pagesNavigator">
 	    	<button th:if="${ prevPage!=null }" class="navPage previousPage" role="button" th:onclick="previousPage()"></button>
 	    	<div class="navPage" th:text="${ currentPage }"></div>/<div class="navPage" th:text="${ pages }"></div>
