@@ -43,17 +43,10 @@ public class GeneralController {
 	@GetMapping("/navbar")
 	public String getNavbar(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model) {
 		
-		System.out.println("Logged member : " + loggedMember);
-		
 		MemberUtils memberUtils = new MemberUtils();
 		
-		try {
-			memberUtils.checkCookieMember(loggedMember, memberRepository, model);
-		} catch (AuthenticationException e) {
-			// TODO Auto-generated catch block
-			System.out.println("No member logged.");
-		}
-		
+		memberUtils.checkCookieMember(loggedMember, memberRepository, model);
+				
 		return "navbar";
 		
 	}

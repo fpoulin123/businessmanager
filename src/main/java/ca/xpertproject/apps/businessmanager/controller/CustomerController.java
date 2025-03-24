@@ -43,7 +43,11 @@ public class CustomerController {
 	@GetMapping("/allCustomers")
 	public String getCustomers(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false, defaultValue = "1") String page, Model model) throws AuthenticationException {
 		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model)) {
+			System.out.println("Retour vers noaccess");
+			model.asMap().entrySet().forEach(entry -> System.out.println(entry.getKey() + ": " + entry.getValue()));
+			return "noaccess";
+		}
 		
 		List<Customer> customers = customerRepository.findAll();
 		
