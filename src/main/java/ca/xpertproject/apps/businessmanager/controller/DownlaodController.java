@@ -1,5 +1,7 @@
 package ca.xpertproject.apps.businessmanager.controller;
 
+import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants.MEMBER_LOGGED_COOKIE_NAME;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,16 +21,20 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import ca.xpertproject.apps.businessmanager.exception.AuthenticationException;
 import ca.xpertproject.apps.businessmanager.model.Customer;
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
+import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.model.Payment;
 import ca.xpertproject.apps.businessmanager.model.PaymentRepository;
 import ca.xpertproject.apps.businessmanager.model.Subscription;
 import ca.xpertproject.apps.businessmanager.model.SubscriptionRepository;
+import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
@@ -45,24 +51,22 @@ public class DownlaodController {
 	@Autowired
 	PaymentRepository paymentRepository;
 	
-//	@GetMapping(value="/downloadCustomers",produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-//	public @ResponseBody Resource getFileViaByteArrayResource() throws IOException, URISyntaxException {
-//		File fileToDwnld = new File("./customers.csv");
-//		if(!fileToDwnld.exists())fileToDwnld.createNewFile();
-//	    Path path = Paths.get(fileToDwnld.toURI());
-//	    
-//	    ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
-//	    
-//	    return resource;
-//	}
+	@Autowired
+	MemberRepository memberRepository;
+	
+	MemberUtils memberUtils = new MemberUtils(); 
 	
 	@GetMapping("/downloadCustomers")
-    public void downloadCustomers(HttpSession session,HttpServletResponse response) throws Exception {
+    public void downloadCustomers(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,HttpSession session,HttpServletResponse response) throws Exception {
         try {
+        	
+        	if(!memberUtils.checkCookieMember(loggedMember, memberRepository)) {
+        		throw new AuthenticationException("Accès non autorisé.");
+        	}
 
-            String fileName="./customers.csv";
+            String fileName="clients.csv";
             
-            File fileToDownload = new File(fileName);
+            File fileToDownload = new File("./" + fileName);
             if(fileToDownload.exists())fileToDownload.delete();
             
             List<Customer> customerList = customerRepository.findAll();
@@ -97,12 +101,16 @@ public class DownlaodController {
     }
 	
 	@GetMapping("/downloadSubscriptions")
-    public void downloadSubscriptions(HttpSession session,HttpServletResponse response) throws Exception {
+    public void downloadSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, HttpSession session,HttpServletResponse response) throws Exception {
         try {
 
-            String fileName="./abonnements.csv";
+        	if(!memberUtils.checkCookieMember(loggedMember, memberRepository)) {
+        		throw new AuthenticationException("Accès non autorisé.");
+        	}
+        	
+            String fileName="abonnements.csv";
             
-            File fileToDownload = new File(fileName);
+            File fileToDownload = new File("./" + fileName);
             if(fileToDownload.exists())fileToDownload.delete();
             
             List<Subscription> subscriptionList = subscriptionRepository.findAll();
@@ -137,12 +145,16 @@ public class DownlaodController {
 	}   
         
     @GetMapping("/downloadPayments")
-    public void downloadPayments(HttpSession session,HttpServletResponse response) throws Exception {
+    public void downloadPayments(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, HttpSession session,HttpServletResponse response) throws Exception {
         try {
+        	
+        	if(!memberUtils.checkCookieMember(loggedMember, memberRepository)) {
+        		throw new AuthenticationException("Accès non autorisé.");
+        	}
 
-            String fileName="./paiments.csv";
+            String fileName="paiements.csv";
             
-            File fileToDownload = new File(fileName);
+            File fileToDownload = new File("./" + fileName);
             if(fileToDownload.exists())fileToDownload.delete();
             
             List<Payment> paymentList = paymentRepository.findAll();

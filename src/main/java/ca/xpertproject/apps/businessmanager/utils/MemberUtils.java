@@ -46,7 +46,7 @@ public class MemberUtils {
 		return hasAccess;
 	}
 	
-public boolean checkCookieMember(String loggedMember, MemberRepository memberRepository) {
+	public boolean checkCookieMember(String loggedMember, MemberRepository memberRepository) {
 		
 		boolean hasAccess=false;
 		
