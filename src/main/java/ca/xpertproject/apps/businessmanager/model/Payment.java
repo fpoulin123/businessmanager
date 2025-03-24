@@ -39,5 +39,17 @@ public class Payment {
 	
 	@ManyToOne
 	public Subscription subscription;
+
+	public String toCsvString() {
+		
+		return String.format("\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\"", 
+				this.id,
+				this.subscriptionId,
+				this.subscription.customer.firstName,
+				this.subscription.customer.lastName,
+				this.amount,
+				this.paymentDate
+			);
+	}
 	
 }

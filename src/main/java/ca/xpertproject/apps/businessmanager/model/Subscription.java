@@ -196,4 +196,17 @@ public class Subscription {
 		return String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s", this.id, this.customer.firstName, this.customer.lastName, this.duration, this.taekwondo, this.kickboxing,this.taekibodo, this.amount, this.subscriptionDate);
 	}
 	
+	public String toCsvString() {
+		
+		return String.format("\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\"", 
+				this.id, 
+				this.customer.firstName, 
+				this.customer.lastName, 
+				this.duration, 
+				(this.taekwondo)?"Taekwondo":"", 
+				(this.kickboxing)?"Kickboxing":"",
+				(this.taekibodo)?"Taekibodo":"", 
+				this.amount, 
+				this.subscriptionDate);
+	}
 }

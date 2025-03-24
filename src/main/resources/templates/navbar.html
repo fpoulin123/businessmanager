@@ -9,13 +9,13 @@
 	        <li class="nav-item">
 	          <a id="page_home" class="nav-link" aria-current="page" href="/mybusiness/home">Accueil</a>
 	        </li>
-	        <li class="nav-item">
+	        <li class="nav-item" th:if="${ memberName!=null }">
 	          <a id="page_customers" class="nav-link" href="/mybusiness/allCustomers">Clients</a>
 	        </li>
-	        <li class="nav-item">
+	        <li class="nav-item" th:if="${ memberName!=null }">
 	          <a id="page_subscriptions" class="nav-link" href="/mybusiness/allSubscriptions">Abonnements</a>
 	        </li>
-	        <li class="nav-item">
+	        <li class="nav-item" th:if="${ memberName!=null }">
 	          <a id="page_payments" class="nav-link" href="/mybusiness/allPayments">Paiements</a>
 	        </li>
 	<!--         <li class="nav-item"> -->

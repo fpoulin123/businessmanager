@@ -195,10 +195,20 @@ public class Customer {
 		return subscriptions;
 	}
 
-
-
 	public void setSubscriptions(List<Subscription> subscriptions) {
 		this.subscriptions = subscriptions;
+	}
+
+	public String toCsvString() {
+		// TODO Auto-generated method stub
+		return String.format("\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\"", 
+				this.id, 
+				this.firstName, 
+				this.lastName, 
+				this.address, 
+				this.city, 
+				this.phoneNumber, 
+				this.email);
 	}
 
 
