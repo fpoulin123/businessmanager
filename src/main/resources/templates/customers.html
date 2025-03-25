@@ -112,6 +112,13 @@
       	display: inline-block;
       }
       
+      a.export{
+      	color:white; 
+      	background-color: #0d6efd; 
+      	border-radius: 10px;
+      	text-decoration: none;
+      }
+      
       
     </style>
 
@@ -144,7 +151,8 @@
 		  	<button class="btn btn-lg btn-primary" role="button" th:onclick="createCustomer()">Nouveau client</button>
 		  </div>
 		  <div class="form-floating filter" >
-		  	<a href="./downloadCustomers">Export clients.csv</a>
+		  	<button class="btn btn-lg btn-primary" role="button" onclick="exportCsv()">Export CSV</button>
+		  
 		  </div>
 	    </div>
 	    <div class="pagesNavigator">
@@ -236,6 +244,11 @@
 		
 		location = "allCustomers?page=[[${nextPage}]]";
 		
+	}
+	
+	function exportCsv(){
+		
+		location = "downloadCustomers";
 	}
   </script>
   

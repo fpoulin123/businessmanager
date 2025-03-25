@@ -129,7 +129,8 @@
 	<div class="bg-body-tertiary p-3 rounded">
 		<button class="btn btn-lg btn-primary" role="button" th:onclick="addSubscription()">Nouvel abonnement</button>
 		
-		<a href="./downloadSubscriptions">Export abonnements.csv</a>
+		<button class="btn btn-lg btn-primary" role="button" onclick="exportCsv()">Export CSV</button>
+		  
 		
 		<div class="pagesNavigator">
 	    	<button th:if="${ prevPage!=null }" class="navPage previousPage" role="button" th:onclick="previousPage()"></button>
@@ -139,7 +140,7 @@
 	</div>
 	
 	  <div class="bg-body-tertiary p-3 rounded">
-	    <table>
+	    <table style="width:100%;">
 	     <thead>
 <!-- 	     	<th>Id</th> -->
 <!-- 	     	<th>Numéro client</th> -->
@@ -215,6 +216,11 @@
 	function nextPage(){
 		
 		location = "allSubscriptions?page=[[${nextPage}]]";
+		
+	}
+	
+	function exportCsv(){
+		location = "downloadSubscriptions";
 		
 	}
   </script>
