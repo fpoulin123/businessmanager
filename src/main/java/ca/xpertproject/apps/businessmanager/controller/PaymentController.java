@@ -23,6 +23,8 @@ import ca.xpertproject.apps.businessmanager.exception.AuthenticationException;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.model.Payment;
 import ca.xpertproject.apps.businessmanager.model.PaymentRepository;
+import ca.xpertproject.apps.businessmanager.model.Subscription;
+import ca.xpertproject.apps.businessmanager.model.SubscriptionRepository;
 import ca.xpertproject.apps.businessmanager.objects.PaymentExt;
 import ca.xpertproject.apps.businessmanager.objects.mappers.PaymentMapper;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
@@ -33,6 +35,9 @@ public class PaymentController {
 	
 	@Autowired
 	PaymentRepository paymentRepository;
+	
+	@Autowired
+	SubscriptionRepository subscriptionRepository;
 	
 	@Autowired
 	MemberRepository memberRepository;
@@ -94,7 +99,9 @@ public class PaymentController {
 		String subscriptionIdStr = body.get("subscriptionId");
 		subscriptionId = Long.parseLong(subscriptionIdStr);
 		
-		payment.setSubscriptionId(subscriptionId);
+		Subscription subscription = subscriptionRepository.findById(subscriptionId);
+		
+		payment.setSubscription(subscription);
 		payment.setAmount(Double.valueOf(body.get("amount")));
 		payment.setPaymentDate(paymentDate);;
 		
