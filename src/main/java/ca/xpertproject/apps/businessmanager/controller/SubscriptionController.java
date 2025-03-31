@@ -73,8 +73,6 @@ public class SubscriptionController {
 	@GetMapping("/validSubscriptions")
 	public String getValidSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model) throws AuthenticationException {
 		
-		System.out.println("Get all valid subscriptions.");
-		
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		List<Subscription> subscriptions = subscriptionRepository.findAll();
@@ -88,8 +86,6 @@ public class SubscriptionController {
 	
 	@GetMapping("/subscriptions")
 	public String getSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = true) Long customerId, Model model) throws AuthenticationException {
-		
-		System.out.println("Get subscriptions for customer " + customerId);
 		
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
@@ -122,8 +118,6 @@ public class SubscriptionController {
 		long dayInMillis = 24*3600*1000;
 		
 		long durationDateTime = durationLong*dayInMillis;
-		
-		System.out.println("Duration : " + duration);
 		
 		long expirationDateTime = subscriptionDateTime + durationDateTime;
 		
@@ -224,8 +218,6 @@ public class SubscriptionController {
 	public String modifySubscription(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model) throws ParseException, AuthenticationException {
 		
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
-		
-		body.forEach((k,v)-> System.out.println(k + ":" + v));
 		
 		boolean taekwondo = "on".equals(body.get("taekwondo"))?true:false;
 		boolean kickboxing = "on".equals(body.get("kickboxing"))?true:false;

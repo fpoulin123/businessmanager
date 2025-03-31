@@ -11,7 +11,7 @@ public class SubscriptionMapper {
 	private static final long DAYINMILLIS = 24*3600*1000;
 	
 	public SubscriptionExt convert(Subscription subscription) {
-		System.out.println("Subscription: " + subscription.getId());
+		
 		return GenericBuilder.of(SubscriptionExt::new)
 				.with(SubscriptionExt::setId,subscription.getId())
 				.with(SubscriptionExt::setCustomerId, subscription.getCustomerId())

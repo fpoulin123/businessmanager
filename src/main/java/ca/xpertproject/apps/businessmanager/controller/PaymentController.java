@@ -81,11 +81,6 @@ public class PaymentController {
 		
 		Iterator<Entry<String, String>> prms = body.entrySet().iterator();
 		
-		while (prms.hasNext()) {
-			Entry<String, String> entry = (Entry<String, String>) prms.next();
-			System.out.println(entry.getKey() + ": " + entry.getValue());
-		}
-		
 		Payment payment = new Payment();
 		
 		String paymentDateValue = body.get("paymentDate");

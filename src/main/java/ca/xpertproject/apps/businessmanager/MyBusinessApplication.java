@@ -29,9 +29,8 @@ public class MyBusinessApplication {
 		Properties properties = new Properties();
 		try {
 			
-			
 			File propFile = new File("../global.properties");
-			System.out.println("Properties file path : " + propFile.getAbsolutePath());
+			
 			if(!propFile.exists())propFile.createNewFile();
 			
 			InputStream propsIn = new FileInputStream(propFile);

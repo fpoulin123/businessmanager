@@ -23,7 +23,7 @@ public class MemberUtils {
 			List<Member> memberOpt = memberRepository.findByEmail(loggedMember);
 			
 			if(!memberOpt.isEmpty()) {
-				System.out.println("Member is not empty");
+				
 				Member member = memberOpt.get(0);
 				if(member.getActive()) {
 					
@@ -35,11 +35,11 @@ public class MemberUtils {
 				}
 				
 			}else {
-				System.out.println("Member is empty");
+				
 				model.addAttribute("authErrorMsg", "Vous n'avez pas accès a cette resource. Merci de vous authentifier avec un compte ayant les droits adéquats. Merci.");			
 			}
 		}else {
-			System.out.println("Member is empty");
+			
 			model.addAttribute("authErrorMsg", "Vous n'avez pas accès a cette resource. Merci de vous authentifier avec un compte ayant les droits adéquats. Merci.");			
 		}
 		

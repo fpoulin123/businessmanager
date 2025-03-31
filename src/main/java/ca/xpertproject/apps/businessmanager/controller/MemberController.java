@@ -33,8 +33,6 @@ public class MemberController{
 	public String genericExceptionHandler(Exception exception, Model model) {
 		String message = exception.getMessage();
 		
-		System.out.println("EXCEPTION : " + exception.getMessage());
-		
 		if(message.contains("ERROR: duplicate key value violates unique constraint \"unique_email\"")){
 			
 			model.addAttribute("errorMessage", "This e-mail has already been used, please sign in with it or use another one, Thank you!");
@@ -79,8 +77,6 @@ public class MemberController{
 		String email = body.get("email");
 		String password = body.get("password");
 		
-		System.out.println("Password : " + password);
-		
 		password = DigestUtils.sha256Hex(password);
 		
 		Member newMember = new Member();
@@ -112,10 +108,6 @@ public class MemberController{
 		
 		List<Member> potentialMembers = (List<Member>) memberRepository.findByEmail(body.get("email"));
 		
-		System.out.println("Email : " + body.get("email"));
-		
-		System.out.println("Members found :" + potentialMembers.size());
-		
 		if(potentialMembers.isEmpty()) {
 			throw new AuthenticationException("Wrong user name or password, please retry.");
 		}
@@ -126,8 +118,6 @@ public class MemberController{
 		String sentPassword = body.get("password");
 		
 		String sha256hex = DigestUtils.sha256Hex(sentPassword);
-		
-		System.out.println("Input pswd : " + sentPassword + " - " + sha256hex);
 		
 		if(sha256hex.equals(member.getPassword())) {
 			
