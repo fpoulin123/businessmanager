@@ -94,11 +94,15 @@ public class PaymentController {
 		String subscriptionIdStr = body.get("subscriptionId");
 		subscriptionId = Long.parseLong(subscriptionIdStr);
 		
+
 		Subscription subscription = subscriptionRepository.findById(subscriptionId);
 		
 		payment.setSubscription(subscription);
+
 		payment.setAmount(Double.valueOf(body.get("amount")));
-		payment.setPaymentDate(paymentDate);;
+		payment.setPaymentDate(paymentDate);
+		
+		System.out.println("Payment : " + payment.toString());
 		
 		paymentRepository.save(payment);
 		 
