@@ -2,10 +2,8 @@ package ca.xpertproject.apps.businessmanager.utils;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
-import ca.xpertproject.apps.businessmanager.exception.AuthenticationException;
 import ca.xpertproject.apps.businessmanager.model.Member;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 

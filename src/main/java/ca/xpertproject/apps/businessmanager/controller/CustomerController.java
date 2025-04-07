@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants.MEMBER_LOGGED_COOKIE_NAME;
+import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants.PICTURES_DIR_PATH;
 
+import ca.xpertproject.apps.businessmanager.constant.ApplicationConstants;
 import ca.xpertproject.apps.businessmanager.exception.AuthenticationException;
 import ca.xpertproject.apps.businessmanager.model.Customer;
 import ca.xpertproject.apps.businessmanager.model.CustomerIdComparator;
@@ -139,7 +141,8 @@ public class CustomerController {
 
 		String fileExt = origName.substring(origName.lastIndexOf("."), origName.length());
 
-		String pictureFolder = "C:/Users/Fabrice/Documents/GitHub/businessmanager/src/main/resources/static/img/customerPictures";
+		String pictureFolder =PICTURES_DIR_PATH;
+				//"C:/Applications/businessmanager/contents/static/img/customerPictures";
 
 		String fileName = UUID.randomUUID().toString() + fileExt;
 
@@ -154,6 +157,21 @@ public class CustomerController {
 				.with(Customer::setPicture, "./img/customerPictures/" + fileName).build();
 
 		customerRepository.save(customer);
+		
+		Customer newCustomer = customerRepository.save(customer);
+
+		String barcodeValue = customer.getBarcodeValue();
+		if (barcodeValue == null || barcodeValue.isEmpty()) {
+			String left = new SimpleDateFormat("yyyyMMdd").format(new Date());
+			Long leftLong = Long.parseLong(left);
+			Long barcodeValueLong = leftLong * 10000;
+			barcodeValueLong = barcodeValueLong + customer.getId();
+			barcodeValue = barcodeValueLong.toString();
+		}
+
+		newCustomer.setBarcodeValue(barcodeValue);
+		
+		customerRepository.save(newCustomer);
 
 		return "redirect:./customer?id=" + customer.id;
 	}
@@ -166,13 +184,6 @@ public class CustomerController {
 
 		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
 			return "noaccess";
-
-		String inscriptionDateValue = body.get("inscriptiondate");
-		Date inscriptionDate = null;
-
-		if (inscriptionDateValue != null && !(inscriptionDateValue.isEmpty())) {
-			inscriptionDate = new SimpleDateFormat("yyyy-MM-dd").parse(body.get("inscriptiondate"));
-		}
 
 		Customer customer = customerRepository.findById(Long.parseLong(body.get("id")));
 
@@ -191,8 +202,7 @@ public class CustomerController {
 				.with(Customer::setPhoneNumber, body.get("phonenumber")).with(Customer::setEmail, body.get("email"))
 				.with(Customer::setBarcodeValue, barcodeValue).build();
 
-		customerRepository.save(customer);
-
+		
 		return "redirect:./customer?id=" + customer.id;
 	}
 }

@@ -1,5 +1,7 @@
 package ca.xpertproject.apps.businessmanager.controller;
 
+import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants.MEMBER_LOGGED_COOKIE_NAME;
+
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
@@ -7,7 +9,6 @@ import java.util.Optional;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,8 +21,6 @@ import ca.xpertproject.apps.businessmanager.model.Member;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-
-import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants.MEMBER_LOGGED_COOKIE_NAME;
 
 @Controller
 public class MemberController{

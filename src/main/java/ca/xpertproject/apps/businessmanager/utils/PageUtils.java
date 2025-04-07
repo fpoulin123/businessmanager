@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 
 public class PageUtils {
 
-
 	/**
 	 * Use this function to page items
 	 * @param <T>
@@ -17,6 +16,7 @@ public class PageUtils {
 	 * @param pagedListName : the name of the list returned in the model
 	 * @return a paged list of items
 	 */
+	
 	public static <T> List<T> getPagedItems(List<T> rawList, Model model, String page, String pagedListName ){
 
 		List<T> pagedItems = new ArrayList<T>();

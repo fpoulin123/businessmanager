@@ -1,15 +1,14 @@
 package ca.xpertproject.apps.businessmanager.controller;
 
+import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants.MEMBER_LOGGED_COOKIE_NAME;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import org.springframework.aop.aspectj.SingletonAspectInstanceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ca.xpertproject.apps.businessmanager.exception.AuthenticationException;
 import ca.xpertproject.apps.businessmanager.model.Customer;
-import ca.xpertproject.apps.businessmanager.model.CustomerLightFullNameComparator;
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
 import ca.xpertproject.apps.businessmanager.model.GenericBuilder;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
@@ -28,14 +26,11 @@ import ca.xpertproject.apps.businessmanager.model.Payment;
 import ca.xpertproject.apps.businessmanager.model.PaymentRepository;
 import ca.xpertproject.apps.businessmanager.model.Subscription;
 import ca.xpertproject.apps.businessmanager.model.SubscriptionRepository;
-import ca.xpertproject.apps.businessmanager.objects.CustomerLight;
 import ca.xpertproject.apps.businessmanager.objects.SubscriptionExt;
-import ca.xpertproject.apps.businessmanager.objects.mappers.CustomerMapper;
 import ca.xpertproject.apps.businessmanager.objects.mappers.SubscriptionMapper;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
 import ca.xpertproject.apps.businessmanager.utils.PageUtils;
 import jakarta.servlet.http.HttpServletResponse;
-import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants.MEMBER_LOGGED_COOKIE_NAME;
 
 
 @Controller

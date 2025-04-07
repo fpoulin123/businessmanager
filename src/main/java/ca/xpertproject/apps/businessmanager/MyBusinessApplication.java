@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class MyBusinessApplication {
 
-	public static Properties myBusinessProps = getGlobalProperties();
+	
 	
 	public static void main(String[] args) {
 		SpringApplication.run(MyBusinessApplication.class, args);
@@ -25,24 +25,6 @@ public class MyBusinessApplication {
 		 
 	}
 	
-	private static Properties getGlobalProperties(){
-		Properties properties = new Properties();
-		try {
-			
-			File propFile = new File("../global.properties");
-			
-			if(!propFile.exists())propFile.createNewFile();
-			
-			InputStream propsIn = new FileInputStream(propFile);
-			properties.load(propsIn);
-			
-			propsIn.close();
-
-		}catch(IOException e) {
-			e.printStackTrace();
-		}
-		return properties;
-	}
 
 	@Bean
 	@ConfigurationProperties("app.datasource")
