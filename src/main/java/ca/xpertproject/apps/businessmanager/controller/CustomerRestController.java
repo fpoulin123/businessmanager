@@ -2,6 +2,7 @@ package ca.xpertproject.apps.businessmanager.controller;
 
 import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants.MEMBER_LOGGED_COOKIE_NAME;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,7 @@ public class CustomerRestController {
 	@GetMapping("getCustomerList")
 	public List<CustomerLight> getCustomerList(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember){
 		
-		//if(!memberUtils.checkCookieMember(loggedMember, memberRepository))return Collections.EMPTY_LIST;
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository))return Collections.emptyList();
 
 		
 		List<CustomerLight> customerList = (List<CustomerLight>) customerRepository.findAll().stream().map(customer-> CustomerMapper.convertForList(customer)).collect(Collectors.toList());
@@ -43,12 +44,5 @@ public class CustomerRestController {
 		return customerList;
 	}
 
-	private String convertForAC(Customer customer) {
-
-		
-		String customerDisplay = customer.getFirstName() + " " + customer.getLastName() + " " + customer.getId();
-		
-		return customerDisplay.trim();
-	}
-
+	
 }
