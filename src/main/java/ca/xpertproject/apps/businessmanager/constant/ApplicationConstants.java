@@ -18,7 +18,7 @@ public class ApplicationConstants {
 		Properties properties = new Properties();
 		try {
 			
-			File propFile = new File("../global.properties");
+			File propFile = new File("./global.properties");
 			
 			if(!propFile.exists())propFile.createNewFile();
 			

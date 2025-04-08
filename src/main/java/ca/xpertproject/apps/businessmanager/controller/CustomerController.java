@@ -142,7 +142,6 @@ public class CustomerController {
 		String fileExt = origName.substring(origName.lastIndexOf("."), origName.length());
 
 		String pictureFolder =PICTURES_DIR_PATH;
-				//"C:/Applications/businessmanager/contents/static/img/customerPictures";
 
 		String fileName = UUID.randomUUID().toString() + fileExt;
 
@@ -156,16 +155,14 @@ public class CustomerController {
 				.with(Customer::setEmail, body.get("email"))
 				.with(Customer::setPicture, "./img/customerPictures/" + fileName).build();
 
-		customerRepository.save(customer);
-		
 		Customer newCustomer = customerRepository.save(customer);
-
-		String barcodeValue = customer.getBarcodeValue();
+		
+		String barcodeValue = newCustomer.getBarcodeValue();
 		if (barcodeValue == null || barcodeValue.isEmpty()) {
 			String left = new SimpleDateFormat("yyyyMMdd").format(new Date());
 			Long leftLong = Long.parseLong(left);
 			Long barcodeValueLong = leftLong * 10000;
-			barcodeValueLong = barcodeValueLong + customer.getId();
+			barcodeValueLong = barcodeValueLong + newCustomer.getId();
 			barcodeValue = barcodeValueLong.toString();
 		}
 
@@ -173,7 +170,7 @@ public class CustomerController {
 		
 		customerRepository.save(newCustomer);
 
-		return "redirect:./customer?id=" + customer.id;
+		return "redirect:./customer?id=" + newCustomer.id;
 	}
 
 	@PostMapping(value = "/updateCustomer")

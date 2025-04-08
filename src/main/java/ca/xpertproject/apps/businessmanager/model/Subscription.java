@@ -11,9 +11,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 @Entity
 @Table(name="subscription")
+
+@Builder
+@AllArgsConstructor
+
 public class Subscription {
 	
 		public Subscription() {
@@ -183,10 +189,6 @@ public class Subscription {
 		this.paymentList = paymentList;
 	}
 
-	public String toString() {
-		
-		return String.format("%s;%s;%s;%s;%s;%s;%s;%s;%s", this.id, this.customer.firstName, this.customer.lastName, this.duration, this.taekwondo, this.kickboxing,this.taekibodo, this.amount, this.subscriptionDate);
-	}
 	
 	public String toCsvString() {
 		
