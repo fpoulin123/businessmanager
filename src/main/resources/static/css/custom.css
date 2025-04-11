@@ -106,10 +106,12 @@ button.navPage {
 	background-color: transparent;
 	background-repeat: no-repeat;
 	background-position: center;
-	background-size: 17px;
+	background-size: 30px;
 }
 
 div.navPage {
+	font-weight:bold;
+	font-size:1.25rem;
 	height: 30px;
 	width: 60px;
 	vertical-align: middle;
