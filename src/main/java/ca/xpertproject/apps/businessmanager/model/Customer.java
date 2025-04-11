@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="customer")
 
-public class Customer {
+public class Customer implements CSVTransformable{
 	
 	
 	

@@ -61,6 +61,8 @@ public class PaymentController {
 	@GetMapping("payments")
 	public String getPayments(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false, defaultValue = "1") String page, @RequestParam(required = true) Long subscriptionId ,Model model) {
 		
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		
 		List<Payment> payments = paymentRepository.findBySubscriptionId(subscriptionId);
 		
 		model.addAttribute("payments", payments);
@@ -71,6 +73,8 @@ public class PaymentController {
 	@GetMapping("addPayment")
 	public String addPayment(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false, defaultValue = "1") String page, @RequestParam(required = true) Long subscriptionId ,Model model) {
 		
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		
 		model.addAttribute("subscriptionId", subscriptionId);
 		
 		return "createPaymentForm";
@@ -79,7 +83,7 @@ public class PaymentController {
 	@PostMapping("addPayment")
 	public String addPayment(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model) throws ParseException {
 		
-		Iterator<Entry<String, String>> prms = body.entrySet().iterator();
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		Payment payment = new Payment();
 		

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.xpertproject.apps.businessmanager.exception.AuthenticationException;
+import ca.xpertproject.apps.businessmanager.model.CSVTransformable;
 import ca.xpertproject.apps.businessmanager.model.Customer;
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
@@ -30,7 +31,7 @@ import jakarta.servlet.http.HttpSession;
 
 
 @RestController
-public class DownlaodController {
+public class DownloadController {
 
 	@Autowired
 	CustomerRepository customerRepository;
@@ -54,7 +55,7 @@ public class DownlaodController {
         		throw new AuthenticationException("Accès non autorisé.");
         	}
 
-            String fileName="clients.csv";
+            String fileName="clients.csv"; 
             
             File fileToDownload = new File("./" + fileName);
             if(fileToDownload.exists())fileToDownload.delete();

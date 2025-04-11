@@ -11,6 +11,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ca.xpertproject.apps.businessmanager.exception.AuthenticationException;
 import ca.xpertproject.apps.businessmanager.model.Member;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
+import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -27,6 +29,8 @@ public class MemberController{
 	
 	@Autowired
 	MemberRepository memberRepository;
+	
+	MemberUtils memberUtils = new MemberUtils();
 	
 	@ExceptionHandler(Exception.class)
 	public String genericExceptionHandler(Exception exception, Model model) {
@@ -51,7 +55,8 @@ public class MemberController{
 	
 	
 	@GetMapping("/member")
-	public String getMember(@RequestParam(required=false, defaultValue="1") Long id, Model model) {
+	public String getMember(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,@RequestParam(required=false, defaultValue="1") Long id, Model model) {
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		Optional<Member> memberOpt = memberRepository.findById(id);
 		if(memberOpt.isPresent()) {
@@ -97,11 +102,11 @@ public class MemberController{
 	@PostMapping("/signin")
 	public String authenticate(@RequestParam Map<String, String> body, HttpServletResponse response) throws NoSuchAlgorithmException, AuthenticationException {
 		
-		if(body.get("email").isEmpty()) {
+		if(body.get("email")==null||body.get("email").isEmpty()) {
 			throw new AuthenticationException("E-mail is empty.");
 		}
 		
-		if(body.get("password").isEmpty()) {
+		if(body.get("password")==null||body.get("password").isEmpty()) {
 			throw new AuthenticationException("Password is empty.");
 		}
 		
@@ -137,7 +142,6 @@ public class MemberController{
 			throw excp;
 
 		}
-		
 	
 	}
 	
