@@ -1,2 +1,1 @@
-"Numéro";"Prénom";"Nom";"Durée";"Sport 1";"Sport 2";"Sport 3";"Montant";"Date"
-"1";"Pierre";" Dupont";"90";"Taekwondo";"Kickboxing";"";"350.0";"2025-03-21 00:00:00.0"
+"Numéro client";"Numéro abonnement";"Prénom";"Nom";"Durée";"Sport 1";"Sport 2";"Sport 3";"Montant";"Date abonnement";"Date expiration"

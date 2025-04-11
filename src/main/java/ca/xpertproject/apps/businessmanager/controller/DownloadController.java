@@ -25,6 +25,7 @@ import ca.xpertproject.apps.businessmanager.model.Payment;
 import ca.xpertproject.apps.businessmanager.model.PaymentRepository;
 import ca.xpertproject.apps.businessmanager.model.Subscription;
 import ca.xpertproject.apps.businessmanager.model.SubscriptionRepository;
+import ca.xpertproject.apps.businessmanager.objects.mappers.SubscriptionMapper;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -94,6 +95,8 @@ public class DownloadController {
 	@GetMapping("/downloadSubscriptions")
     public void downloadSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, HttpSession session,HttpServletResponse response) throws Exception {
         try {
+        	
+        	SubscriptionMapper mapper = new SubscriptionMapper();
 
         	if(!memberUtils.checkCookieMember(loggedMember, memberRepository)) {
         		throw new AuthenticationException("Accès non autorisé.");
@@ -109,8 +112,8 @@ public class DownloadController {
             FileWriter fr = new FileWriter(fileToDownload);
             BufferedWriter bfr = new BufferedWriter(fr);
                         
-            bfr.append("\"Numéro\";\"Prénom\";\"Nom\";\"Durée\";\"Sport 1\";\"Sport 2\";\"Sport 3\";\"Montant\";\"Date\"" + System.lineSeparator());
-            subscriptionList.stream().forEach(subscription-> {
+            bfr.append("\"Numéro client\";\"Numéro abonnement\";\"Prénom\";\"Nom\";\"Durée\";\"Sport 1\";\"Sport 2\";\"Sport 3\";\"Montant\";\"Date abonnement\";\"Date expiration\"" + System.lineSeparator());
+            subscriptionList.stream().map(sub -> mapper.convert(sub)).forEach(subscription-> {
             	try {
 					bfr.append(subscription.toCsvString() + System.lineSeparator());
 				} catch (IOException e) {

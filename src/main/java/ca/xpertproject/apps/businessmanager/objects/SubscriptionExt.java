@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class SubscriptionExt {
-	
+
 	public SubscriptionExt() {
 		super();
 	}
@@ -30,36 +30,36 @@ public class SubscriptionExt {
 		this.subscriptionDate = subscriptionDate;
 		this.expirationDate = expirationDate;
 		this.isValid = isValid;
-		
+
 	}
-	
-	
+
+
 	private Long id;
-	
+
 	private Long customerId;
-	
+
 	private String customerFirstname;
-	
+
 	private String customerLastname;
-	
+
 	private Integer duration;
-	
+
 	private Boolean taekwondo;
-	
+
 	private Boolean kickboxing;
-	
+
 	private Boolean taekibodo;
-	
+
 	private Double amount;
-	
+
 	private Date subscriptionDate;
-	
+
 	private Date expirationDate;
-	
+
 	private Boolean isValid;
-	
+
 	private Double balance;
-	
+
 	private Boolean payed;
 
 	public Long getId() {
@@ -173,7 +173,25 @@ public class SubscriptionExt {
 	public void setPayed(Boolean payed) {
 		this.payed = payed;
 	}
-	
-	
+
+	public String toCsvString() {
+
+		return String.format("\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\"", 
+				this.id,
+				this.customerId,
+				this.customerFirstname,
+				this.customerLastname,
+				this.duration,
+				(this.taekwondo)?"Taekwondo":"", 
+				(this.kickboxing)?"Kickboxing":"",
+				(this.taekibodo)?"Taekibodo":"", 
+				this.amount,
+				this.subscriptionDate,
+				this.expirationDate,
+				this.isValid);
+
+	}
+
+
 
 }

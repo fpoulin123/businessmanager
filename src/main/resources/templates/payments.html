@@ -109,6 +109,18 @@ td {
 	padding: 5px;
 	border: solid gray 1px;
 }
+
+div.filter {
+	display: inline-block;
+}
+
+div.filter select{
+   
+    width: 150px;
+    height: 49px;
+    border-radius: 10px;
+
+}
 </style>
 
 
@@ -122,18 +134,28 @@ td {
 
 
 	<input type="hidden" id="currentPage" value="page_payments" />
+	<input type="hidden" id="yearfiltered" th:value="${ year }" />
+	
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4"
 		style="min-height: 56px;" id="navbar"></nav>
 
 	<main class="container">
 		<div class="bg-body-tertiary p-3 rounded">
 			<div class="form-floating filter">
+				<select id="yearFilter" onchange="javascript:filter();">
+					<option class="yearOpt" th:each="year : ${ yearList }" th:value="${ year }" th:id="${ year }"
+						data-th-text="${ year }"></option>
+
+				</select>
+
+			</div>
+			<div class="form-floating filter">
 				<button class="btn btn-lg btn-primary" role="button"
 					onclick="exportCsv()">Export CSV</button>
 			</div>
 		</div>
 		<div class="bg-body-tertiary p-3 rounded">
-			<table style="width:100%;">
+			<table style="width: 100%;">
 				<thead>
 					<!-- 	     	<th>Id</th> -->
 					<!-- 	     	<th>Numéro client</th> -->
@@ -170,6 +192,15 @@ td {
 
 </body>
 <script th:inline="javascript">
+		
+ 		var yearOptionId = [[ ${ year }]];
+ 		
+		$('.yearOpt').removeAttr('selected');
+		
+		if(yearOptionId!=""){
+			$("#" + yearOptionId).removeAttr('selected').attr('selected', true);
+		}
+			
     	injectNavbar();
   	 	
   		function viewPayment(id){
@@ -178,6 +209,11 @@ td {
   		
   		function exportCsv(){
   			location="downloadPayments";
+  		}
+  		
+  		function filter(){
+  			var year = $("#yearFilter").val();
+  			location="./allPayments?year=" + year;
   		}
 
   </script>

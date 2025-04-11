@@ -4,11 +4,13 @@ import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import ca.xpertproject.apps.businessmanager.exception.AuthenticationException;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.model.Payment;
 import ca.xpertproject.apps.businessmanager.model.PaymentRepository;
+import ca.xpertproject.apps.businessmanager.model.StringComparator;
 import ca.xpertproject.apps.businessmanager.model.Subscription;
 import ca.xpertproject.apps.businessmanager.model.SubscriptionRepository;
 import ca.xpertproject.apps.businessmanager.objects.PaymentExt;
@@ -42,22 +45,47 @@ public class PaymentController {
 	@Autowired
 	MemberRepository memberRepository;
 	
+	SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+	
 	MemberUtils memberUtils = new MemberUtils();
 	
 	@GetMapping("allPayments")
-	public String getAllPayments(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false, defaultValue = "1") String page, Model model) throws AuthenticationException {
+	public String getAllPayments(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false, defaultValue = "1") String page, @RequestParam(required = false, defaultValue = "") String year, Model model) throws AuthenticationException {
 		
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		List<Payment> payments = paymentRepository.findAll();
 		
-		List<PaymentExt> paymentExtList = payments.stream().map(pay-> PaymentMapper.convert(pay)).collect(Collectors.toList());
+		List<String> yearList = new ArrayList<String>();
+		
+		yearList.add("");
+		
+		yearList.sort(new StringComparator());
+		
+		for (Payment payment : payments) {
+			String yearStr = yearFormat.format(payment.getPaymentDate());
+			if(!yearList.contains(yearStr))yearList.add(yearStr);
+		}
+		
+		model.addAttribute("yearList",yearList);
+		
+		model.addAttribute("year", year);
+		
+		List<PaymentExt> paymentExtList = payments.stream().map(pay-> PaymentMapper.convert(pay)).filter(payment -> matchYear(payment, year)).collect(Collectors.toList());
 		
 		model.addAttribute("payments", paymentExtList);
 		
 		return "payments";
 	}
 	
+
+	private boolean matchYear(PaymentExt payment, String year) {
+		if(year==null||"".equals(year))return true;
+		
+		return year.equals(yearFormat.format(payment.getPaymentDate()));
+	}
+
+
 	@GetMapping("payments")
 	public String getPayments(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false, defaultValue = "1") String page, @RequestParam(required = true) Long subscriptionId ,Model model) {
 		
