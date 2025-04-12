@@ -80,8 +80,8 @@ public class CustomerControllerTest {
 	}
 	
 	@Test
-	public void modifyCustomer_notLogged_noaccess() throws Exception {
-		mockMvc.perform(get("/modifyCustomer").param("id", "1")).andExpect(status().isOk()).andExpect(view().name("noaccess"));
+	public void editCustomer_notLogged_noaccess() throws Exception {
+		mockMvc.perform(get("/editCustomer").param("id", "1")).andExpect(status().isOk()).andExpect(view().name("noaccess"));
 	}
 	
 	@Test
@@ -147,7 +147,7 @@ public class CustomerControllerTest {
 	}
 	
 	@Test
-	public void modifyCustomer_logged() throws Exception {
+	public void editCustomer_logged() throws Exception {
 		
 		Member member = new Member();
 		
@@ -163,7 +163,7 @@ public class CustomerControllerTest {
 		
 		when(customerRepository.findById(anyLong())).thenReturn(customer);
 		
-		mockMvc.perform(get("/modifyCustomer").cookie(loginCookie).param("id", "1")).andExpect(status().isOk()).andExpect(view().name("modifyCustomerform"));
+		mockMvc.perform(get("/editCustomer").cookie(loginCookie).param("id", "1")).andExpect(status().isOk()).andExpect(view().name("modifyCustomerform"));
 	}
 	
 	@Test
