@@ -153,13 +153,14 @@ div.filter select{
 				<button class="btn btn-lg btn-primary" role="button"
 					onclick="exportCsv()">Export CSV</button>
 			</div>
-			<div class="form-floating filter">
-				<button class="btn btn-lg btn-primary" role="button"
-					onclick="createEvent()">Nouvel événement</button>
-			</div>
+			
 			<div class="form-floating filter">
 				<button class="btn btn-lg btn-primary" role="button"
 					onclick="calendar()">Calendrier</button>
+			</div>
+			<div class="form-floating filter">
+				<button class="btn btn-lg btn-primary" role="button"
+					onclick="javascript:newEvent()">Nouvel événement</button>
 			</div>
 		</div>
 		<div class="bg-body-tertiary p-3 rounded">
@@ -223,12 +224,12 @@ div.filter select{
   			location="./allEvents?year=" + year;
   		}
   		
-  		function createEvent(){
-			location="./createEvent";
-  		}
-  		
   		function calendar(){
 			location="./calendar";
+  		}
+  		
+  		function newEvent(){
+			location="./createEvent";
   		}
 
   </script>

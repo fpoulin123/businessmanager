@@ -95,7 +95,7 @@ public class EventController {
 	@GetMapping("/calendar_example")
 	public String viewCalendarExpl(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model) {
 		
-		return "calendar_example";
+		return "calendar_example ";
 	}
 	
 	@GetMapping("/createEvent")
@@ -139,7 +139,7 @@ public class EventController {
 		
 		event = eventRepository.save(event);
 		
-		return "redirect:/viewEvent?id=" + event.id;
+		return "redirect:/event?id=" + event.id;
 	}
 	
 	
