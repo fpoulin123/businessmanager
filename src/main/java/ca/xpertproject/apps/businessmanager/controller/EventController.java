@@ -142,5 +142,52 @@ public class EventController {
 		return "redirect:/event?id=" + event.id;
 	}
 	
+	@GetMapping("/editEvent")
+	public String editEvent(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = true) Long id,Model model) {
+
+
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		
+		Event event = eventRepository.findById(id);
+		
+		model.addAttribute("event", event);
+		
+		return "editEventForm";
+	}
+	
+	@PostMapping("/updateEvent")
+	public String updateEvent(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model) throws ParseException {
+		
+		Event event = eventRepository.findById(Long.parseLong(body.get("id")));
+		
+		String eventDateStr = body.get("eventDate");
+		
+		Date eventDate = null;
+		
+		if(eventDateStr!=null &&  !(eventDateStr.isEmpty())) {
+			eventDate = new SimpleDateFormat("yyyy-MM-dd").parse(eventDateStr);
+		}
+		
+		String endDateStr = body.get("endDate");
+		
+		Date endDate = null;
+		
+		if(endDateStr!=null &&  !(endDateStr.isEmpty())) {
+			endDate = new SimpleDateFormat("yyyy-MM-dd").parse(endDateStr);
+		}
+		
+		String amountStr= body.get("amount");
+		
+		event.setEventName(body.get("eventName"));
+		event.setEventType(body.get("eventType"));
+		event.setEventDate(eventDate);
+		event.setEndDate(endDate);
+		event.setAmount(Double.parseDouble(amountStr));
+		
+		event = eventRepository.save(event);
+		
+		return "redirect:/event?id=" + event.id;
+	}
+	
 	
 }

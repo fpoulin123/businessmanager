@@ -108,9 +108,10 @@
       
       }
       
-      main.form-signin div{
-      	padding-top:10px;
-      	padding-bottom: 10px;      
+      label.checkboxlbl{
+      	position:relative;
+      	padding: 0px;
+      
       }
     </style>
 
@@ -125,59 +126,51 @@
   <body>
 
 
-    <input type="hidden" id="currentPage" value="page_customers"/>
+    <input type="hidden" id="currentPage" value="page_eventss"/>
+    
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" style="min-height: 56px;" id="navbar"></nav>
 
 	
 	<main class="form-signin w-100 m-auto">
-  
-<!--     <img class="mb-4" src="./img/metlogo.svg" alt="" width="297" height="107"> -->
-    <p class="errorMsg" data-th-text="${ errorMessage }"></p>
-    <h1 class="h3 mb-3 fw-normal">Événement</h1>
-    
-    <div>
-      
-      <label>Nom : </label>
-      <span data-th-text="${ event.eventName }"></span>
-    </div>
-    
-    <div>
-      <label>Type : </label>
-      <span data-th-text="${ event.eventType }"></span>
-    </div>
-    
-    <div>
-      <label>Date de début: </label>
-      <span data-th-text="${#dates.format(event.eventDate, 'dd-MM-yyyy')}"></span>
-    </div>
-    
-    <div>
-      <label>Date de fin: </label>
-      <span data-th-text="${#dates.format(event.endDate, 'dd-MM-yyyy')}"></span>
-    </div>
-    
-    <div>
-      <label>Montant : </label>
-      <span data-th-text="${ event.amount }"></span>
-    </div>
-    
-    </main>
-    <main class="w-100 m-auto">
-	    <div style="text-align: center;">
-		    <button class="btn btn-primary py-2" th:onclick="editEvent([[${ event.id }]])">Modifier</button>
+  <form action="./updateEvent" method="post" name="eventForm" id="eventForm">
 
-	    </div>
-	
-	</main>
+    <p class="errorMsg" data-th-text="${ errorMessage }"></p>
+    <h1 class="h3 mb-3 fw-normal">Edition événement</h1>
+
+	<input type="hidden" id="eventId" name="id" th:value="${ event.id }"/>
+    <div class="form-floating">
+      <input type="text" class="form-control" id="floatingEventName" name="eventName" placeholder="eventName" th:value="${ event.eventName }" required="required">
+      <label for="floatingInput">Nom de l'événement</label>
+    </div>
+    
+    <div class="form-floating">
+      <input type="text" class="form-control" id="floatingEventName" name="eventType" placeholder="eventType" th:value="${ event.eventType }" required="required">
+      <label for="floatingInput">Type</label>
+    </div>
+            
+    <div class="form-floating">
+      <input type="date" class="form-control" id="floatingEventDate" name="eventDate" placeholder="eventDate" th:value="${#dates.format(event.eventDate, 'yyyy-MM-dd')}" required>
+      <label for="floatingPaymentDate">Date de début</label>
+    </div>
+    
+    <div class="form-floating">
+      <input type="date" class="form-control" id="floatingEventDate" name="endDate" placeholder="endDate" th:value="${#dates.format(event.endDate, 'yyyy-MM-dd')}">
+      <label for="floatingPaymentDate">Date de fin</label>
+    </div>
+        
+    <div class="form-floating">
+      <input type="text" class="form-control" id="floatingAmount" name="amount" placeholder="amount" th:value="${ event.amount }" required>
+      <label for="floatingInput">Montant</label>
+    </div>
+    
+
+    <button class="btn btn-primary py-2" type="submit">Enregistrer</button>
+    <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2024</p>
+  </form>
+</main>
 
 	<script src="./js/bootstrap.bundle.min.js"></script>
-	<script type="text/javascript">
-		function editEvent(id){
-			location="./editEvent?id=" + id;
-		}
-		
-	</script>
-	
+
 	<script type="text/javascript" src="./js/jquery.js"></script>
 	<script src="./js/sign.js"></script>
 	<script src="./js/inject.js"></script>
