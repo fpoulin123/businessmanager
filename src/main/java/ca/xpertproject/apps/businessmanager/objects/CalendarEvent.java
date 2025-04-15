@@ -13,4 +13,6 @@ public class CalendarEvent {
 	String title;
 	
 	String start;
+	
+	String end;
 }

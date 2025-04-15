@@ -121,11 +121,20 @@ public class EventController {
 			eventDate = new SimpleDateFormat("yyyy-MM-dd").parse(eventDateStr);
 		}
 		
+		String endDateStr = body.get("endDate");
+		
+		Date endDate = null;
+		
+		if(endDateStr!=null &&  !(endDateStr.isEmpty())) {
+			endDate = new SimpleDateFormat("yyyy-MM-dd").parse(endDateStr);
+		}
+		
 		String amountStr= body.get("amount");
 		
 		event.setEventName(body.get("eventName"));
 		event.setEventType(body.get("eventType"));
 		event.setEventDate(eventDate);
+		event.setEndDate(endDate);
 		event.setAmount(Double.parseDouble(amountStr));
 		
 		event = eventRepository.save(event);

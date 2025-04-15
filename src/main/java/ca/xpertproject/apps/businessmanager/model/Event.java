@@ -45,6 +45,9 @@ public class Event implements CSVTransformable{
 	@Column(name="amount")
 	public Double amount;
 	
+	@Column(name="end_date")
+	public Date endDate;
+	
 
 	@Override
 	public String toCsvString() {

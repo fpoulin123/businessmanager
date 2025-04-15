@@ -7,7 +7,7 @@ import ca.xpertproject.apps.businessmanager.objects.CalendarEvent;
 
 public class EventMapper {
 	
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 	public CalendarEvent convert(Event event) {
 		
@@ -15,6 +15,12 @@ public class EventMapper {
 		CalendarEvent calendarEvent = new CalendarEvent();
 		calendarEvent.setTitle(event.getEventName());
 		calendarEvent.setStart(sdf.format(event.getEventDate()));
+		
+		if(event.getEndDate()!=null&&event.getEndDate().after(event.getEventDate())) {
+			calendarEvent.setEnd(sdf.format(event.endDate) + " 23:59:59");
+		}else {
+			calendarEvent.setEnd(calendarEvent.getStart());
+		}
 		
 		return calendarEvent;
 		

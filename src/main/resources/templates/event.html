@@ -147,8 +147,13 @@
     </div>
     
     <div>
-      <label>Date : </label>
-      <span data-th-text="${ event.eventDate }"></span>
+      <label>Date de début: </label>
+      <span data-th-text="${#dates.format(event.eventDate, 'dd-MM-yyyy')}"></span>
+    </div>
+    
+    <div>
+      <label>Date de fin: </label>
+      <span data-th-text="${#dates.format(event.endDate, 'dd-MM-yyyy')}"></span>
     </div>
     
     <div>
