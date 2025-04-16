@@ -186,7 +186,7 @@
 		<td data-th-text="${ customer.email }"></td>
 		<td>
 			<button class="btn btn-lg btn-primary btn-view" role="button" th:onclick="viewCustomer([[${ customer.id }]])"></button>
-			<button class="btn btn-lg btn-primary btn-edit" role="button" th:onclick="viewCustomer([[${ customer.id }]])"></button>
+			<button class="btn btn-lg btn-primary btn-edit" role="button" th:onclick="editCustomer([[${ customer.id }]])"></button>
 		</td>	
 	
 	</tr>
@@ -211,6 +211,10 @@
    	
   	function viewCustomer(id){
 		location="./customer?id=" + id;
+	}
+	
+  	function editCustomer(id){
+		location="./editCustomer?id=" + id;
 	}
 	
 	function addSubscription(customerid){

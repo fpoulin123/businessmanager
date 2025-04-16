@@ -107,7 +107,7 @@ public class CustomerController {
 		return "customer";
 	}
 
-	@GetMapping("/modifyCustomer")
+	@GetMapping("/editCustomer")
 	public String getModifyCustomer(
 			@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,
 			@RequestParam(required = true) Long id, Model model) throws AuthenticationException {

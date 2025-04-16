@@ -188,7 +188,7 @@
     </main>
     <main class="w-100 m-auto">
 	    <div style="text-align: center;">
-		    <button class="btn btn-primary py-2" th:onclick="modifyCustomer([[${ customer.id }]])">Modifier</button>
+		    <button class="btn btn-primary py-2" th:onclick="editCustomer([[${ customer.id }]])">Modifier</button>
 		    <button class="btn btn-primary py-2" th:onclick="showSubscriptions([[${ customer.id }]])">Abonnements</button>
 		    <button class="btn btn-primary py-2" th:onclick="newSubscription([[${ customer.id }]])">Créer abonnements</button>
 		    
@@ -200,8 +200,8 @@
 
 	<script src="./js/bootstrap.bundle.min.js"></script>
 	<script type="text/javascript">
-		function modifyCustomer(id){
-			location="./modifyCustomer?id=" + id;
+		function editCustomer(id){
+			location="./editCustomer?id=" + id;
 		}
 		
 		function showSubscriptions(id){
