@@ -11,7 +11,7 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/navbar-static/">
 
-    
+    <link href="./css/jquery-ui.css" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
@@ -126,43 +126,54 @@
   <body>
 
 
-    <input type="hidden" id="currentPage" value="page_events"/>
+    <input type="hidden" id="currentPage" value="page_payments"/>
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" style="min-height: 56px;" id="navbar"></nav>
 
 	
 	<main class="form-signin w-100 m-auto">
-  <form action="./createEvent" method="post" name="eventForm" id="eventForm">
+  <form action="./addAttendee" method="post" name="attendeeForm" id="attendeeForm">
 
     <p class="errorMsg" data-th-text="${ errorMessage }"></p>
-    <h1 class="h3 mb-3 fw-normal">Nouvel événement</h1>
-
+    <h1 class="h3 mb-3 fw-normal">Nouveau participant</h1>
 	
-    <div class="form-floating">
-      <input type="text" class="form-control" id="floatingEventName" name="eventName" placeholder="eventName" required="required">
-      <label for="floatingInput">Nom de l'événement</label>
+	<div class="form-floatin-g" th:if="${ eventLocked==false }">
+      <input type="text" class="form-control" id="floatingEventDisplay" name="eventDisplay" placeholder="eventDisplay">
+      <input type="text" class="form-control" id="floatingEventId" name="eventId" placeholder="eventId" required="required">
+      
+      <label for="floatingEventId">Événement</label>
+    </div>
+    
+    <div class="form-floating" th:if="${ eventLocked==true }">
+    	<label>Événement: </label><span th:text="${ event.eventName }"></span>
+    </div>
+    
+    <div class="form-floating" th:if="${ eventLocked==true }">
+      <input type="text" class="form-control" id="floatingEventId" name="eventId"  th:value="${ event.id }" placeholder="eventId" required="required">
+      <label for="floatingEventId">Numéro événement</label>
     </div>
     
     <div class="form-floating">
-      <input type="text" class="form-control" id="floatingEventName" name="eventType" placeholder="eventType" required="required">
-      <label for="floatingInput">Type</label>
-    </div>
-            
-    <div class="form-floating">
-      <input type="date" class="form-control" id="floatingEventDate" name="eventDate" placeholder="eventDate" required>
-      <label for="floatingPaymentDate">Date de début</label>
+		<input type="text" class="form-control" id="floatingCustomerDisplay" name="customerDisplay" placeholder="customerDisplay">
+      
+		<label for="floatingInput">Participant</label>
     </div>
     
     <div class="form-floating">
-      <input type="date" class="form-control" id="floatingEventDate" name="endDate" placeholder="endDate" >
-      <label for="floatingPaymentDate">Date de fin</label>
+      <input type="text" class="form-control" id="floatingCustomerId" name="customerId" placeholder="customerId" required="required">
+      <label for="floatingCustomerId">Numéro client</label>
     </div>
-        
+    
+    <div class="form-floating">
+    	<label class="checkboxlbl">Payé</label>
+    	<input type="checkbox" id="floatingPayed" name="payed" placeholder="payed" >
+    	
+    </div>
+     
     <div class="form-floating">
       <input type="text" class="form-control" id="floatingAmount" name="amount" placeholder="amount" required>
-      <label for="floatingInput">Montant</label>
+      <label for="floatingAmount">Montant</label>
     </div>
-    
-
+   
     <button class="btn btn-primary py-2" type="submit">Créer</button>
     <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2024</p>
   </form>
@@ -171,11 +182,44 @@
 	<script src="./js/bootstrap.bundle.min.js"></script>
 
 	<script type="text/javascript" src="./js/jquery.js"></script>
+	<script src="./js/jquery.js"></script>
+	<script src="./js/jquery-ui.js"></script>
 	<script src="./js/sign.js"></script>
 	<script src="./js/inject.js"></script>
 	
 	<script type="text/javascript">
 	injectNavbar();
+	
+	$.getJSON("./getACEventList", function(data){
+		$( "#floatingEventDisplay" ).autocomplete({
+			source: data,
+			select: function(event,ui){
+				var label = ui.item.label;
+				 var value = ui.item.value;
+				 
+				 $( "#floatingEventDisplay" ).val(label);
+				 $( "#floatingEventId" ).val(value);
+				 
+				 return false;					
+			}
+		});
+	});
+	var eventId = $( "#floatingEventId" ).val();
+	$.getJSON("./getACEventCustomerList?eventId="+ eventId, function(data){
+		$( "#floatingCustomerDisplay" ).autocomplete({
+			source: data,
+			select: function(event,ui){
+				var label = ui.item.label;
+				 var value = ui.item.value;
+				 
+				 $( "#floatingCustomerDisplay" ).val(label);
+				 $( "#floatingCustomerId" ).val(value);
+				 
+				 return false;					
+			}
+		});
+	});
+	
 	</script>
     </body>
     

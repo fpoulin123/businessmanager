@@ -125,7 +125,7 @@
   <body>
 
 
-    <input type="hidden" id="currentPage" value="page_customers"/>
+    <input type="hidden" id="currentPage" value="page_events"/>
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" style="min-height: 56px;" id="navbar"></nav>
 
 	
@@ -165,9 +165,33 @@
     <main class="w-100 m-auto">
 	    <div style="text-align: center;">
 		    <button class="btn btn-primary py-2" th:onclick="editEvent([[${ event.id }]])">Modifier</button>
-
+		    <button class="btn btn-primary py-2" th:onclick="addAttendee([[${ event.id }]])">Ajout participants</button>
 	    </div>
 	
+	</main>
+	<main class="container">
+		<div class="bg-body-tertiary p-3 rounded">
+		<h2>Participants: </h2>
+	    <table style="margin:auto;">
+	     <thead>
+	     	<th>Prénom</th>
+	     	<th>Nom</th>
+	     	<th>Montant</th>
+	     	<th>Payé</th>
+<!-- 	     	<th>Actions</th> -->
+	     </thead>
+		<tbody data-th-each="attendee : ${ attendees }">
+			<tr>
+				<td data-th-text="${ attendee.customer.firstName }"></td>
+				<td data-th-text="${ attendee.customer.lastName}"></td>
+				<td data-th-text="${ attendee.amount }"></td>
+				<td data-th-text="${ attendee.payed }"></td>
+				
+			</tr>
+		</tbody>
+		
+		</table>
+	  </div>
 	</main>
 
 	<script src="./js/bootstrap.bundle.min.js"></script>
@@ -175,6 +199,11 @@
 		function editEvent(id){
 			location="./editEvent?id=" + id;
 		}
+		
+		function addAttendee(id){
+			location="./addAttendee?eventId=" + id;
+		}
+		
 		
 	</script>
 	

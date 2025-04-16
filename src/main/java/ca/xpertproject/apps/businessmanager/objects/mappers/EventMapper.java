@@ -2,8 +2,11 @@ package ca.xpertproject.apps.businessmanager.objects.mappers;
 
 import java.text.SimpleDateFormat;
 
+import ca.xpertproject.apps.businessmanager.model.Customer;
 import ca.xpertproject.apps.businessmanager.model.Event;
 import ca.xpertproject.apps.businessmanager.objects.CalendarEvent;
+import ca.xpertproject.apps.businessmanager.objects.CustomerLight;
+import ca.xpertproject.apps.businessmanager.objects.EventForAC;
 
 public class EventMapper {
 	
@@ -24,6 +27,11 @@ public class EventMapper {
 		
 		return calendarEvent;
 		
+	}
+	
+	public static EventForAC convertForList(Event event) {
+
+		return new EventForAC(event.getEventName(), event.getId().toString());
 	}
 
 }

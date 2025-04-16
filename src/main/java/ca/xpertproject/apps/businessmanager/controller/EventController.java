@@ -18,7 +18,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ca.xpertproject.apps.businessmanager.model.Customer;
+import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
 import ca.xpertproject.apps.businessmanager.model.Event;
+import ca.xpertproject.apps.businessmanager.model.EventAttendee;
+import ca.xpertproject.apps.businessmanager.model.EventAttendeeRepository;
 import ca.xpertproject.apps.businessmanager.model.EventRepository;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.model.Payment;
@@ -35,6 +39,12 @@ public class EventController {
 	
 	@Autowired
 	MemberRepository memberRepository;
+	
+	@Autowired
+	CustomerRepository customerRepository;
+	
+	@Autowired
+	EventAttendeeRepository eventAttendeeRepository;
 	
 	MemberUtils memberUtils = new MemberUtils();
 	
@@ -82,6 +92,10 @@ public class EventController {
 		Event event = eventRepository.findById(id);
 		
 		model.addAttribute("event", event);
+		
+		List<EventAttendee> attendees = eventAttendeeRepository.findByEventId(id);
+		
+		model.addAttribute("attendees", attendees);
 		
 		return "event";
 	}
@@ -189,5 +203,44 @@ public class EventController {
 		return "redirect:/event?id=" + event.id;
 	}
 	
+	@GetMapping("/addAttendee")
+	public String addAttendee(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false) Long eventId,Model model) {
+
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		
+		if(eventId!=null) {
+			Event event = eventRepository.findById(eventId);
+			model.addAttribute("event", event);
+			model.addAttribute("eventLocked", true);
+		}else {
+			model.addAttribute("eventLocked", false);
+		}
+				
+		return "addAttendeeForm";
+	}
+	
+	@PostMapping("/addAttendee")
+	public String addAttendee(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model) {
+
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		
+		body.entrySet().forEach(attr -> System.out.println(attr.getKey() + " : " + attr.getValue()));
+		
+		EventAttendee attendee = new EventAttendee();
+		
+		attendee.setEventId(Long.parseLong(body.get("eventId")));
+		
+		Customer customer = customerRepository.findById(Long.parseLong(body.get("customerId")));
+		
+		attendee.setCustomer(customer);
+		
+		attendee.setAmount(Double.parseDouble(body.get("amount")));
+		
+		attendee.setPayed(("on".equals(body.get("payed")))?true:false);
+		
+		attendee = eventAttendeeRepository.save(attendee);
+				
+		return "redirect:/event?id=" +attendee.getEventId();
+	}
 	
 }
