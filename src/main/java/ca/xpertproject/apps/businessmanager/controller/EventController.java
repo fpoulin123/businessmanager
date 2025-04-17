@@ -53,9 +53,7 @@ public class EventController {
 	@GetMapping("/allEvents")
 	public String getAllEvents(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false, defaultValue = "1") String page, @RequestParam(required = false, defaultValue = "") String year, Model model) {
 		
-
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
-		
 		
 		List<Event> eventList = eventRepository.findAll().stream().filter(event -> matchYear(event, year)).collect(Collectors.toList());
 		
@@ -89,6 +87,8 @@ public class EventController {
 	@GetMapping("/event")
 	public String viewEvent(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = true) Long id, Model model) {
 		
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		
 		Event event = eventRepository.findById(id);
 		
 		model.addAttribute("event", event);
@@ -103,6 +103,8 @@ public class EventController {
 	@GetMapping("/calendar")
 	public String viewCalendar(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model) {
 		
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+				
 		return "calendar";
 	}
 	
@@ -125,6 +127,8 @@ public class EventController {
 	@PostMapping("/createEvent")
 	public String createEvent(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model) throws ParseException {
 		
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+				
 		Event event = new Event();
 		
 		String eventDateStr = body.get("eventDate");
@@ -159,7 +163,6 @@ public class EventController {
 	@GetMapping("/editEvent")
 	public String editEvent(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = true) Long id,Model model) {
 
-
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		Event event = eventRepository.findById(id);
@@ -172,6 +175,8 @@ public class EventController {
 	@PostMapping("/updateEvent")
 	public String updateEvent(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model) throws ParseException {
 		
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+				
 		Event event = eventRepository.findById(Long.parseLong(body.get("id")));
 		
 		String eventDateStr = body.get("eventDate");
@@ -233,6 +238,36 @@ public class EventController {
 		Customer customer = customerRepository.findById(Long.parseLong(body.get("customerId")));
 		
 		attendee.setCustomer(customer);
+		
+		attendee.setAmount(Double.parseDouble(body.get("amount")));
+		
+		attendee.setPayed(("on".equals(body.get("payed")))?true:false);
+		
+		attendee = eventAttendeeRepository.save(attendee);
+				
+		return "redirect:/event?id=" +attendee.getEventId();
+	}
+	
+	@GetMapping("/editAttendee")
+	public String editAttendee(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false) Long id,Model model) {
+
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		
+		EventAttendee attendee = eventAttendeeRepository.findById(id);
+		Event event = eventRepository.findById(attendee.getEventId());
+		model.addAttribute("attendee", attendee);
+		model.addAttribute("event", event);
+		return "editAttendeeForm";
+	}
+	
+	@PostMapping("/updateAttendee")
+	public String updateAttendee(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model) {
+
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		
+		body.entrySet().forEach(attr -> System.out.println(attr.getKey() + " : " + attr.getValue()));
+		
+		EventAttendee attendee = eventAttendeeRepository.findById(Long.parseLong(body.get("attendeeId")));
 		
 		attendee.setAmount(Double.parseDouble(body.get("amount")));
 		

@@ -14,12 +14,13 @@
 <link rel="canonical"
 	href="https://getbootstrap.com/docs/5.3/examples/navbar-static/">
 
-
+<link href="./css/jquery/jquery-ui.css" rel="stylesheet">
 
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
 <link href="./css/bootstrap/bootstrap.min.css" rel="stylesheet">
+
 
 
 <!-- Custom styles for this template -->
@@ -38,45 +39,36 @@
 
 
 	<main class="form-signin w-100 m-auto">
-		<form action="./createEvent" method="post" name="eventForm"
-			id="eventForm">
+		<form action="./updateAttendee" method="post" name="attendeeForm"
+			id="attendeeForm">
 
 			<p class="errorMsg" data-th-text="${ errorMessage }"></p>
-			<h1 class="h3 mb-3 fw-normal">Nouvel événement</h1>
-
-
-			<div class="form-floating">
-				<input type="text" class="form-control" id="floatingEventName"
-					name="eventName" placeholder="eventName" required="required">
-				<label for="floatingInput">Nom de l'événement</label>
+			<h1 class="h3 mb-3 fw-normal">Nouveau participant</h1>
+			<input type="hidden" name="attendeeId" id="attendeeId" th:value="${ attendee.id }">
+			
+			<div>
+				<label for="floatingEventId">Événement : </label>
+				<span th:text="${ event.eventName }"></span> 
 			</div>
 
-			<div class="form-floating">
-				<input type="text" class="form-control" id="floatingEventName"
-					name="eventType" placeholder="eventType" required="required">
-				<label for="floatingInput">Type</label>
-			</div>
-
-			<div class="form-floating">
-				<input type="date" class="form-control" id="floatingEventDate"
-					name="eventDate" placeholder="eventDate" required> <label
-					for="floatingPaymentDate">Date de début</label>
-			</div>
-
-			<div class="form-floating">
-				<input type="date" class="form-control" id="floatingEventDate"
-					name="endDate" placeholder="endDate"> <label
-					for="floatingPaymentDate">Date de fin</label>
+			<div>
+				<label for="floatingInput">Participant : </label>
+				<span th:text="${ attendee.customer.firstName }"></span>&nbsp;
+				<span th:text="${ attendee.customer.lastName }"></span>
 			</div>
 
 			<div class="form-floating">
 				<input type="text" class="form-control" id="floatingAmount"
-					name="amount" placeholder="amount" required> <label
-					for="floatingInput">Montant</label>
+					name="amount" placeholder="amount" required th:value="${attendee.amount}"> <label
+					for="floatingAmount">Montant</label>
 			</div>
 
-
-			<button class="btn btn-primary py-2" type="submit">Créer</button>
+			<div class="form-floating">
+				<label class="checkboxlbl">Payé</label> <input type="checkbox"
+					id="floatingPayed" name="payed" placeholder="payed">
+			</div>
+			
+			<button class="btn btn-primary py-2" type="submit">Enregistrer</button>
 			<p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2024</p>
 		</form>
 	</main>
@@ -84,11 +76,24 @@
 	<script src="./js/bootstrap.bundle.min.js"></script>
 
 	<script type="text/javascript" src="./js/jquery/jquery.js"></script>
+	<script src="./js/jquery/jquery.js"></script>
+	<script src="./js/jquery/jquery-ui.js"></script>
 	<script src="./js/sign.js"></script>
 	<script src="./js/inject.js"></script>
 
 	<script type="text/javascript">
-		injectNavbar();
+	injectNavbar();
+	
+	var payed=[[${attendee.payed}]];
+	
+	var payedChk = document.querySelector('#floatingPayed');
+	
+	if(payed){
+		payedChk.checked=true;
+	}else{
+		payedChk.checked=false;
+	}
+	
 	</script>
 </body>
 

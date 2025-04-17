@@ -1,236 +1,151 @@
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
-  <head><script src="../assets/js/color-modes.js"></script>
+<head>
+<script src="../assets/js/color-modes.js"></script>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.122.0">
-    <title>My Business</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author"
+	content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+<meta name="generator" content="Hugo 0.122.0">
+<title>My Business</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/navbar-static/">
+<link rel="canonical"
+	href="https://getbootstrap.com/docs/5.3/examples/navbar-static/">
 
-    
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+<link href="./css/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="./css/custom.css" rel="stylesheet">
 
-<link href="./css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-
-      .b-example-divider {
-        width: 100%;
-        height: 3rem;
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-      }
-
-      .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-      }
-
-      .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-      }
-
-      .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-      }
-
-      .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .btn-bd-primary {
-        --bd-violet-bg: #712cf9;
-        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
-
-        --bs-btn-font-weight: 600;
-        --bs-btn-color: var(--bs-white);
-        --bs-btn-bg: var(--bd-violet-bg);
-        --bs-btn-border-color: var(--bd-violet-bg);
-        --bs-btn-hover-color: var(--bs-white);
-        --bs-btn-hover-bg: #6528e0;
-        --bs-btn-hover-border-color: #6528e0;
-        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
-        --bs-btn-active-color: var(--bs-btn-hover-color);
-        --bs-btn-active-bg: #5a23c8;
-        --bs-btn-active-border-color: #5a23c8;
-      }
-
-      .bd-mode-toggle {
-        z-index: 1500;
-      }
-
-      .bd-mode-toggle .dropdown-menu .active .bi {
-        display: block !important;
-      }
-      
-      th{
-      	padding: 5px;
-      	background-color: silver;
-      	border: solid gray 1px;
-      
-      }
-      
-      td{
-      	padding: 5px;
-      	border: solid gray 1px;
-      
-      }
-      
-      main.form-signin div{
-      	padding-top:10px;
-      	padding-bottom: 10px;      
-      }
-    </style>
-
-    
-    <!-- Custom styles for this template -->
-    <link href="./css/navbar-static.css" rel="stylesheet">
-    <link href="./css/sign-in.css" rel="stylesheet">
-    <link href="./css/custom.css" rel="stylesheet">
-  </head>
-  
-  
-  <body>
+<!-- Custom styles for this template -->
+<link href="./css/navbar-static.css" rel="stylesheet">
+<link href="./css/sign-in.css" rel="stylesheet">
+<link href="./css/custom.css" rel="stylesheet">
+</head>
 
 
-    <input type="hidden" id="currentPage" value="page_subscriptions"/>
-	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" style="min-height: 56px;" id="navbar"></nav>
+<body>
 
-	
+
+	<input type="hidden" id="currentPage" value="page_subscriptions" />
+	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4"
+		style="min-height: 56px;" id="navbar"></nav>
+
+
 	<main class="form-signin w-100 m-auto">
-  
-<!--     <img class="mb-4" src="./img/metlogo.svg" alt="" width="297" height="107"> -->
-    <p class="errorMsg" data-th-text="${ errorMessage }"></p>
-    <h1 class="h3 mb-3 fw-normal">Abonnement</h1>
-    
-    <div>
-      
-      <label>Numéro client : </label>
-      <span data-th-text="${ subscription.customer.id }"></span>
-    </div>
-    <div>
-      <label>Nom client : </label>
-      <span data-th-text="${ subscription.customer.firstName }"></span>&nbsp;<span data-th-text="${ subscription.customer.lastName }"></span>
-    </div>
-    
-    <div>
-      <label>Durée : </label>
-      <span data-th-text="${ subscription.duration }"></span>
-    </div>
-    
-    <div>
-      <label>Taekwondo : </label>
-      <div th:class="'checked-' + ${ subscription.taekwondo }"></div>
-    </div>
-    
-    <div>
-      <label>Kickboxing : </label>
-      <div th:class="'checked-' + ${ subscription.kickboxing }"></div>
-    </div>
-    
-    <div>
-      <label>Taekibodo : </label>
-      <div th:class="'checked-' + ${ subscription.taekibodo }"></div>
-    </div>
 
-    <div>
-      <label>Montant : </label>
-      <span data-th-text="${ #numbers.formatDecimal( subscription.amount ,1,2,'POINT' )}"></span><span>&nbsp;CAD</span>
-    </div>
-    
-    <div>
-      <label>Date effective : </label>
-      <span th:text="${#dates.format(subscription.subscriptionDate, 'dd-MM-yyyy')}"></span>
-    </div>
-    
-    <div>
-      <label>Date expiration : </label>
-      <span th:text="${#dates.format(expirationDate, 'dd-MM-yyyy')}"></span>
-    </div>
-    
-    <div>
-      <label>Abonnement valide : </label>
-      <div th:class="'checked-' + ${ subscriptionValid }"></div>
-    </div>
-    
-    <button class="btn btn-primary py-2" th:onclick="modifySubscription([[${ subscription.id }]])">Modifier</button>
-    <button class="btn btn-primary py-2" th:onclick="addPayment([[${ subscription.id }]])">Ajout paiement</button>
-    
-    
-  
-</main>
-<main class="container">
-`	<div class="bg-body-tertiary p-3 rounded">
-	    <table style="margin:auto;">
-	     <thead>
-<!-- 	     	<th>Id</th> -->
-<!-- 	     	<th>Numéro client</th> -->
-	     	<th>Numéro</th>
-	     	<th>Abonnement</th>
-	     	<th>Montant</th>
-	     	<th>Date de paiement</th>
-	     	<th>Actions</th>
-	     </thead>
-		<tbody data-th-each="payment : ${ payments }">
-			<tr>
-				<td data-th-text="${ payment.id }"></td>
-				<td data-th-text="${ payment.subscriptionId }"></td>
-				<td data-th-text="${ payment.amount }"></td>
-				<td data-th-text="${#dates.format(payment.paymentDate, 'dd-MM-yyyy')}"></td>
-				<td><button class="btn btn-lg btn-primary btn-view" role="button" th:onclick="viewPayment([[${ payment.id }]])"></button></td>
-			
-			</tr>
-		</tbody>
-		
-		</table>
-	  </div>
-	  <div class="bg-body-tertiary p-3 rounded">
-	  <div >
-	  	<label>Total des paiements:&nbsp;</label><span th:text="${ #numbers.formatDecimal( totalPayed,1,2,'POINT' )}"></span><span>&nbsp;CAD</span>
-	  </div>
-	  <div>
-	  	<label>Balance:&nbsp;</label><span th:text="${ #numbers.formatDecimal( leftToPay,1,2,'POINT' )}"></span><span>&nbsp;CAD</span>
-	  </div>
-	  </div>
-	  
+		<!--     <img class="mb-4" src="./img/metlogo.svg" alt="" width="297" height="107"> -->
+		<p class="errorMsg" data-th-text="${ errorMessage }"></p>
+		<h1 class="h3 mb-3 fw-normal">Abonnement</h1>
 
-</main>
+		<div>
+
+			<label>Numéro client : </label> <span
+				data-th-text="${ subscription.customer.id }"></span>
+		</div>
+		<div>
+			<label>Nom client : </label> <span
+				data-th-text="${ subscription.customer.firstName }"></span>&nbsp;<span
+				data-th-text="${ subscription.customer.lastName }"></span>
+		</div>
+
+		<div>
+			<label>Durée : </label> <span
+				data-th-text="${ subscription.duration }"></span>
+		</div>
+
+		<div>
+			<label>Taekwondo : </label>
+			<div th:class="'checked-' + ${ subscription.taekwondo }"></div>
+		</div>
+
+		<div>
+			<label>Kickboxing : </label>
+			<div th:class="'checked-' + ${ subscription.kickboxing }"></div>
+		</div>
+
+		<div>
+			<label>Taekibodo : </label>
+			<div th:class="'checked-' + ${ subscription.taekibodo }"></div>
+		</div>
+
+		<div>
+			<label>Montant : </label> <span
+				data-th-text="${ #numbers.formatDecimal( subscription.amount ,1,2,'POINT' )}"></span><span>&nbsp;CAD</span>
+		</div>
+		<div>
+			<label>Total des paiements : </label><span
+				th:text="${ #numbers.formatDecimal( totalPayed,1,2,'POINT' )}"></span><span>&nbsp;CAD</span>
+		</div>
+		<div>
+			<label>Balance : </label><span
+				th:text="${ #numbers.formatDecimal( leftToPay,1,2,'POINT' )}"></span><span>&nbsp;CAD</span>
+		</div>
+
+		<div>
+			<label>Date effective : </label> <span
+				th:text="${#dates.format(subscription.subscriptionDate, 'dd-MM-yyyy')}"></span>
+		</div>
+
+		<div>
+			<label>Date expiration : </label> <span
+				th:text="${#dates.format(expirationDate, 'dd-MM-yyyy')}"></span>
+		</div>
+
+		<div>
+			<label>Abonnement valide : </label>
+			<div th:class="'checked-' + ${ subscriptionValid }"></div>
+		</div>
+
+		<button class="btn btn-primary py-2"
+			th:onclick="modifySubscription([[${ subscription.id }]])">Modifier</button>
+		<button class="btn btn-primary py-2"
+			th:onclick="addPayment([[${ subscription.id }]])">Ajout
+			paiement</button>
+
+
+
+	</main>
+	<main class="container">
+		`
+		<div class="bg-body-tertiary p-3 rounded">
+			<h2>Paiments : </h2>
+			<table style="margin: auto;">
+				<thead>
+					<!-- 	     	<th>Id</th> -->
+					<!-- 	     	<th>Numéro client</th> -->
+					<th>Numéro</th>
+					<th>Abonnement</th>
+					<th>Montant</th>
+					<th>Date de paiement</th>
+					<th>Actions</th>
+				</thead>
+				<tbody data-th-each="payment : ${ payments }">
+					<tr>
+						<td data-th-text="${ payment.id }"></td>
+						<td data-th-text="${ payment.subscriptionId }"></td>
+						<td data-th-text="${ payment.amount }"></td>
+						<td
+							data-th-text="${#dates.format(payment.paymentDate, 'dd-MM-yyyy')}"></td>
+						<td><button class="btn btn-lg btn-primary btn-view"
+								role="button" th:onclick="viewPayment([[${ payment.id }]])"></button></td>
+
+					</tr>
+				</tbody>
+
+			</table>
+		</div>
+		<div class="bg-body-tertiary p-3 rounded"></div>
+
+
+	</main>
 
 	<script src="./js/bootstrap.bundle.min.js"></script>
-	
-	<script type="text/javascript" src="./js/jquery.js"></script>
+
+	<script type="text/javascript" src="./js/jquery/jquery.js"></script>
 	<script src="./js/sign.js"></script>
 	<script src="./js/inject.js"></script>
 	<script type="text/javascript">
@@ -246,7 +161,7 @@
 		}
 
 	</script>
-	
-    </body>
-    
+
+</body>
+
 </html>
