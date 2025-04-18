@@ -1,3 +1,7 @@
-#!/bin/sh
-pid = $(ps aux | grep businessmanager | grep -v grep | awk '{print $2}')
-echo "Process : $pid"
+#!/bin/bash
+
+PID=`ps -eaf | grep businessmanager | grep -v grep | awk '{print $2}'`
+if [[ "" !=  "$PID" ]]; then
+  echo "killing $PID"
+  kill -9 $PID
+fi
