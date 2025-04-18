@@ -25,6 +25,8 @@ public class EventMapper {
 			calendarEvent.setEnd(calendarEvent.getStart());
 		}
 		
+		calendarEvent.setUrl("./event?id=" +event.id);
+		
 		return calendarEvent;
 		
 	}

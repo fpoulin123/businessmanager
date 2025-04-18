@@ -163,7 +163,7 @@ public class CustomerControllerTest {
 		
 		when(customerRepository.findById(anyLong())).thenReturn(customer);
 		
-		mockMvc.perform(get("/editCustomer").cookie(loginCookie).param("id", "1")).andExpect(status().isOk()).andExpect(view().name("modifyCustomerform"));
+		mockMvc.perform(get("/editCustomer").cookie(loginCookie).param("id", "1")).andExpect(status().isOk()).andExpect(view().name("editCustomerForm"));
 	}
 	
 	@Test
@@ -216,8 +216,10 @@ public class CustomerControllerTest {
 	
 	@Test
 	public void updateCustomerPost_notLogged_noAccess() throws Exception {
+
+		MockMultipartFile mockFile = new MockMultipartFile("picture", "picture.jpg", "text/plain", "my beautiful picture".getBytes());
 		
-		mockMvc.perform(post("/updateCustomer").param("firstname", "firstname").param("lastname","lastname")).andExpect(status().isOk()).andExpect(view().name("noaccess"));
+		mockMvc.perform(multipart("/updateCustomer").file(mockFile).param("firstname", "firstname").param("lastname","lastname")).andExpect(status().isOk()).andExpect(view().name("noaccess"));
 	}
 	
 	@Test
@@ -233,12 +235,14 @@ public class CustomerControllerTest {
 		
 		when(memberRepository.findByEmail(anyString())).thenReturn(Collections.singletonList(member));
 		
+		MockMultipartFile mockFile = new MockMultipartFile("picture", "picture.jpg", "text/plain", "my beautiful picture".getBytes());
+		
 		Customer customer = easyRandom.nextObject(Customer.class);
 		
 		customer.setBarcodeValue(null);
 		
 		when(customerRepository.findById(any())).thenReturn(customer);
 	
-		mockMvc.perform(multipart("/updateCustomer").cookie(loginCookie).param("id", "1").param("firstname", "firstname").param("lastname","lastname")).andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:./customer?id=" + customer.getId()));
+		mockMvc.perform(multipart("/updateCustomer").file(mockFile).cookie(loginCookie).param("id", "1").param("firstname", "firstname").param("lastname","lastname")).andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:./customer?id=" + customer.getId()));
 	}
 }

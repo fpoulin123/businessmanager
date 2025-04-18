@@ -36,12 +36,17 @@
 
 	<main class="form-signin w-100 m-auto">
 		<form action="./updateCustomer" method="post" name="customerform"
-			id="cusomerform" enctype="application/x-www-form-urlencoded">
+			id="cusomerform" enctype="multipart/form-data">
 			<!--     <img class="mb-4" src="./img/metlogo.svg" alt="" width="297" height="107"> -->
 			<p class="errorMsg" data-th-text="${ errorMessage }"></p>
 			<h1 class="h3 mb-3 fw-normal">Edition client</h1>
 			<input type="hidden" class="form-control" id="id" name="id"
 				th:value="${ customer.id }">
+			<div class="form-floating">
+				<input type="file" class="form-control" id="flotingPicture"
+					name="picture" placeholder="Picture"> <label
+					for="floatingInput">Photo</label>
+			</div>
 			<div class="form-floating">
 				<input type="text" class="form-control" id="floatingFirstname"
 					name="firstname" placeholder="First name"

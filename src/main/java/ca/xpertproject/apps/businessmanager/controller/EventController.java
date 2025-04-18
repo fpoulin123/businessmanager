@@ -25,9 +25,7 @@ import ca.xpertproject.apps.businessmanager.model.EventAttendee;
 import ca.xpertproject.apps.businessmanager.model.EventAttendeeRepository;
 import ca.xpertproject.apps.businessmanager.model.EventRepository;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
-import ca.xpertproject.apps.businessmanager.model.Payment;
 import ca.xpertproject.apps.businessmanager.model.StringComparator;
-import ca.xpertproject.apps.businessmanager.objects.PaymentExt;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -96,6 +94,8 @@ public class EventController {
 		List<EventAttendee> attendees = eventAttendeeRepository.findByEventId(id);
 		
 		model.addAttribute("attendees", attendees);
+		
+		model.addAttribute("nbrAttendees", attendees.size());
 		
 		return "event";
 	}
@@ -276,6 +276,20 @@ public class EventController {
 		attendee = eventAttendeeRepository.save(attendee);
 				
 		return "redirect:/event?id=" +attendee.getEventId();
+	}
+	
+	@GetMapping("/deleteAttendee")
+	public String deleteAttendee(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false) Long id,Model model) {
+		
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+				
+		EventAttendee attendee = eventAttendeeRepository.findById(id);
+		
+		Long eventId = attendee.getEventId();
+		
+		eventAttendeeRepository.deleteById(id);
+		
+		return "redirect:/event?id=" + eventId;
 	}
 	
 }

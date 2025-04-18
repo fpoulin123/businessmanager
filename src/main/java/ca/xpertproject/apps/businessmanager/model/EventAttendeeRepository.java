@@ -13,4 +13,6 @@ public interface EventAttendeeRepository extends Repository<EventAttendee, Long>
 	List<EventAttendee> findAll();
 	
 	List<EventAttendee> findByEventId(Long eventId); 
+	
+	void deleteById(Long eventId);
 }

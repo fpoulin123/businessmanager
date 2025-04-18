@@ -76,9 +76,9 @@
 		</div>
 
 	</main>
-	<main class="container">
+	<main class="container" style="margin-top:20px;">
 		<div class="bg-body-tertiary p-3 rounded">
-			<h2>Participants:</h2>
+			<h2>Participants: <span th:text="${nbrAttendees}"></span></h2>
 			<table style="margin: auto;">
 				<thead>
 					<th>Prénom</th>
@@ -94,8 +94,12 @@
 						<td data-th-text="${ attendee.customer.lastName}"></td>
 						<td data-th-text="${ attendee.amount }"></td>
 						<td data-th-text="${ attendee.payed }"></td>
-						<td><button class="btn btn-lg btn-primary btn-edit"
-								role="button" th:onclick="editAttendee([[${ attendee.id }]])"></button></td>
+						<td>
+							<button class="btn btn-lg btn-primary btn-edit"
+								role="button" th:onclick="editAttendee([[${ attendee.id }]])"></button>
+							<button class="btn btn-lg btn-primary btn-delete"
+								role="button" th:onclick="deleteAttendee([[${ attendee.id }]])"></button>	
+						</td>
 					</tr>
 				</tbody>
 
@@ -112,9 +116,13 @@
 		function addAttendee(id) {
 			location = "./addAttendee?eventId=" + id;
 		}
-
+		
 		function editAttendee(id) {
 			location = "./editAttendee?id=" + id;
+		}
+
+		function deleteAttendee(id) {
+			location = "./deleteAttendee?id=" + id;
 		}
 	</script>
 

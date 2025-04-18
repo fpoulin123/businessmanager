@@ -129,6 +129,15 @@ button.btn-edit {
 	background-size: 30px;
 }
 
+button.btn-delete {
+	width: 40px;
+	height: 40px;
+	background-image: url("../img/delete.svg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 30px;
+}
+
 th.width100 {
 	min-width: 100px;
 }
