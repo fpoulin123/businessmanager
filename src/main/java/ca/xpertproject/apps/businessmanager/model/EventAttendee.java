@@ -45,5 +45,16 @@ public class EventAttendee {
 	
 	@Column(name="amount")
 	Double amount;
+
+	public String toCsvString() {
+				
+		return String.format("\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";", 
+				this.id,
+				this.customer.id,
+				this.customer.firstName, 
+				this.customer.lastName,
+				this.amount,				
+				this.payed);
+	}
 	
 }

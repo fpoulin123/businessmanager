@@ -14,12 +14,17 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.xpertproject.apps.businessmanager.exception.AuthenticationException;
 import ca.xpertproject.apps.businessmanager.model.CSVTransformable;
 import ca.xpertproject.apps.businessmanager.model.Customer;
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
+import ca.xpertproject.apps.businessmanager.model.Event;
+import ca.xpertproject.apps.businessmanager.model.EventAttendee;
+import ca.xpertproject.apps.businessmanager.model.EventAttendeeRepository;
+import ca.xpertproject.apps.businessmanager.model.EventRepository;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.model.Payment;
 import ca.xpertproject.apps.businessmanager.model.PaymentRepository;
@@ -45,6 +50,12 @@ public class DownloadController {
 	
 	@Autowired
 	MemberRepository memberRepository;
+	
+	@Autowired
+	EventRepository eventRepository;
+	
+	@Autowired
+	EventAttendeeRepository attendeeRepository;
 	
 	MemberUtils memberUtils = new MemberUtils(); 
 	
@@ -181,5 +192,53 @@ public class DownloadController {
             System.out.println(exception.getMessage());			
         }
     }
+    
+    @GetMapping("/downloadAttendees")
+    public void downloadAttendees(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required=true) Long eventId, HttpSession session,HttpServletResponse response) throws Exception {
+        try {
+        	
+        	if(!memberUtils.checkCookieMember(loggedMember, memberRepository)) {
+        		throw new AuthenticationException("Accès non autorisé.");
+        	}
+
+        	Event event = eventRepository.findById(eventId);
+        	       	
+        	String eventName = event.eventName.replace(" ","_").toLowerCase();
+        	String fileName="participants_" + event.eventName +  ".csv";
+            
+            File fileToDownload = new File("./" + fileName);
+            if(fileToDownload.exists())fileToDownload.delete();
+            
+            List<EventAttendee> attendeeList = attendeeRepository.findByEventId(eventId);
+
+            FileWriter fr = new FileWriter(fileToDownload);
+            BufferedWriter bfr = new BufferedWriter(fr);
+            
+            bfr.append("\"Numéro\";\"Num. client\";\"Prénom\";\"Nom\";\"Montant\";\"Payé\"" + System.lineSeparator());
+            
+            attendeeList.stream().forEach(attendee-> {
+            	try {
+					bfr.append(attendee.toCsvString() + System.lineSeparator());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            });
+            
+            bfr.flush();
+            
+            bfr.close();
+            
+            InputStream inputStream = new FileInputStream(fileToDownload);
+            response.setContentType("application/force-download");
+            response.setHeader("Content-Disposition", "attachment; filename="+fileName); 
+            IOUtils.copy(inputStream, response.getOutputStream());
+            response.flushBuffer();
+            inputStream.close();
+        } catch (Exception exception){
+            System.out.println(exception.getMessage());			
+        }
+    }
+    
 }
 

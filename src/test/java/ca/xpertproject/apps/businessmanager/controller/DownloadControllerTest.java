@@ -19,6 +19,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
+import ca.xpertproject.apps.businessmanager.model.EventAttendeeRepository;
+import ca.xpertproject.apps.businessmanager.model.EventRepository;
 import ca.xpertproject.apps.businessmanager.model.Member;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.model.PaymentRepository;
@@ -43,6 +45,12 @@ public class DownloadControllerTest {
 	
 	@MockitoBean
 	private PaymentRepository paymentRepository;
+	
+	@MockitoBean
+	private EventRepository eventRepository;
+	
+	@MockitoBean
+	private EventAttendeeRepository eventAttendeeRepository;
 	
 	@Mock
 	private MemberUtils memberUtils;
