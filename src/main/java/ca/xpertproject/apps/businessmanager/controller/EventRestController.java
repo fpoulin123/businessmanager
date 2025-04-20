@@ -41,6 +41,18 @@ public class EventRestController {
 		
 		return eventList;
 	}
+	
+	@GetMapping("/getACEventTypeList")
+	public List<String> getACEventTypeList(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember){
+		
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository))return Collections.emptyList();
+
+		
+		List<String> eventList = (List<String>) eventRepository.findAll().stream().map(event-> EventMapper.convertForTypeList(event)).collect(Collectors.toList());
+		
+		
+		return eventList;
+	}
 
 	
 }

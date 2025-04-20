@@ -35,5 +35,10 @@ public class EventMapper {
 
 		return new EventForAC(event.getEventName(), event.getId().toString());
 	}
+	
+	public static String convertForTypeList(Event event) {
+
+		return event.getEventType();
+	}
 
 }

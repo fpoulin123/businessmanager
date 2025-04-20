@@ -79,8 +79,8 @@
 	<main class="container" style="margin-top:20px;">
 		<div class="bg-body-tertiary p-3 rounded">
 			<h2>Participants: <span th:text="${nbrAttendees}"></span></h2>
-			<button class="btn btn-lg btn-primary btn-delete"
-								role="button" th:onclick="exportAttendees([[${ event.id }]])"></button>
+			<button class="btn btn-lg btn-primary"
+								role="button" th:onclick="exportAttendees([[${ event.id }]])">Export CSV</button>
 			<table style="margin: auto;">
 				<thead>
 					<th>Prénom</th>
@@ -111,6 +111,7 @@
 
 	<script src="./js/bootstrap.bundle.min.js"></script>
 	<script type="text/javascript">
+		
 		function editEvent(id) {
 			location = "./editEvent?id=" + id;
 		}

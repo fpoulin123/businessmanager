@@ -28,6 +28,8 @@ public class GeneralController {
 		MemberUtils memberUtils = new MemberUtils();
 		
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model)) {
+			System.out.println("Check cookie failed");
+			
 			return "redirect:signin";
 		};
 				

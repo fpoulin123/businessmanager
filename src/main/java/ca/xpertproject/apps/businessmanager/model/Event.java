@@ -1,5 +1,6 @@
 package ca.xpertproject.apps.businessmanager.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -52,7 +53,13 @@ public class Event implements CSVTransformable{
 	@Override
 	public String toCsvString() {
 		
-		return null;
+		return String.format("\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";", 
+				this.id,
+				this.eventName,
+				this.eventType,
+				new SimpleDateFormat("yyyy-MM-dd").format(this.eventDate),
+				endDate!=null?new SimpleDateFormat("yyyy-MM-dd").format(this.endDate):new SimpleDateFormat("yyyy-MM-dd").format(this.eventDate),
+				this.amount);
 	}
 
 }

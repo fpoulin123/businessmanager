@@ -26,6 +26,7 @@
 <link href="./css/navbar-static.css" rel="stylesheet">
 <link href="./css/sign-in.css" rel="stylesheet">
 <link href="./css/custom.css" rel="stylesheet">
+<link href="./css/jquery/jquery-ui.css" rel="stylesheet">
 </head>
 
 
@@ -52,7 +53,7 @@
 			</div>
 
 			<div class="form-floating">
-				<input type="text" class="form-control" id="floatingEventName"
+				<input type="text" class="form-control" id="floatingEventType"
 					name="eventType" placeholder="eventType" required="required">
 				<label for="floatingInput">Type</label>
 			</div>
@@ -84,11 +85,19 @@
 	<script src="./js/bootstrap.bundle.min.js"></script>
 
 	<script type="text/javascript" src="./js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="./js/jquery/jquery-ui.js"></script>
 	<script src="./js/sign.js"></script>
 	<script src="./js/inject.js"></script>
 
 	<script type="text/javascript">
 		injectNavbar();
+		
+		$.getJSON("./getACEventTypeList", function(data){
+			$( "#floatingEventType" ).autocomplete({
+				source: data
+			});
+		});
+	
 	</script>
 </body>
 
