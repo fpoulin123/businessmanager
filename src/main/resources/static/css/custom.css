@@ -198,11 +198,10 @@ button.navPage {
 div.navPage {
 	font-weight: bold;
 	font-size: 1.25rem;
-	height: 30px;
-	width: 60px;
-	vertical-align: middle;
+	height: 50px;
+	width: 30px;
+	vertical-align: top;
 	text-align: center;
-	height: 30px;
 }
 
 .navPage {

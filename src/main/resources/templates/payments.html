@@ -52,6 +52,17 @@
 			</div>
 		</div>
 		<div class="bg-body-tertiary p-3 rounded">
+			<div class="pagesNavigator">
+				<button th:if="${ prevPage!=null }" class="navPage previousPage"
+					role="button" th:onclick="previousPage()"></button>
+				<div class="navPage" th:text="${ currentPage }"></div>
+				<div class="navPage">/</div>
+				<div class="navPage" th:text="${ pages }"></div>
+				<button th:if="${ nextPage!=null }" class="navPage nextPage"
+					role="button" th:onclick="nextPage()"></button>
+			</div>
+		</div>
+		<div class="bg-body-tertiary p-3 rounded">
 			<table style="width: 100%;">
 				<thead>
 					<!-- 	     	<th>Id</th> -->
@@ -79,6 +90,17 @@
 					</tr>
 				</tbody>
 			</table>
+		</div>
+		<div class="bg-body-tertiary p-3 rounded">
+			<div class="pagesNavigator">
+				<button th:if="${ prevPage!=null }" class="navPage previousPage"
+					role="button" th:onclick="previousPage()"></button>
+				<div class="navPage" th:text="${ currentPage }"></div>
+				<div class="navPage">/</div>
+				<div class="navPage" th:text="${ pages }"></div>
+				<button th:if="${ nextPage!=null }" class="navPage nextPage"
+					role="button" th:onclick="nextPage()"></button>
+			</div>
 		</div>
 	</main>
 	<script src="./js/bootstrap.bundle.min.js"></script>

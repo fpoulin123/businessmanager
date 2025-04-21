@@ -31,6 +31,7 @@ import ca.xpertproject.apps.businessmanager.model.SubscriptionRepository;
 import ca.xpertproject.apps.businessmanager.objects.PaymentExt;
 import ca.xpertproject.apps.businessmanager.objects.mappers.PaymentMapper;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
+import ca.xpertproject.apps.businessmanager.utils.PageUtils;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
@@ -73,7 +74,7 @@ public class PaymentController {
 		
 		List<PaymentExt> paymentExtList = payments.stream().map(pay-> PaymentMapper.convert(pay)).filter(payment -> matchYear(payment, year)).collect(Collectors.toList());
 		
-		model.addAttribute("payments", paymentExtList);
+		PageUtils.getPagedItems(paymentExtList, model, page, "payments");
 		
 		return "payments";
 	}
@@ -94,6 +95,8 @@ public class PaymentController {
 		List<Payment> payments = paymentRepository.findBySubscriptionId(subscriptionId);
 		
 		model.addAttribute("payments", payments);
+		
+		PageUtils.getPagedItems(payments, model, page, "payments");
 		
 		return "payments";
 	}
