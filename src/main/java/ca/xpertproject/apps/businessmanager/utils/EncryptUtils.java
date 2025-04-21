@@ -22,24 +22,19 @@ public class EncryptUtils {
 	    byte[] key = sha.digest(password.getBytes("UTF-8"));
 	    SecretKey secretKey = new SecretKeySpec(key, "AES");
 		
-	    // Conversion de la clé en tableau de bytes
 	    byte[] keyBytes = secretKey.getEncoded();
 	    SecretKeySpec secretKeySpec = new SecretKeySpec(keyBytes, "AES");
-
-	    System.out.println("Texte original: " + inputToEncrypt);
 
 	    Cipher cipher = Cipher.getInstance("AES");
 	    cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
 	    byte[] encryptedBytes = cipher.doFinal(inputToEncrypt.getBytes());
 	    String encryptedText = Base64.getEncoder().encodeToString(encryptedBytes);
 	    
-	    System.out.println("Texte chiffré: " + encryptedText);
-	    
 	    return encryptedText;
 	}
 	
 	public static String decryptAES(String password, String inputToDecrypt) throws NoSuchAlgorithmException, UnsupportedEncodingException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
-		System.out.println("Texte à déchiffrer: " + inputToDecrypt);
+		
 		MessageDigest sha = MessageDigest.getInstance("SHA-256");
 	    byte[] key = sha.digest(password.getBytes("UTF-8"));
 	    SecretKey secretKey = new SecretKeySpec(key, "AES");
@@ -53,8 +48,6 @@ public class EncryptUtils {
 	    byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(inputToDecrypt));
 	    String decryptedText = new String(decryptedBytes);
 	    
-	    System.out.println("Texte déchiffré: " + decryptedText);
-
 	    return decryptedText;
 	}
 	
