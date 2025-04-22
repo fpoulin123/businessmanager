@@ -193,6 +193,50 @@ public class DownloadController {
         }
     }
     
+    @GetMapping("/downloadEvents")
+    public void downloadEvents(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, HttpSession session,HttpServletResponse response) throws Exception {
+        try {
+        	
+        	if(!memberUtils.checkCookieMember(loggedMember, memberRepository)) {
+        		throw new AuthenticationException("Accès non autorisé.");
+        	}
+
+            String fileName="events.csv";
+            
+            File fileToDownload = new File("./" + fileName);
+            if(fileToDownload.exists())fileToDownload.delete();
+            
+            List<Event> eventList = eventRepository.findAll();
+
+            FileWriter fr = new FileWriter(fileToDownload);
+            BufferedWriter bfr = new BufferedWriter(fr);
+            
+            bfr.append("\"Numéro\";\"Nom\";\"Type\";\"Date\";\"Date de fin\";\"Montant\"" + System.lineSeparator());
+            
+            eventList.stream().forEach(event-> {
+            	try {
+					bfr.append(event.toCsvString() + System.lineSeparator());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            });
+            
+            bfr.flush();
+            
+            bfr.close();
+            
+            InputStream inputStream = new FileInputStream(fileToDownload);
+            response.setContentType("application/force-download");
+            response.setHeader("Content-Disposition", "attachment; filename="+fileName); 
+            IOUtils.copy(inputStream, response.getOutputStream());
+            response.flushBuffer();
+            inputStream.close();
+        } catch (Exception exception){
+            System.out.println(exception.getMessage());			
+        }
+    }
+    
     @GetMapping("/downloadAttendees")
     public void downloadAttendees(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required=true) Long eventId, HttpSession session,HttpServletResponse response) throws Exception {
         try {
@@ -204,7 +248,7 @@ public class DownloadController {
         	Event event = eventRepository.findById(eventId);
         	       	
         	String eventName = event.eventName.replace(" ","_").toLowerCase();
-        	String fileName="participants_" + event.eventName +  ".csv";
+        	String fileName="participants_" + eventName +  ".csv";
             
             File fileToDownload = new File("./" + fileName);
             if(fileToDownload.exists())fileToDownload.delete();

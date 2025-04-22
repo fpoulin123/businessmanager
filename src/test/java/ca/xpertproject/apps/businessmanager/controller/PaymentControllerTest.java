@@ -1,6 +1,8 @@
 package ca.xpertproject.apps.businessmanager.controller;
 
 import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants.MEMBER_LOGGED_COOKIE_NAME;
+import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants.COOKIE_ENCRYPTION_KEY;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -9,7 +11,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +35,7 @@ import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.model.Payment;
 import ca.xpertproject.apps.businessmanager.model.PaymentRepository;
 import ca.xpertproject.apps.businessmanager.model.SubscriptionRepository;
+import ca.xpertproject.apps.businessmanager.utils.EncryptUtils;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
 import jakarta.servlet.http.Cookie;
 
@@ -55,8 +65,8 @@ public class PaymentControllerTest {
 	EasyRandom easyRandom = new EasyRandom();
 	
 	@BeforeEach
-	public void init() {
-		loginCookie=new Cookie(MEMBER_LOGGED_COOKIE_NAME, "admin@mybusiness.ca");
+	public void init() throws InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+		loginCookie=new Cookie(MEMBER_LOGGED_COOKIE_NAME, EncryptUtils.encryptAES(COOKIE_ENCRYPTION_KEY, "admin@mybusiness.ca"));
         loginCookie.setMaxAge(3600*24);
         
 	}

@@ -58,7 +58,7 @@
 				<button th:if="${ prevPage!=null }" class="navPage previousPage"
 					role="button" th:onclick="previousPage()"></button>
 				<div class="navPage" th:text="${ currentPage }"></div>
-				/
+				<div class="navPage">/</div>
 				<div class="navPage" th:text="${ pages }"></div>
 				<button th:if="${ nextPage!=null }" class="navPage nextPage"
 					role="button" th:onclick="nextPage()"></button>
@@ -80,6 +80,8 @@
 					<th style="min-width: 100px;">Date effective</th>
 					<th style="min-width: 100px;">Date expiration
 					<th>Valide</th>
+					<th>Payé</th>
+					<th>Balance</th>
 					<th>Actions</th>
 				</thead>
 				<tbody data-th-each="subscription : ${ subscriptions }">
@@ -98,6 +100,8 @@
 						<td
 							data-th-text="${#dates.format(subscription.expirationDate, 'dd-MM-yyyy')}"></td>
 						<td th:class="'checked-'+${ subscription.isValid }"></td>
+						<td th:class="'checked-' +${ subscription.payed }"></td>
+						<td data-th-text="${ subscription.balance }"></td>
 						<td><button class="btn btn-lg btn-primary btn-view"
 								role="button"
 								th:onclick="viewSubscription([[${ subscription.id }]])"></button></td>
@@ -111,7 +115,7 @@
 				<button th:if="${ prevPage!=null }" class="navPage previousPage"
 					role="button" th:onclick="previousPage()"></button>
 				<div class="navPage" th:text="${ currentPage }"></div>
-				/
+				<div class="navPage">/</div>
 				<div class="navPage" th:text="${ pages }"></div>
 				<button th:if="${ nextPage!=null }" class="navPage nextPage"
 					role="button" th:onclick="nextPage()"></button>

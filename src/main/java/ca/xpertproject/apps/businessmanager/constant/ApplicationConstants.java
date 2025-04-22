@@ -13,6 +13,8 @@ public class ApplicationConstants {
 	public static final String MEMBER_LOGGED_COOKIE_NAME = "mybusinessLoggedMember";
 	
 	public static final String PICTURES_DIR_PATH = myBusinessProps.getProperty("pictures.dir.path");
+	
+	public static final String COOKIE_ENCRYPTION_KEY = myBusinessProps.getProperty("cookie.encryption.key");
 
 	private static Properties getGlobalProperties(){
 		Properties properties = new Properties();

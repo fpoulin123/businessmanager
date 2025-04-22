@@ -138,23 +138,28 @@ public class CustomerController {
 		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
 			return "noaccess";
 
-		String origName = picture.getOriginalFilename();
+		String fileName = null;
+		
+		if(picture!=null&&!picture.isEmpty()) {
+			String origName = picture.getOriginalFilename();
 
-		String fileExt = origName.substring(origName.lastIndexOf("."), origName.length());
+			String fileExt = origName.substring(origName.lastIndexOf("."), origName.length());
 
-		String pictureFolder =PICTURES_DIR_PATH;
+			String pictureFolder =PICTURES_DIR_PATH;
 
-		String fileName = UUID.randomUUID().toString() + fileExt;
+			fileName = UUID.randomUUID().toString() + fileExt;
 
-		String destFilePath = pictureFolder + "/" + fileName;
+			String destFilePath = pictureFolder + "/" + fileName;
 
-		picture.transferTo(new File(destFilePath));
+			picture.transferTo(new File(destFilePath));
 
+		}
+		
 		Customer customer = GenericBuilder.of(Customer::new).with(Customer::setFirstName, body.get("firstname"))
 				.with(Customer::setLastName, body.get("lastname")).with(Customer::setAddress, body.get("address"))
 				.with(Customer::setCity, body.get("city")).with(Customer::setPhoneNumber, body.get("phonenumber"))
 				.with(Customer::setEmail, body.get("email"))
-				.with(Customer::setPicture, "./img/customerPictures/" + fileName).build();
+				.with(Customer::setPicture, fileName!=null?"./img/customerPictures/" + fileName:null).build();
 
 		Customer newCustomer = customerRepository.save(customer);
 		
@@ -183,18 +188,23 @@ public class CustomerController {
 		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
 			return "noaccess";
 		
-		String origName = picture.getOriginalFilename();
+		String fileName = null;
+		
+		if(picture!=null&&!picture.isEmpty()) {
+			String origName = picture.getOriginalFilename();
 
-		String fileExt = origName.substring(origName.lastIndexOf("."), origName.length());
+			String fileExt = origName.substring(origName.lastIndexOf("."), origName.length());
 
-		String pictureFolder =PICTURES_DIR_PATH;
+			String pictureFolder =PICTURES_DIR_PATH;
 
-		String fileName = UUID.randomUUID().toString() + fileExt;
+			fileName = UUID.randomUUID().toString() + fileExt;
 
-		String destFilePath = pictureFolder + "/" + fileName;
+			String destFilePath = pictureFolder + "/" + fileName;
 
-		picture.transferTo(new File(destFilePath));
+			picture.transferTo(new File(destFilePath));
 
+		}
+		
 		Customer customer = customerRepository.findById(Long.parseLong(body.get("id")));
 
 		String barcodeValue = customer.getBarcodeValue();
@@ -211,7 +221,7 @@ public class CustomerController {
 				.with(Customer::setAddress, body.get("address")).with(Customer::setCity, body.get("city"))
 				.with(Customer::setPhoneNumber, body.get("phonenumber")).with(Customer::setEmail, body.get("email"))
 				.with(Customer::setBarcodeValue, barcodeValue)
-				.with(Customer::setPicture, "./img/customerPictures/" + fileName).build();
+				.with(Customer::setPicture, fileName!=null?"./img/customerPictures/" + fileName:null).build();
 
 		customerRepository.save(customer);
 		
