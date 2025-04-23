@@ -1,5 +1,8 @@
 package ca.xpertproject.apps.businessmanager.controller;
 
+import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants.MEMBER_LOGGED_COOKIE_NAME;
+import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants.PICTURES_DIR_PATH;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -21,10 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants.MEMBER_LOGGED_COOKIE_NAME;
-import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants.PICTURES_DIR_PATH;
-
-import ca.xpertproject.apps.businessmanager.constant.ApplicationConstants;
 import ca.xpertproject.apps.businessmanager.exception.AuthenticationException;
 import ca.xpertproject.apps.businessmanager.model.Customer;
 import ca.xpertproject.apps.businessmanager.model.CustomerIdComparator;
@@ -101,6 +100,8 @@ public class CustomerController {
 		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
 			return "noaccess";
 		Customer customer = customerRepository.findById(id);
+		
+		System.out.println("Picture path : " + customer.picture);
 
 		model.addAttribute("customer", customer);
 
@@ -117,7 +118,7 @@ public class CustomerController {
 
 		model.addAttribute("customer", customer);
 
-		return "modifyCustomerform";
+		return "editCustomerForm";
 	}
 
 	@GetMapping("/createCustomer")
@@ -137,23 +138,28 @@ public class CustomerController {
 		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
 			return "noaccess";
 
-		String origName = picture.getOriginalFilename();
+		String fileName = null;
+		
+		if(picture!=null&&!picture.isEmpty()) {
+			String origName = picture.getOriginalFilename();
 
-		String fileExt = origName.substring(origName.lastIndexOf("."), origName.length());
+			String fileExt = origName.substring(origName.lastIndexOf("."), origName.length());
 
-		String pictureFolder =PICTURES_DIR_PATH;
+			String pictureFolder =PICTURES_DIR_PATH;
 
-		String fileName = UUID.randomUUID().toString() + fileExt;
+			fileName = UUID.randomUUID().toString() + fileExt;
 
-		String destFilePath = pictureFolder + "/" + fileName;
+			String destFilePath = pictureFolder + "/" + fileName;
 
-		picture.transferTo(new File(destFilePath));
+			picture.transferTo(new File(destFilePath));
 
+		}
+		
 		Customer customer = GenericBuilder.of(Customer::new).with(Customer::setFirstName, body.get("firstname"))
 				.with(Customer::setLastName, body.get("lastname")).with(Customer::setAddress, body.get("address"))
 				.with(Customer::setCity, body.get("city")).with(Customer::setPhoneNumber, body.get("phonenumber"))
 				.with(Customer::setEmail, body.get("email"))
-				.with(Customer::setPicture, "./img/customerPictures/" + fileName).build();
+				.with(Customer::setPicture, fileName!=null?"./img/customerPictures/" + fileName:null).build();
 
 		Customer newCustomer = customerRepository.save(customer);
 		
@@ -176,12 +182,29 @@ public class CustomerController {
 	@PostMapping(value = "/updateCustomer")
 	public String updateCustomer(
 			@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,
-			@RequestParam Map<String, String> body, HttpServletResponse response, Model model)
-			throws ParseException, AuthenticationException {
+			@RequestParam MultipartFile picture, @RequestParam Map<String, String> body, HttpServletResponse response, Model model)
+			throws ParseException, AuthenticationException, IllegalStateException, IOException {
 
 		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
 			return "noaccess";
+		
+		String fileName = null;
+		
+		if(picture!=null&&!picture.isEmpty()) {
+			String origName = picture.getOriginalFilename();
 
+			String fileExt = origName.substring(origName.lastIndexOf("."), origName.length());
+
+			String pictureFolder =PICTURES_DIR_PATH;
+
+			fileName = UUID.randomUUID().toString() + fileExt;
+
+			String destFilePath = pictureFolder + "/" + fileName;
+
+			picture.transferTo(new File(destFilePath));
+
+		}
+		
 		Customer customer = customerRepository.findById(Long.parseLong(body.get("id")));
 
 		String barcodeValue = customer.getBarcodeValue();
@@ -197,8 +220,10 @@ public class CustomerController {
 				.with(Customer::setFirstName, body.get("firstname")).with(Customer::setLastName, body.get("lastname"))
 				.with(Customer::setAddress, body.get("address")).with(Customer::setCity, body.get("city"))
 				.with(Customer::setPhoneNumber, body.get("phonenumber")).with(Customer::setEmail, body.get("email"))
-				.with(Customer::setBarcodeValue, barcodeValue).build();
+				.with(Customer::setBarcodeValue, barcodeValue)
+				.with(Customer::setPicture, fileName!=null?"./img/customerPictures/" + fileName:null).build();
 
+		customerRepository.save(customer);
 		
 		return "redirect:./customer?id=" + customer.id;
 	}

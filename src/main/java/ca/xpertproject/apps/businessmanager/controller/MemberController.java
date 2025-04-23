@@ -2,10 +2,16 @@ package ca.xpertproject.apps.businessmanager.controller;
 
 import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants.MEMBER_LOGGED_COOKIE_NAME;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +23,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ca.xpertproject.apps.businessmanager.constant.ApplicationConstants;
 import ca.xpertproject.apps.businessmanager.exception.AuthenticationException;
 import ca.xpertproject.apps.businessmanager.model.Member;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
+import ca.xpertproject.apps.businessmanager.utils.EncryptUtils;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -100,7 +108,7 @@ public class MemberController{
 	}
 	
 	@PostMapping("/signin")
-	public String authenticate(@RequestParam Map<String, String> body, HttpServletResponse response) throws NoSuchAlgorithmException, AuthenticationException {
+	public String authenticate(@RequestParam Map<String, String> body, HttpServletResponse response) throws NoSuchAlgorithmException, AuthenticationException, InvalidKeyException, UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 		
 		if(body.get("email")==null||body.get("email").isEmpty()) {
 			throw new AuthenticationException("E-mail is empty.");
@@ -131,7 +139,7 @@ public class MemberController{
 				throw excp;
 			}
 			
-			Cookie loginCookie=new Cookie(MEMBER_LOGGED_COOKIE_NAME, member.getEmail());
+			Cookie loginCookie=new Cookie(MEMBER_LOGGED_COOKIE_NAME, EncryptUtils.encryptAES(ApplicationConstants.COOKIE_ENCRYPTION_KEY, member.getEmail()));
             loginCookie.setMaxAge(3600*24);
             response.addCookie(loginCookie);
 			

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+<head>
+<script src="../assets/js/color-modes.js"></script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author"
+	content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+<meta name="generator" content="Hugo 0.122.0">
+<title>My Business</title>
+
+<link rel="canonical"
+	href="https://getbootstrap.com/docs/5.3/examples/navbar-static/">
+
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+<link href="./css/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="./css/navbar-static.css" rel="stylesheet">
+<link href="./css/sign-in.css" rel="stylesheet">
+<link href="./css/custom.css" rel="stylesheet">
+</head>
+
+
+<body>
+
+
+	<input type="hidden" id="currentPage" value="page_customers" />
+	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4"
+		style="min-height: 56px;" id="navbar"></nav>
+
+
+	<main class="form-signin w-100 m-auto">
+		<form action="./updateCustomer" method="post" name="customerform"
+			id="cusomerform" enctype="multipart/form-data">
+			<!--     <img class="mb-4" src="./img/metlogo.svg" alt="" width="297" height="107"> -->
+			<p class="errorMsg" data-th-text="${ errorMessage }"></p>
+			<h1 class="h3 mb-3 fw-normal">Edition client</h1>
+			<input type="hidden" class="form-control" id="id" name="id"
+				th:value="${ customer.id }">
+			<div class="form-floating">
+				<input type="file" class="form-control" id="flotingPicture"
+					name="picture" placeholder="Picture"> <label
+					for="floatingInput">Photo</label>
+			</div>
+			<div class="form-floating">
+				<input type="text" class="form-control" id="floatingFirstname"
+					name="firstname" placeholder="First name"
+					th:value="${ customer.firstName }" required="required"> <label
+					for="floatingInput">Prénom</label>
+			</div>
+
+			<div class="form-floating">
+				<input type="text" class="form-control" id="floatingLastname"
+					name="lastname" placeholder="Last name"
+					th:value="${ customer.lastName }" required="required"> <label
+					for="floatingInput">Nom</label>
+			</div>
+
+			<div class="form-floating">
+				<input type="text" class="form-control" id="floatingLastname"
+					name="address" placeholder="Address"
+					th:value="${ customer.address }" required="required"> <label
+					for="floatingInput">Adresse</label>
+			</div>
+
+			<div class="form-floating">
+				<input type="text" class="form-control" id="floatingLastname"
+					name="city" placeholder="City" th:value="${ customer.city }"
+					required="required"> <label for="floatingInput">Ville</label>
+			</div>
+
+			<div class="form-floating">
+				<input type="text" class="form-control" id="floatingPhonenumber"
+					name="phonenumber" placeholder="Phone number"
+					th:value="${ customer.phoneNumber }" required="required"> <label
+					for="floatingInput">Téléphone</label>
+			</div>
+
+			<div class="form-floating">
+				<input type="email" class="form-control" id="floatingEmail"
+					name="email" placeholder="name@example.com"
+					th:value="${ customer.email }" required="required"> <label
+					for="floatingInput">Email</label>
+			</div>
+
+			<button class="btn btn-primary py-2" type="submit">Enregistrer</button>
+			<button class="btn btn-primary py-2" onclick="backToCustomerView">Annuler</button>
+			<p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2024</p>
+		</form>
+	</main>
+
+	<script src="./js/bootstrap.bundle.min.js"></script>
+
+	<script type="text/javascript" src="./js/jquery/jquery.js"></script>
+	<script src="./js/sign.js"></script>
+	<script src="./js/inject.js"></script>
+	<script type="text/javascript">
+	
+	injectNavbar();
+		function backToCustomerView(){
+
+			var id = document.getElementById("id").value;
+			location = "/customer?id=" + id;
+		}
+	</script>
+
+</body>
+
+</html>

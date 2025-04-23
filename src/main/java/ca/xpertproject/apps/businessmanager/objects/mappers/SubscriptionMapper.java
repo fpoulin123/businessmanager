@@ -3,6 +3,7 @@ package ca.xpertproject.apps.businessmanager.objects.mappers;
 import java.util.Date;
 
 import ca.xpertproject.apps.businessmanager.model.GenericBuilder;
+import ca.xpertproject.apps.businessmanager.model.Payment;
 import ca.xpertproject.apps.businessmanager.model.Subscription;
 import ca.xpertproject.apps.businessmanager.objects.SubscriptionExt;
 
@@ -25,9 +26,28 @@ public class SubscriptionMapper {
 				.with(SubscriptionExt::setSubscriptionDate, subscription.getSubscriptionDate())
 				.with(SubscriptionExt::setExpirationDate, getExpirationDate(subscription))
 				.with(SubscriptionExt::setIsValid, isValid(subscription))
+				.with(SubscriptionExt::setPayed, getPayed(subscription))
+				.with(SubscriptionExt::setBalance, getBalance(subscription))
 				.build();
 				
 
+	}
+
+	private Double getBalance(Subscription subscription) {
+		// TODO Auto-generated method stub
+		Double totalAmountPayed = 0.0;
+		for (Payment payment : subscription.paymentList) {
+			totalAmountPayed = totalAmountPayed + payment.amount;
+		}
+
+		Double leftToPay = subscription.amount - totalAmountPayed;
+
+		return leftToPay;
+	}
+
+	private Boolean getPayed(Subscription subscription) {
+		// TODO Auto-generated method stub
+		return subscription.amount>getBalance(subscription);
 	}
 
 	private Boolean isValid(Subscription subscription) {
