@@ -75,7 +75,17 @@ public class Customer implements CSVTransformable{
 	@OneToMany(mappedBy="customerId")
 	public List<Subscription> subscriptions;
 	
+	@Column(name="title")
+	public String title;
 	
+	@Column(name="level")
+	public String level;
+	
+	@Column(name="height")
+	public Integer height;
+	
+	@Column(name="weight")
+	public Integer weight;
 	
 	public Long getId() {
 		return id;
@@ -192,6 +202,32 @@ public class Customer implements CSVTransformable{
 	public void setSubscriptions(List<Subscription> subscriptions) {
 		this.subscriptions = subscriptions;
 	}
+	
+	
+
+	public String getTitle() {
+		return title;
+	}
+
+
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+
+
+	public String getLevel() {
+		return level;
+	}
+
+
+
+	public void setLevel(String level) {
+		this.level = level;
+	}
+
+
 
 	public String toCsvString() {
 		// TODO Auto-generated method stub
@@ -202,7 +238,9 @@ public class Customer implements CSVTransformable{
 				this.address, 
 				this.city, 
 				this.phoneNumber, 
-				this.email);
+				this.email,
+				this.title,
+				this.level);
 	}
 
 
