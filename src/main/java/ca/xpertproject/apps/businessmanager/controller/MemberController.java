@@ -124,7 +124,7 @@ public class MemberController{
 			throw new AuthenticationException("Wrong user name or password, please retry.");
 		}
 					
-		Member member = Optional.of(potentialMembers.getFirst()).orElse(null);
+		Member member = Optional.of(potentialMembers.get(0)).orElse(null);
 		
 			
 		String sentPassword = body.get("password");
