@@ -1,5 +1,8 @@
 package ca.xpertproject.apps.businessmanager.controller;
 
+import java.net.URI;
+import java.net.http.HttpRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +13,7 @@ import ca.xpertproject.apps.businessmanager.exception.AuthenticationException;
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 
@@ -23,8 +27,13 @@ public class GeneralController {
 	MemberRepository memberRepository;
 	
 	@GetMapping("/home")
-	public String getEvent(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model) throws AuthenticationException {
+	public String getEvent(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model, HttpServletRequest httpRequest) throws AuthenticationException {
 		
+		String host = httpRequest.getRequestURL().toString();
+		Integer port = httpRequest.getLocalPort();
+		
+		System.out.println("FROM host : " + host + ", port : " + port);
+
 		MemberUtils memberUtils = new MemberUtils();
 		
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model)) {
