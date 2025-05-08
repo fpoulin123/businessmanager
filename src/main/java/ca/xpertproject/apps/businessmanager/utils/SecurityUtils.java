@@ -6,7 +6,7 @@ import java.util.List;
 import jakarta.servlet.http.HttpServletRequest;
 
 public class SecurityUtils {
-	private static final List<String> AUTHORIZED_HOST = Arrays.asList("http://localhost:8080/mybusiness", "https://clubdefenseexpert.com/mybusiness");
+	private static final List<String> AUTHORIZED_HOST = Arrays.asList("http://localhost:8080/mybusiness", "https://clubdefenseexpert.com/mybusiness", "http://clubdefenseexpert.com/mybusiness");
 	
 	public static boolean checkAuthorizedHost(HttpServletRequest request) {
 		
