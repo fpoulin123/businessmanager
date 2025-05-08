@@ -47,7 +47,7 @@ public class SubscriptionMapper {
 
 	private Boolean getPayed(Subscription subscription) {
 		// TODO Auto-generated method stub
-		return subscription.amount>getBalance(subscription);
+		return getBalance(subscription).doubleValue()==0;
 	}
 
 	private Boolean isValid(Subscription subscription) {

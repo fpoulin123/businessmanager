@@ -154,11 +154,32 @@ public class CustomerController {
 			picture.transferTo(new File(destFilePath));
 
 		}
+
+		String heightValue = body.get("height");
+		
+		Integer height = (heightValue!=null&&!heightValue.isEmpty())?Integer.parseInt(heightValue):null;
+		
+		String weightValue = body.get("weight");
+		
+		Integer weight = (weightValue!=null&&!weightValue.isEmpty())?Integer.parseInt(weightValue):null;
+		
+		String birthdateDateValue = body.get("birthdate");
+		Date birthdate = null;
+
+		if(birthdateDateValue!=null &&  !(birthdateDateValue.isEmpty())) {
+			birthdate = new SimpleDateFormat("yyyy-MM-dd").parse(birthdateDateValue);
+		}
+
 		
 		Customer customer = GenericBuilder.of(Customer::new).with(Customer::setFirstName, body.get("firstname"))
 				.with(Customer::setLastName, body.get("lastname")).with(Customer::setAddress, body.get("address"))
 				.with(Customer::setCity, body.get("city")).with(Customer::setPhoneNumber, body.get("phonenumber"))
 				.with(Customer::setEmail, body.get("email"))
+				.with(Customer::setTitle, body.get("title"))
+				.with(Customer::setLevel, body.get("level"))
+				.with(Customer::setHeight, height)
+				.with(Customer::setWeight, weight)
+				.with(Customer::setBirthdate, birthdate)
 				.with(Customer::setPicture, fileName!=null?"./img/customerPictures/" + fileName:null).build();
 
 		Customer newCustomer = customerRepository.save(customer);
@@ -207,6 +228,14 @@ public class CustomerController {
 		
 		Customer customer = customerRepository.findById(Long.parseLong(body.get("id")));
 
+		String birthdateDateValue = body.get("birthdate");
+		Date birthdate = null;
+
+		if(birthdateDateValue!=null &&  !(birthdateDateValue.isEmpty())) {
+			birthdate = new SimpleDateFormat("yyyy-MM-dd").parse(birthdateDateValue);
+		}
+
+		
 		String barcodeValue = customer.getBarcodeValue();
 		if (barcodeValue == null || barcodeValue.isEmpty()) {
 			String left = new SimpleDateFormat("yyyyMMdd").format(new Date());
@@ -215,12 +244,24 @@ public class CustomerController {
 			barcodeValueLong = barcodeValueLong + customer.getId();
 			barcodeValue = barcodeValueLong.toString();
 		}
-
+		String heightValue = body.get("height");
+		
+		Integer height = (heightValue!=null&&!heightValue.isEmpty())?Integer.parseInt(heightValue):null;
+		
+		String weightValue = body.get("weight");
+		
+		Integer weight = (weightValue!=null&&!weightValue.isEmpty())?Integer.parseInt(weightValue):null;
+		
 		customer = GenericBuilder.of(Customer::new).with(Customer::setId, customer.getId())
 				.with(Customer::setFirstName, body.get("firstname")).with(Customer::setLastName, body.get("lastname"))
 				.with(Customer::setAddress, body.get("address")).with(Customer::setCity, body.get("city"))
 				.with(Customer::setPhoneNumber, body.get("phonenumber")).with(Customer::setEmail, body.get("email"))
 				.with(Customer::setBarcodeValue, barcodeValue)
+				.with(Customer::setTitle, body.get("title"))
+				.with(Customer::setLevel, body.get("level"))
+				.with(Customer::setHeight, height)
+				.with(Customer::setWeight, weight)
+				.with(Customer::setBirthdate, birthdate)
 				.with(Customer::setPicture, fileName!=null?"./img/customerPictures/" + fileName:null).build();
 
 		customerRepository.save(customer);

@@ -4,6 +4,8 @@ import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -107,6 +109,66 @@ public class SubscriptionController {
 		model.addAttribute("subscriptions", subscriptionExtList);
 
 		return "subscriptions";
+	}
+	
+	@GetMapping("/expiredSubscriptions")
+	public String getExpiredSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model) throws AuthenticationException {
+
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+
+		List<Subscription> subscriptions = subscriptionRepository.findAll();
+
+		List<SubscriptionExt> subscriptionExtList = subscriptions.stream().map(sub-> mapper.convert(sub)).filter(t -> !t.getIsValid()).collect(Collectors.toList());
+
+		model.addAttribute("subscriptions", subscriptionExtList);
+
+		return "subscriptions";
+	}
+	@GetMapping("/subscriptionsCloseToEnd")
+	public String getSubscriptionsCloseToEnd(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model){
+		
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		
+		List<SubscriptionExt> subscriptionExtList = subscriptionRepository.findAll().stream().map(sub-> mapper.convert(sub)).filter(t -> willExpire(t)).collect(Collectors.toList());
+		
+		model.addAttribute("subscriptions", subscriptionExtList);
+
+		return "subscriptions";
+	}
+	
+	@GetMapping("/subscriptionsExpiredThirty")
+	public String getSubscriptionsExpiredThirty(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model){
+		
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		
+		List<SubscriptionExt> subscriptionExtList = subscriptionRepository.findAll().stream().map(sub-> mapper.convert(sub)).filter(t -> hasExpired(t)).collect(Collectors.toList());
+		
+		model.addAttribute("subscriptions", subscriptionExtList);
+
+		return "subscriptions";
+	}
+
+
+	private boolean willExpire(SubscriptionExt t) {
+				
+		LocalDate lcNow = LocalDate.now();
+		
+		LocalDate preavisLc = lcNow.plusDays(15);
+		
+		LocalDate expireDateLocal = t.getExpirationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		
+		return preavisLc.isAfter(expireDateLocal)&&LocalDate.now().isBefore(expireDateLocal);
+	}
+	
+	private boolean hasExpired(SubscriptionExt t) {
+		
+		LocalDate lcNow = LocalDate.now();
+		
+		LocalDate preavisLc = lcNow.minusDays(30);
+		
+		LocalDate expireDateLocal = t.getExpirationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		
+		return preavisLc.isBefore(expireDateLocal)&&LocalDate.now().isAfter(expireDateLocal);
 	}
 
 	@GetMapping("/subscriptions")

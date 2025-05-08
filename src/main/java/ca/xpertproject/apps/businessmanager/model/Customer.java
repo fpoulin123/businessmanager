@@ -1,5 +1,8 @@
 package ca.xpertproject.apps.businessmanager.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -9,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 
 @Entity
@@ -86,6 +90,15 @@ public class Customer implements CSVTransformable{
 	
 	@Column(name="weight")
 	public Integer weight;
+	
+	@Column(name="birthdate")
+	public Date birthdate;
+	
+	@Transient
+	public Integer age;
+	
+	@Column(name="active")
+	public boolean active;
 	
 	public Long getId() {
 		return id;
@@ -221,10 +234,83 @@ public class Customer implements CSVTransformable{
 		return level;
 	}
 
-
-
 	public void setLevel(String level) {
 		this.level = level;
+	}
+
+	public Integer getHeight() {
+		return height;
+	}
+
+	public void setHeight(Integer height) {
+		this.height = height;
+	}
+
+	public Integer getWeight() {
+		return weight;
+	}
+
+	public void setWeight(Integer weight) {
+		this.weight = weight;
+	}
+
+	public Date getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
+	}
+	
+	public Integer getAge(){
+		Date birthDate = getBirthdate();
+		Integer age = null;
+		
+		if(birthDate!=null) {
+			try {
+							
+				SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Date now = new Date();
+				String currentYearStr = yearFormat.format(now);
+						
+				String birthYearStr = yearFormat.format(birthDate);
+				Integer currentYear = Integer.parseInt(currentYearStr);
+				Integer birthYear = Integer.parseInt(birthYearStr);
+				
+				String birthdateStr = sdf.format(birthDate);
+				
+				String comparingDateStr = birthdateStr.replace(birthYearStr, currentYearStr);
+				
+				Date comparingDate = sdf.parse(comparingDateStr);
+				
+				int numYear = currentYear - birthYear;
+				
+				if(comparingDate.after(now)) {
+					numYear = numYear - 1;
+				}
+				
+				age = numYear;
+			}catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		
+		
+		
+		return age;
+	}
+
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 

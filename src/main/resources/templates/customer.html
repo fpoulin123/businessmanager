@@ -48,6 +48,10 @@
 
 		</div>
 
+		<div th:if="${ customer.title!=null }">
+
+			<label>Title : </label> <span data-th-text="${ customer.title }"></span>
+		</div>
 
 		<div>
 
@@ -56,6 +60,26 @@
 
 		<div>
 			<label>Nom : </label> <span data-th-text="${ customer.lastName }"></span>
+		</div>
+		
+		<div>
+
+			<label>Grade : </label> <span data-th-text="${ customer.level }"></span>
+		</div>
+		
+		<div>
+
+			<label>Taille : </label> <span data-th-text="${ customer.height }"></span>
+		</div>
+		
+		<div>
+
+			<label>Poid : </label> <span data-th-text="${ customer.weight }"></span>
+		</div>
+		
+		<div>
+
+			<label>Date de naissance : </label> <span data-th-text="${#dates.format(customer.birthdate, 'dd-MM-yyyy')}"></span>
 		</div>
 
 		<div>

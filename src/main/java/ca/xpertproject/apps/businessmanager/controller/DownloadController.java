@@ -258,7 +258,7 @@ public class DownloadController {
             FileWriter fr = new FileWriter(fileToDownload);
             BufferedWriter bfr = new BufferedWriter(fr);
             
-            bfr.append("\"Numéro\";\"Num. client\";\"Prénom\";\"Nom\";\"Montant\";\"Payé\"" + System.lineSeparator());
+            bfr.append("\"Numéro\";\"Num. client\";\"Prénom\";\"Nom\";\"Taille\";\"Poid\";\"Age\";\"Montant\";\"Payé\"" + System.lineSeparator());
             
             attendeeList.stream().forEach(attendee-> {
             	try {

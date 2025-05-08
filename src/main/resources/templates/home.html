@@ -82,7 +82,7 @@
 					<td class="card_table">
 						<div class="chart_box">
 							<h3 class="dshbd_card">CA mensuel</h3>
-							<div style="height: 180px;">
+							<div style="height: 180px;" onclick="expandMonthlyRevenue()">
 								<canvas class="dshbd_card" id="myChart2"></canvas>
 							</div>
 						</div>
@@ -90,7 +90,7 @@
 					<td class="card_table">
 						<div class="chart_box">
 							<h3 class="dshbd_card">Abonnements mensuels</h3>
-							<div style="height: 180px;">
+							<div style="height: 180px;" onclick="expandMonthlySubs()">
 								<canvas class="dshbd_card" id="myChart3"></canvas>
 							</div>
 						</div>
@@ -99,8 +99,18 @@
 
 			</table>
 
-
+			<div class="form-floating filter">
+				<button class="btn btn-lg btn-primary" role="button"
+					onclick="expiredThirty()">Abonnements expirés (30jrs)</button>
+	
+			</div>
+			<div class="form-floating filter">
+				<button class="btn btn-lg btn-primary" role="button"
+					onclick="willExpireFifteen()">Abonnements expirant (15jrs)</button>
+	
+			</div>
 		</div>
+		
 
 	</main>
 
@@ -157,7 +167,21 @@
 			createBarChart("myChart3", "Abonnements par mois", "Nbre d'abonnement", months, numbers);
 		});
 		
+		function expandMonthlyRevenue(){
+			location = "./monthlyRevenue";
+		}
 		
+		function expandMonthlySubs(){
+			location = "./monthlySubscriptions";
+		}
+		
+		function expiredThirty(){
+			location = "./subscriptionsExpiredThirty";
+		}
+		
+		function willExpireFifteen(){
+			location = "./subscriptionsCloseToEnd";
+		}
 	</script>
 
 </body>

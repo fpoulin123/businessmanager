@@ -47,12 +47,15 @@ public class EventAttendee {
 	Double amount;
 
 	public String toCsvString() {
-				
-		return String.format("\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";", 
+		
+		return String.format("\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\"", 
 				this.id,
 				this.customer.id,
 				this.customer.firstName, 
 				this.customer.lastName,
+				this.customer.height,
+				this.customer.weight,
+				this.customer.getAge(),
 				this.amount,				
 				this.payed);
 	}

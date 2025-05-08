@@ -47,6 +47,13 @@
 					name="picture" placeholder="Picture"> <label
 					for="floatingInput">Photo</label>
 			</div>
+			
+			<div class="form-floating">
+				<input type="text" class="form-control" id="floatingTitle"
+					name="title" placeholder="Titre" th:value="${ customer.title }" >
+				<label for="floatingTitle">Titre</label>
+			</div>
+
 			<div class="form-floating">
 				<input type="text" class="form-control" id="floatingFirstname"
 					name="firstname" placeholder="First name"
@@ -59,6 +66,30 @@
 					name="lastname" placeholder="Last name"
 					th:value="${ customer.lastName }" required="required"> <label
 					for="floatingInput">Nom</label>
+			</div>
+			
+			<div class="form-floating">
+				<input type="text" class="form-control" id="floatingLevel"
+					name="level" placeholder="Grade" th:value="${ customer.level }" >
+				<label for="floatingInput">Grade</label>
+			</div>
+			
+			<div class="form-floating">
+				<input type="text" class="form-control" id="floatingHeight"
+					name="height" placeholder="Height" th:value="${ customer.height }" >
+				<label for="floatingHeight">Taille en cm</label>
+			</div>
+			
+			<div class="form-floating">
+				<input type="text" class="form-control" id="floatingWeight"
+					name="weight" placeholder="Weight" th:value="${ customer.weight }" >
+				<label for="floatingWeight">Poid en lbs</label>
+			</div>
+			
+			<div class="form-floating">
+				<input type="date" class="form-control" id="floatingBirthdate"
+					name="birthdate" placeholder="Birthdate" th:value="${#dates.format(customer.birthdate, 'yyyy-MM-dd')}" >
+				<label for="floatingBirthdate">Date de naissance</label>
 			</div>
 
 			<div class="form-floating">

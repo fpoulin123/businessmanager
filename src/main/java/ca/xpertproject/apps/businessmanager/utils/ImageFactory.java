@@ -51,18 +51,18 @@ public class ImageFactory {
 		//gr.drawRect(0, 0, 500, 800);
 		gr.fillRect(0, 0, cardWidth, cardHeight);
 		gr.drawImage(logoImg,10, 0, null);
-
-		String customerName = customer.getFirstName() + " " + customer.getLastName();
+		String title = customer.getTitle();
+		String customerNameL1 = (title!=null&&!title.isEmpty())?title + " " + customer.getFirstName():customer.getFirstName();
 		
-		Font font = new Font("Arial", Font.BOLD, 30);
+		Font font = new Font("Arial", Font.BOLD, 25);
 
 		gr.setFont(font);
 		gr.setColor(Color.BLACK);
-		gr.drawString(customer.getFirstName(), 15, 410);
-		gr.drawString(customer.getLastName(), 15, 440);
-		//gr.drawRect(0, 0, cardWidth-2, cardHeight-2);
-		gr.drawImage(barcode, -10, 460, null);
-		gr.drawString(customer.getBarcodeValue(), 90, 580);
+		gr.drawString(customerNameL1, 15, 395);
+		gr.drawString(customer.getLastName(), 15, 425);
+		gr.drawString(customer.getLevel(),15,460);
+		gr.drawImage(barcode, -10, 480, null);
+		gr.drawString(customer.getBarcodeValue(), 90, 590);
 		return resultImage;
 	}
 	

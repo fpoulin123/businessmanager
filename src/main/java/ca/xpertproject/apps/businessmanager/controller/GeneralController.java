@@ -23,7 +23,7 @@ public class GeneralController {
 	MemberRepository memberRepository;
 	
 	@GetMapping("/home")
-	public String getEvent(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model) throws AuthenticationException {
+	public String getHome(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model) throws AuthenticationException {
 		
 		MemberUtils memberUtils = new MemberUtils();
 		
@@ -34,6 +34,28 @@ public class GeneralController {
 		};
 				
 		return "home";
+		
+	}
+	
+	@GetMapping("/monthlyRevenue")
+	public String getMonthlyRevenue(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model) throws AuthenticationException {
+		
+		MemberUtils memberUtils = new MemberUtils();
+		
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+				
+		return "monthlyRevenue";
+		
+	}
+	
+	@GetMapping("/monthlySubscriptions")
+	public String getMonthlySubscriptions(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model) throws AuthenticationException {
+		
+		MemberUtils memberUtils = new MemberUtils();
+		
+		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+				
+		return "monthlySubscriptions";
 		
 	}
 	

@@ -83,7 +83,7 @@ public class EventController {
 	}
 	
 	@GetMapping("/event")
-	public String viewEvent(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = true) Long id, Model model) {
+	public String viewEvent(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = true) Long id, Model model) throws ParseException {
 		
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
@@ -92,7 +92,7 @@ public class EventController {
 		model.addAttribute("event", event);
 		
 		List<EventAttendee> attendees = eventAttendeeRepository.findByEventId(id);
-		
+				
 		model.addAttribute("attendees", attendees);
 		
 		model.addAttribute("nbrAttendees", attendees.size());
