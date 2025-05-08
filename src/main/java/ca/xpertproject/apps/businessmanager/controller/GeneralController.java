@@ -13,6 +13,7 @@ import ca.xpertproject.apps.businessmanager.exception.AuthenticationException;
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
+import ca.xpertproject.apps.businessmanager.utils.SecurityUtils;
 import jakarta.servlet.http.HttpServletRequest;
 
 
@@ -29,11 +30,8 @@ public class GeneralController {
 	@GetMapping("/home")
 	public String getEvent(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model, HttpServletRequest httpRequest) throws AuthenticationException {
 		
-		String host = httpRequest.getRequestURL().toString();
-		Integer port = httpRequest.getLocalPort();
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
 		
-		System.out.println("FROM host : " + host + ", port : " + port);
-
 		MemberUtils memberUtils = new MemberUtils();
 		
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model)) {
