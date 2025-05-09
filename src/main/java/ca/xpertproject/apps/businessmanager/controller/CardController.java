@@ -20,6 +20,7 @@ import ca.xpertproject.apps.businessmanager.constant.ApplicationConstants;
 import ca.xpertproject.apps.businessmanager.model.Customer;
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
 import ca.xpertproject.apps.businessmanager.utils.ImageFactory;
+import ca.xpertproject.apps.businessmanager.utils.SecurityUtils;
 import net.sourceforge.barbecue.Barcode;
 import net.sourceforge.barbecue.BarcodeFactory;
 import net.sourceforge.barbecue.BarcodeImageHandler;
@@ -32,6 +33,8 @@ public class CardController {
 	
 	@GetMapping("membercard")
 	public String getMemberCard(@RequestParam(required = true) Long id, Model model) throws Exception {
+		
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
 		
 		Customer customer = customerRepository.findById(id);
 		

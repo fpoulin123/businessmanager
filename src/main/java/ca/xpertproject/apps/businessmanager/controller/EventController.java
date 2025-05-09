@@ -27,6 +27,8 @@ import ca.xpertproject.apps.businessmanager.model.EventRepository;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.model.StringComparator;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
+import ca.xpertproject.apps.businessmanager.utils.SecurityUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
@@ -49,9 +51,9 @@ public class EventController {
 	SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
 
 	@GetMapping("/allEvents")
-	public String getAllEvents(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false, defaultValue = "1") String page, @RequestParam(required = false, defaultValue = "") String year, Model model) {
+	public String getAllEvents(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false, defaultValue = "1") String page, @RequestParam(required = false, defaultValue = "") String year, Model model, HttpServletRequest httpRequest) {
 		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		List<Event> eventList = eventRepository.findAll().stream().filter(event -> matchYear(event, year)).collect(Collectors.toList());
 		
@@ -83,9 +85,9 @@ public class EventController {
 	}
 	
 	@GetMapping("/event")
-	public String viewEvent(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = true) Long id, Model model) {
+	public String viewEvent(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = true) Long id, Model model, HttpServletRequest httpRequest) {
 		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		Event event = eventRepository.findById(id);
 		
@@ -101,9 +103,9 @@ public class EventController {
 	}
 	
 	@GetMapping("/calendar")
-	public String viewCalendar(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model) {
+	public String viewCalendar(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model, HttpServletRequest httpRequest) {
 		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 				
 		return "calendar";
 	}
@@ -115,19 +117,19 @@ public class EventController {
 	}
 	
 	@GetMapping("/createEvent")
-	public String createEvent(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model) {
+	public String createEvent(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model, HttpServletRequest httpRequest) {
 
 
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		
 		return "createEventForm";
 	}
 	
 	@PostMapping("/createEvent")
-	public String createEvent(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model) throws ParseException {
+	public String createEvent(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model, HttpServletRequest httpRequest) throws ParseException {
 		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 				
 		Event event = new Event();
 		
@@ -161,9 +163,9 @@ public class EventController {
 	}
 	
 	@GetMapping("/editEvent")
-	public String editEvent(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = true) Long id,Model model) {
+	public String editEvent(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = true) Long id,Model model, HttpServletRequest httpRequest) {
 
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		Event event = eventRepository.findById(id);
 		
@@ -173,9 +175,9 @@ public class EventController {
 	}
 	
 	@PostMapping("/updateEvent")
-	public String updateEvent(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model) throws ParseException {
+	public String updateEvent(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model, HttpServletRequest httpRequest) throws ParseException {
 		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 				
 		Event event = eventRepository.findById(Long.parseLong(body.get("id")));
 		
@@ -209,9 +211,9 @@ public class EventController {
 	}
 	
 	@GetMapping("/addAttendee")
-	public String addAttendee(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false) Long eventId,Model model) {
+	public String addAttendee(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false) Long eventId,Model model, HttpServletRequest httpRequest) {
 
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		if(eventId!=null) {
 			Event event = eventRepository.findById(eventId);
@@ -225,9 +227,9 @@ public class EventController {
 	}
 	
 	@PostMapping("/addAttendee")
-	public String addAttendee(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model) {
+	public String addAttendee(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model, HttpServletRequest httpRequest) {
 
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		body.entrySet().forEach(attr -> System.out.println(attr.getKey() + " : " + attr.getValue()));
 		
@@ -249,9 +251,9 @@ public class EventController {
 	}
 	
 	@GetMapping("/editAttendee")
-	public String editAttendee(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false) Long id,Model model) {
+	public String editAttendee(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false) Long id,Model model, HttpServletRequest httpRequest) {
 
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		EventAttendee attendee = eventAttendeeRepository.findById(id);
 		Event event = eventRepository.findById(attendee.getEventId());
@@ -261,9 +263,9 @@ public class EventController {
 	}
 	
 	@PostMapping("/updateAttendee")
-	public String updateAttendee(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model) {
+	public String updateAttendee(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model, HttpServletRequest httpRequest) {
 
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		body.entrySet().forEach(attr -> System.out.println(attr.getKey() + " : " + attr.getValue()));
 		
@@ -279,9 +281,9 @@ public class EventController {
 	}
 	
 	@GetMapping("/deleteAttendee")
-	public String deleteAttendee(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false) Long id,Model model) {
+	public String deleteAttendee(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false) Long id,Model model, HttpServletRequest httpRequest) {
 		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 				
 		EventAttendee attendee = eventAttendeeRepository.findById(id);
 		

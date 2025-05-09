@@ -17,6 +17,8 @@ import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.objects.EventForAC;
 import ca.xpertproject.apps.businessmanager.objects.mappers.EventMapper;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
+import ca.xpertproject.apps.businessmanager.utils.SecurityUtils;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 public class EventRestController {
@@ -31,9 +33,9 @@ public class EventRestController {
 	
 	
 	@GetMapping("/getACEventList")
-	public List<EventForAC> getACEventList(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember){
+	public List<EventForAC> getACEventList(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, HttpServletRequest httpRequest){
 		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository))return Collections.emptyList();
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository))return Collections.emptyList();
 
 		
 		List<EventForAC> eventList = (List<EventForAC>) eventRepository.findAll().stream().map(event-> EventMapper.convertForList(event)).collect(Collectors.toList());
@@ -43,9 +45,9 @@ public class EventRestController {
 	}
 	
 	@GetMapping("/getACEventTypeList")
-	public List<String> getACEventTypeList(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember){
+	public List<String> getACEventTypeList(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, HttpServletRequest httpRequest){
 		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository))return Collections.emptyList();
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository))return Collections.emptyList();
 
 		
 		List<String> eventList = (List<String>) eventRepository.findAll().stream().map(event-> EventMapper.convertForTypeList(event)).collect(Collectors.toList());
