@@ -146,7 +146,12 @@ public class CustomerController {
 			String fileExt = origName.substring(origName.lastIndexOf("."), origName.length());
 
 			String pictureFolder =PICTURES_DIR_PATH;
-
+			
+			File picturesDir= new File(PICTURES_DIR_PATH);
+			if(!picturesDir.exists()) {
+				picturesDir.mkdirs();
+			}
+			System.out.println("PICTURES: " + picturesDir.getAbsolutePath());
 			fileName = UUID.randomUUID().toString() + fileExt;
 
 			String destFilePath = pictureFolder + "/" + fileName;
@@ -217,7 +222,11 @@ public class CustomerController {
 			String fileExt = origName.substring(origName.lastIndexOf("."), origName.length());
 
 			String pictureFolder =PICTURES_DIR_PATH;
-
+			File picturesDir= new File(PICTURES_DIR_PATH);
+			if(!picturesDir.exists()) {
+				picturesDir.mkdirs();
+			}
+			System.out.println("PICTURES: " + picturesDir.getAbsolutePath());
 			fileName = UUID.randomUUID().toString() + fileExt;
 
 			String destFilePath = pictureFolder + "/" + fileName;

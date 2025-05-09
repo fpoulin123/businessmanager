@@ -5,7 +5,7 @@
 -- Dumped from database version 17.2
 -- Dumped by pg_dump version 17.2
 
--- Started on 2025-04-26 10:31:55
+-- Started on 2025-05-08 15:20:32
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -20,7 +20,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 240 (class 1255 OID 18406)
+-- TOC entry 242 (class 1255 OID 18540)
 -- Name: isvalidsubscription(date, integer); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -45,7 +45,48 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 217 (class 1259 OID 18407)
+-- TOC entry 241 (class 1259 OID 18670)
+-- Name: accesslog; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.accesslog (
+    id bigint NOT NULL,
+    date timestamp without time zone NOT NULL,
+    customer_number character varying NOT NULL,
+    firstname character varying NOT NULL,
+    lastname character varying NOT NULL,
+    granted boolean NOT NULL
+);
+
+
+ALTER TABLE public.accesslog OWNER TO postgres;
+
+--
+-- TOC entry 240 (class 1259 OID 18669)
+-- Name: accesslog_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.accesslog_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.accesslog_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4897 (class 0 OID 0)
+-- Dependencies: 240
+-- Name: accesslog_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.accesslog_id_seq OWNED BY public.accesslog.id;
+
+
+--
+-- TOC entry 217 (class 1259 OID 18541)
 -- Name: alldata; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -74,7 +115,7 @@ CREATE TABLE public.alldata (
 ALTER TABLE public.alldata OWNER TO postgres;
 
 --
--- TOC entry 218 (class 1259 OID 18412)
+-- TOC entry 218 (class 1259 OID 18546)
 -- Name: alldata_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -89,7 +130,7 @@ CREATE SEQUENCE public.alldata_id_seq
 ALTER SEQUENCE public.alldata_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4889 (class 0 OID 0)
+-- TOC entry 4898 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: alldata_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -98,7 +139,7 @@ ALTER SEQUENCE public.alldata_id_seq OWNED BY public.alldata.id;
 
 
 --
--- TOC entry 232 (class 1259 OID 18473)
+-- TOC entry 219 (class 1259 OID 18547)
 -- Name: batch_job_execution; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -119,7 +160,7 @@ CREATE TABLE public.batch_job_execution (
 ALTER TABLE public.batch_job_execution OWNER TO postgres;
 
 --
--- TOC entry 236 (class 1259 OID 18519)
+-- TOC entry 220 (class 1259 OID 18552)
 -- Name: batch_job_execution_context; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -133,7 +174,7 @@ CREATE TABLE public.batch_job_execution_context (
 ALTER TABLE public.batch_job_execution_context OWNER TO postgres;
 
 --
--- TOC entry 233 (class 1259 OID 18485)
+-- TOC entry 221 (class 1259 OID 18557)
 -- Name: batch_job_execution_params; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -149,7 +190,7 @@ CREATE TABLE public.batch_job_execution_params (
 ALTER TABLE public.batch_job_execution_params OWNER TO postgres;
 
 --
--- TOC entry 238 (class 1259 OID 18532)
+-- TOC entry 222 (class 1259 OID 18562)
 -- Name: batch_job_execution_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -164,7 +205,7 @@ CREATE SEQUENCE public.batch_job_execution_seq
 ALTER SEQUENCE public.batch_job_execution_seq OWNER TO postgres;
 
 --
--- TOC entry 231 (class 1259 OID 18466)
+-- TOC entry 223 (class 1259 OID 18563)
 -- Name: batch_job_instance; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -179,7 +220,7 @@ CREATE TABLE public.batch_job_instance (
 ALTER TABLE public.batch_job_instance OWNER TO postgres;
 
 --
--- TOC entry 239 (class 1259 OID 18533)
+-- TOC entry 224 (class 1259 OID 18566)
 -- Name: batch_job_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -194,7 +235,7 @@ CREATE SEQUENCE public.batch_job_seq
 ALTER SEQUENCE public.batch_job_seq OWNER TO postgres;
 
 --
--- TOC entry 234 (class 1259 OID 18495)
+-- TOC entry 225 (class 1259 OID 18567)
 -- Name: batch_step_execution; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -224,7 +265,7 @@ CREATE TABLE public.batch_step_execution (
 ALTER TABLE public.batch_step_execution OWNER TO postgres;
 
 --
--- TOC entry 235 (class 1259 OID 18507)
+-- TOC entry 226 (class 1259 OID 18572)
 -- Name: batch_step_execution_context; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -238,7 +279,7 @@ CREATE TABLE public.batch_step_execution_context (
 ALTER TABLE public.batch_step_execution_context OWNER TO postgres;
 
 --
--- TOC entry 237 (class 1259 OID 18531)
+-- TOC entry 227 (class 1259 OID 18577)
 -- Name: batch_step_execution_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -253,7 +294,7 @@ CREATE SEQUENCE public.batch_step_execution_seq
 ALTER SEQUENCE public.batch_step_execution_seq OWNER TO postgres;
 
 --
--- TOC entry 219 (class 1259 OID 18413)
+-- TOC entry 228 (class 1259 OID 18578)
 -- Name: customer; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -277,7 +318,7 @@ CREATE TABLE public.customer (
 ALTER TABLE public.customer OWNER TO postgres;
 
 --
--- TOC entry 220 (class 1259 OID 18418)
+-- TOC entry 229 (class 1259 OID 18583)
 -- Name: customer_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -292,8 +333,8 @@ CREATE SEQUENCE public.customer_id_seq
 ALTER SEQUENCE public.customer_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4890 (class 0 OID 0)
--- Dependencies: 220
+-- TOC entry 4899 (class 0 OID 0)
+-- Dependencies: 229
 -- Name: customer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -301,7 +342,7 @@ ALTER SEQUENCE public.customer_id_seq OWNED BY public.customer.id;
 
 
 --
--- TOC entry 221 (class 1259 OID 18419)
+-- TOC entry 230 (class 1259 OID 18584)
 -- Name: event; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -318,7 +359,7 @@ CREATE TABLE public.event (
 ALTER TABLE public.event OWNER TO postgres;
 
 --
--- TOC entry 222 (class 1259 OID 18425)
+-- TOC entry 231 (class 1259 OID 18590)
 -- Name: event_attendee; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -334,7 +375,7 @@ CREATE TABLE public.event_attendee (
 ALTER TABLE public.event_attendee OWNER TO postgres;
 
 --
--- TOC entry 223 (class 1259 OID 18428)
+-- TOC entry 232 (class 1259 OID 18593)
 -- Name: event_attendee_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -349,8 +390,8 @@ CREATE SEQUENCE public.event_attendee_id_seq
 ALTER SEQUENCE public.event_attendee_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4891 (class 0 OID 0)
--- Dependencies: 223
+-- TOC entry 4900 (class 0 OID 0)
+-- Dependencies: 232
 -- Name: event_attendee_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -358,7 +399,7 @@ ALTER SEQUENCE public.event_attendee_id_seq OWNED BY public.event_attendee.id;
 
 
 --
--- TOC entry 224 (class 1259 OID 18429)
+-- TOC entry 233 (class 1259 OID 18594)
 -- Name: event_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -373,8 +414,8 @@ CREATE SEQUENCE public.event_id_seq
 ALTER SEQUENCE public.event_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4892 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 4901 (class 0 OID 0)
+-- Dependencies: 233
 -- Name: event_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -382,7 +423,7 @@ ALTER SEQUENCE public.event_id_seq OWNED BY public.event.id;
 
 
 --
--- TOC entry 225 (class 1259 OID 18430)
+-- TOC entry 234 (class 1259 OID 18595)
 -- Name: member; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -399,7 +440,7 @@ CREATE TABLE public.member (
 ALTER TABLE public.member OWNER TO postgres;
 
 --
--- TOC entry 226 (class 1259 OID 18436)
+-- TOC entry 235 (class 1259 OID 18601)
 -- Name: member_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -414,8 +455,8 @@ CREATE SEQUENCE public.member_id_seq
 ALTER SEQUENCE public.member_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4893 (class 0 OID 0)
--- Dependencies: 226
+-- TOC entry 4902 (class 0 OID 0)
+-- Dependencies: 235
 -- Name: member_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -423,7 +464,7 @@ ALTER SEQUENCE public.member_id_seq OWNED BY public.member.id;
 
 
 --
--- TOC entry 227 (class 1259 OID 18437)
+-- TOC entry 236 (class 1259 OID 18602)
 -- Name: payment; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -438,7 +479,7 @@ CREATE TABLE public.payment (
 ALTER TABLE public.payment OWNER TO postgres;
 
 --
--- TOC entry 228 (class 1259 OID 18440)
+-- TOC entry 237 (class 1259 OID 18605)
 -- Name: payment_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -453,8 +494,8 @@ CREATE SEQUENCE public.payment_id_seq
 ALTER SEQUENCE public.payment_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4894 (class 0 OID 0)
--- Dependencies: 228
+-- TOC entry 4903 (class 0 OID 0)
+-- Dependencies: 237
 -- Name: payment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -462,7 +503,7 @@ ALTER SEQUENCE public.payment_id_seq OWNED BY public.payment.id;
 
 
 --
--- TOC entry 229 (class 1259 OID 18441)
+-- TOC entry 238 (class 1259 OID 18606)
 -- Name: subscription; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -481,7 +522,7 @@ CREATE TABLE public.subscription (
 ALTER TABLE public.subscription OWNER TO postgres;
 
 --
--- TOC entry 230 (class 1259 OID 18444)
+-- TOC entry 239 (class 1259 OID 18609)
 -- Name: subscription_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -496,8 +537,8 @@ CREATE SEQUENCE public.subscription_id_seq
 ALTER SEQUENCE public.subscription_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4895 (class 0 OID 0)
--- Dependencies: 230
+-- TOC entry 4904 (class 0 OID 0)
+-- Dependencies: 239
 -- Name: subscription_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -505,7 +546,15 @@ ALTER SEQUENCE public.subscription_id_seq OWNED BY public.subscription.id;
 
 
 --
--- TOC entry 4699 (class 2604 OID 18445)
+-- TOC entry 4713 (class 2604 OID 18673)
+-- Name: accesslog id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.accesslog ALTER COLUMN id SET DEFAULT nextval('public.accesslog_id_seq'::regclass);
+
+
+--
+-- TOC entry 4704 (class 2604 OID 18610)
 -- Name: alldata id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -513,7 +562,7 @@ ALTER TABLE ONLY public.alldata ALTER COLUMN id SET DEFAULT nextval('public.alld
 
 
 --
--- TOC entry 4700 (class 2604 OID 18446)
+-- TOC entry 4705 (class 2604 OID 18611)
 -- Name: customer id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -521,7 +570,7 @@ ALTER TABLE ONLY public.customer ALTER COLUMN id SET DEFAULT nextval('public.cus
 
 
 --
--- TOC entry 4701 (class 2604 OID 18447)
+-- TOC entry 4706 (class 2604 OID 18612)
 -- Name: event id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -529,7 +578,7 @@ ALTER TABLE ONLY public.event ALTER COLUMN id SET DEFAULT nextval('public.event_
 
 
 --
--- TOC entry 4703 (class 2604 OID 18448)
+-- TOC entry 4708 (class 2604 OID 18613)
 -- Name: event_attendee id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -537,7 +586,7 @@ ALTER TABLE ONLY public.event_attendee ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
--- TOC entry 4704 (class 2604 OID 18449)
+-- TOC entry 4709 (class 2604 OID 18614)
 -- Name: member id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -545,7 +594,7 @@ ALTER TABLE ONLY public.member ALTER COLUMN id SET DEFAULT nextval('public.membe
 
 
 --
--- TOC entry 4706 (class 2604 OID 18450)
+-- TOC entry 4711 (class 2604 OID 18615)
 -- Name: payment id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -553,7 +602,7 @@ ALTER TABLE ONLY public.payment ALTER COLUMN id SET DEFAULT nextval('public.paym
 
 
 --
--- TOC entry 4707 (class 2604 OID 18451)
+-- TOC entry 4712 (class 2604 OID 18616)
 -- Name: subscription id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -561,7 +610,16 @@ ALTER TABLE ONLY public.subscription ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- TOC entry 4709 (class 2606 OID 18453)
+-- TOC entry 4741 (class 2606 OID 18677)
+-- Name: accesslog accesslog_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.accesslog
+    ADD CONSTRAINT accesslog_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4715 (class 2606 OID 18618)
 -- Name: alldata alldata_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -570,7 +628,7 @@ ALTER TABLE ONLY public.alldata
 
 
 --
--- TOC entry 4733 (class 2606 OID 18525)
+-- TOC entry 4719 (class 2606 OID 18620)
 -- Name: batch_job_execution_context batch_job_execution_context_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -579,7 +637,7 @@ ALTER TABLE ONLY public.batch_job_execution_context
 
 
 --
--- TOC entry 4727 (class 2606 OID 18479)
+-- TOC entry 4717 (class 2606 OID 18622)
 -- Name: batch_job_execution batch_job_execution_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -588,7 +646,7 @@ ALTER TABLE ONLY public.batch_job_execution
 
 
 --
--- TOC entry 4723 (class 2606 OID 18470)
+-- TOC entry 4721 (class 2606 OID 18624)
 -- Name: batch_job_instance batch_job_instance_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -597,7 +655,7 @@ ALTER TABLE ONLY public.batch_job_instance
 
 
 --
--- TOC entry 4731 (class 2606 OID 18513)
+-- TOC entry 4727 (class 2606 OID 18626)
 -- Name: batch_step_execution_context batch_step_execution_context_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -606,7 +664,7 @@ ALTER TABLE ONLY public.batch_step_execution_context
 
 
 --
--- TOC entry 4729 (class 2606 OID 18501)
+-- TOC entry 4725 (class 2606 OID 18628)
 -- Name: batch_step_execution batch_step_execution_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -615,7 +673,7 @@ ALTER TABLE ONLY public.batch_step_execution
 
 
 --
--- TOC entry 4711 (class 2606 OID 18455)
+-- TOC entry 4729 (class 2606 OID 18630)
 -- Name: customer customer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -624,7 +682,7 @@ ALTER TABLE ONLY public.customer
 
 
 --
--- TOC entry 4715 (class 2606 OID 18457)
+-- TOC entry 4733 (class 2606 OID 18632)
 -- Name: event_attendee event_attendee_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -633,7 +691,7 @@ ALTER TABLE ONLY public.event_attendee
 
 
 --
--- TOC entry 4713 (class 2606 OID 18459)
+-- TOC entry 4731 (class 2606 OID 18634)
 -- Name: event event_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -642,7 +700,7 @@ ALTER TABLE ONLY public.event
 
 
 --
--- TOC entry 4725 (class 2606 OID 18472)
+-- TOC entry 4723 (class 2606 OID 18636)
 -- Name: batch_job_instance job_inst_un; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -651,7 +709,7 @@ ALTER TABLE ONLY public.batch_job_instance
 
 
 --
--- TOC entry 4717 (class 2606 OID 18461)
+-- TOC entry 4735 (class 2606 OID 18638)
 -- Name: member member_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -660,7 +718,7 @@ ALTER TABLE ONLY public.member
 
 
 --
--- TOC entry 4719 (class 2606 OID 18463)
+-- TOC entry 4737 (class 2606 OID 18640)
 -- Name: payment payment_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -669,7 +727,7 @@ ALTER TABLE ONLY public.payment
 
 
 --
--- TOC entry 4721 (class 2606 OID 18465)
+-- TOC entry 4739 (class 2606 OID 18642)
 -- Name: subscription subscription_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -678,7 +736,7 @@ ALTER TABLE ONLY public.subscription
 
 
 --
--- TOC entry 4738 (class 2606 OID 18526)
+-- TOC entry 4743 (class 2606 OID 18643)
 -- Name: batch_job_execution_context job_exec_ctx_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -687,7 +745,7 @@ ALTER TABLE ONLY public.batch_job_execution_context
 
 
 --
--- TOC entry 4735 (class 2606 OID 18490)
+-- TOC entry 4744 (class 2606 OID 18648)
 -- Name: batch_job_execution_params job_exec_params_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -696,7 +754,7 @@ ALTER TABLE ONLY public.batch_job_execution_params
 
 
 --
--- TOC entry 4736 (class 2606 OID 18502)
+-- TOC entry 4745 (class 2606 OID 18653)
 -- Name: batch_step_execution job_exec_step_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -705,7 +763,7 @@ ALTER TABLE ONLY public.batch_step_execution
 
 
 --
--- TOC entry 4734 (class 2606 OID 18480)
+-- TOC entry 4742 (class 2606 OID 18658)
 -- Name: batch_job_execution job_inst_exec_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -714,7 +772,7 @@ ALTER TABLE ONLY public.batch_job_execution
 
 
 --
--- TOC entry 4737 (class 2606 OID 18514)
+-- TOC entry 4746 (class 2606 OID 18663)
 -- Name: batch_step_execution_context step_exec_ctx_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -722,7 +780,7 @@ ALTER TABLE ONLY public.batch_step_execution_context
     ADD CONSTRAINT step_exec_ctx_fk FOREIGN KEY (step_execution_id) REFERENCES public.batch_step_execution(step_execution_id);
 
 
--- Completed on 2025-04-26 10:31:56
+-- Completed on 2025-05-08 15:20:32
 
 --
 -- PostgreSQL database dump complete

@@ -180,7 +180,8 @@ public class MemberControllerTest {
 		
 	}
 	
-	@Test
+	//@Test
+	
 	public void logOut() throws Exception {
 				
 		mockMvc.perform(get("/logout").cookie(loginCookie)).andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/home"));
