@@ -2,6 +2,9 @@ package ca.xpertproject.apps.businessmanager.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -99,7 +102,7 @@ public class CustomerTest {
 	}
 	
 	@Test
-	public void constructorFull_test() {
+	public void constructorFull_test() throws ParseException {
 		
 			String address = stringRdmz.getRandomValue();
 			
@@ -119,8 +122,28 @@ public class CustomerTest {
 			
 			List<Subscription> subscriptions = easyRandom.objects(Subscription.class, 3).collect(Collectors.toList());
 			
-			Customer customerFull = new Customer(Long.valueOf(1), firstName, lastName, address, city, phoneNumber,
-					email, picture, barcodeValue, subscriptions);
+			String title = stringRdmz.getRandomValue();
+			String level = stringRdmz.getRandomValue();
+			Integer height = 180;
+			Integer weight = 178;
+			Date birthdate = new SimpleDateFormat("yyyy-MM-dd").parse("1970-01-01");
+			Customer customerFull = new Customer(
+					Long.valueOf(1), 
+					firstName, 
+					lastName, 
+					address, 
+					city, 
+					phoneNumber, 
+					email, 
+					picture, 
+					barcodeValue, 
+					subscriptions,
+					title, 
+					level, 
+					height, 
+					weight, 
+					birthdate, 
+					false);
 			
 			assertEquals(Long.valueOf(1), customerFull.getId());
 			assertEquals(address, customerFull.getAddress());
@@ -136,7 +159,7 @@ public class CustomerTest {
 	
 	
 	@Test
-	public void toCsvString_testValue() {
+	public void toCsvString_testValue() throws ParseException {
 		
 		String address = stringRdmz.getRandomValue();
 		
@@ -155,9 +178,29 @@ public class CustomerTest {
 		String picture = stringRdmz.getRandomValue();
 		
 		List<Subscription> subscriptions = easyRandom.objects(Subscription.class, 3).collect(Collectors.toList());
-		
-		Customer customerFull = new Customer(Long.valueOf(1), firstName, lastName, address, city, phoneNumber,
-				email, picture, barcodeValue, subscriptions);
+
+		String title = stringRdmz.getRandomValue();
+		String level = stringRdmz.getRandomValue();
+		Integer height = 180;
+		Integer weight = 178;
+		Date birthdate = new SimpleDateFormat("yyyy-MM-dd").parse("1970-01-01");
+		Customer customerFull = new Customer(
+				Long.valueOf(1), 
+				firstName, 
+				lastName, 
+				address, 
+				city, 
+				phoneNumber, 
+				email, 
+				picture, 
+				barcodeValue, 
+				subscriptions,
+				title, 
+				level, 
+				height, 
+				weight, 
+				birthdate, 
+				false);
 		
 		
 		String csvString = customerFull.toCsvString();
