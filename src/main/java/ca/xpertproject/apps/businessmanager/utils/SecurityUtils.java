@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public class SecurityUtils {
 	private static final List<String> AUTHORIZED_HOST = Arrays.asList(
+			"http://localhost/",
 			"http://localhost:8080/mybusiness", 
 			"https://clubdefenseexpert.com/mybusiness", 
 			"http://clubdefenseexpert.com/mybusiness");
