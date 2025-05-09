@@ -291,7 +291,7 @@ public class Customer implements CSVTransformable{
 				int numYear = currentYear - birthYear;
 				
 				if(comparingDate.after(now)) {
-					numYear = numYear + 1;
+					numYear = numYear - 1;
 				}
 				
 				age = numYear;
