@@ -68,7 +68,8 @@ public class GeneralController {
 	}
 	
 	@GetMapping("/navbar")
-	public String getNavbar(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model) {
+	public String getNavbar(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model, HttpServletRequest httpRequest) {
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
 		
 		MemberUtils memberUtils = new MemberUtils();
 		

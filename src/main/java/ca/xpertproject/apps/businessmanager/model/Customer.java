@@ -1,6 +1,5 @@
 package ca.xpertproject.apps.businessmanager.model;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -19,8 +18,7 @@ import jakarta.persistence.Transient;
 @Table(name="customer")
 
 public class Customer implements CSVTransformable{
-	
-	
+		
 	
 	public Customer() {
 		super();
@@ -30,7 +28,8 @@ public class Customer implements CSVTransformable{
 	
 
 	public Customer(Long id, String firstName, String lastName, String address, String city, String phoneNumber,
-			String email, String picture, String barcodeValue, List<Subscription> subscriptions) {
+			String email, String picture, String barcodeValue, List<Subscription> subscriptions, String title,
+			String level, Integer height, Integer weight, Date birthdate, boolean active) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -42,6 +41,12 @@ public class Customer implements CSVTransformable{
 		this.picture = picture;
 		this.barcodeValue = barcodeValue;
 		this.subscriptions = subscriptions;
+		this.title = title;
+		this.level = level;
+		this.height = height;
+		this.weight = weight;
+		this.birthdate = birthdate;
+		this.active = active;
 	}
 
 
@@ -237,13 +242,13 @@ public class Customer implements CSVTransformable{
 	public void setLevel(String level) {
 		this.level = level;
 	}
-
+	
 	public Integer getHeight() {
 		return height;
 	}
-
+	
 	public void setHeight(Integer height) {
-		this.height = height;
+		this.height=height;
 	}
 
 	public Integer getWeight() {
@@ -261,42 +266,40 @@ public class Customer implements CSVTransformable{
 	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
-	
-	public Integer getAge(){
+
+	public Integer getAge() {
 		Date birthDate = getBirthdate();
 		Integer age = null;
 		
 		if(birthDate!=null) {
 			try {
-							
 				SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				Date now = new Date();
 				String currentYearStr = yearFormat.format(now);
-						
-				String birthYearStr = yearFormat.format(birthDate);
+				
+				String birthYearStr =  yearFormat.format(birthDate);
 				Integer currentYear = Integer.parseInt(currentYearStr);
 				Integer birthYear = Integer.parseInt(birthYearStr);
 				
-				String birthdateStr = sdf.format(birthDate);
+				String birthDateStr = sdf.format(birthDate);
 				
-				String comparingDateStr = birthdateStr.replace(birthYearStr, currentYearStr);
+				String comparingDateStr = birthDateStr.replace(birthYearStr, currentYearStr);
 				
 				Date comparingDate = sdf.parse(comparingDateStr);
 				
 				int numYear = currentYear - birthYear;
 				
 				if(comparingDate.after(now)) {
-					numYear = numYear - 1;
+					numYear = numYear + 1;
 				}
 				
 				age = numYear;
+				
 			}catch (Exception e) {
-				// TODO: handle exception
+				
 			}
 		}
-		
-		
 		
 		return age;
 	}
@@ -312,8 +315,6 @@ public class Customer implements CSVTransformable{
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-
-
 
 	public String toCsvString() {
 		// TODO Auto-generated method stub

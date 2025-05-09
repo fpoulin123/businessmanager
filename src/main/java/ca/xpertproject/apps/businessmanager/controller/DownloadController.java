@@ -32,6 +32,8 @@ import ca.xpertproject.apps.businessmanager.model.Subscription;
 import ca.xpertproject.apps.businessmanager.model.SubscriptionRepository;
 import ca.xpertproject.apps.businessmanager.objects.mappers.SubscriptionMapper;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
+import ca.xpertproject.apps.businessmanager.utils.SecurityUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
@@ -60,10 +62,10 @@ public class DownloadController {
 	MemberUtils memberUtils = new MemberUtils(); 
 	
 	@GetMapping("/downloadCustomers")
-    public void downloadCustomers(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,HttpSession session,HttpServletResponse response) throws Exception {
+    public void downloadCustomers(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,HttpSession session,HttpServletResponse response, HttpServletRequest httpRequest) throws Exception {
         try {
         	
-        	if(!memberUtils.checkCookieMember(loggedMember, memberRepository)) {
+        	if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository)) {
         		throw new AuthenticationException("Accès non autorisé.");
         	}
 
@@ -104,14 +106,15 @@ public class DownloadController {
     }
 	
 	@GetMapping("/downloadSubscriptions")
-    public void downloadSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, HttpSession session,HttpServletResponse response) throws Exception {
+    public void downloadSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, HttpSession session,HttpServletResponse response, HttpServletRequest httpRequest) throws Exception {
         try {
         	
         	SubscriptionMapper mapper = new SubscriptionMapper();
 
-        	if(!memberUtils.checkCookieMember(loggedMember, memberRepository)) {
+        	if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository)) {
         		throw new AuthenticationException("Accès non autorisé.");
         	}
+
         	
             String fileName="abonnements.csv";
             
@@ -150,12 +153,13 @@ public class DownloadController {
 	}   
         
     @GetMapping("/downloadPayments")
-    public void downloadPayments(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, HttpSession session,HttpServletResponse response) throws Exception {
+    public void downloadPayments(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, HttpSession session,HttpServletResponse response, HttpServletRequest httpRequest) throws Exception {
         try {
         	
-        	if(!memberUtils.checkCookieMember(loggedMember, memberRepository)) {
+        	if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository)) {
         		throw new AuthenticationException("Accès non autorisé.");
         	}
+
 
             String fileName="paiements.csv";
             
@@ -194,12 +198,13 @@ public class DownloadController {
     }
     
     @GetMapping("/downloadEvents")
-    public void downloadEvents(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, HttpSession session,HttpServletResponse response) throws Exception {
+    public void downloadEvents(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, HttpSession session,HttpServletResponse response, HttpServletRequest httpRequest) throws Exception {
         try {
         	
-        	if(!memberUtils.checkCookieMember(loggedMember, memberRepository)) {
+        	if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository)) {
         		throw new AuthenticationException("Accès non autorisé.");
         	}
+
 
             String fileName="events.csv";
             
@@ -238,12 +243,13 @@ public class DownloadController {
     }
     
     @GetMapping("/downloadAttendees")
-    public void downloadAttendees(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required=true) Long eventId, HttpSession session,HttpServletResponse response) throws Exception {
+    public void downloadAttendees(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required=true) Long eventId, HttpSession session,HttpServletResponse response, HttpServletRequest httpRequest) throws Exception {
         try {
         	
-        	if(!memberUtils.checkCookieMember(loggedMember, memberRepository)) {
+        	if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository)) {
         		throw new AuthenticationException("Accès non autorisé.");
         	}
+
 
         	Event event = eventRepository.findById(eventId);
         	       	

@@ -47,7 +47,7 @@ public class EventAttendee {
 	Double amount;
 
 	public String toCsvString() {
-		
+
 		return String.format("\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\";\"%s\"", 
 				this.id,
 				this.customer.id,

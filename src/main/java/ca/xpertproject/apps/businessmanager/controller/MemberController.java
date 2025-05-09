@@ -29,7 +29,9 @@ import ca.xpertproject.apps.businessmanager.model.Member;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.utils.EncryptUtils;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
+import ca.xpertproject.apps.businessmanager.utils.SecurityUtils;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
@@ -108,7 +110,9 @@ public class MemberController{
 	}
 	
 	@PostMapping("/signin")
-	public String authenticate(@RequestParam Map<String, String> body, HttpServletResponse response) throws NoSuchAlgorithmException, AuthenticationException, InvalidKeyException, UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+	public String authenticate(@RequestParam Map<String, String> body, HttpServletResponse response, HttpServletRequest httpRequest) throws NoSuchAlgorithmException, AuthenticationException, InvalidKeyException, UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+		
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
 		
 		if(body.get("email")==null||body.get("email").isEmpty()) {
 			throw new AuthenticationException("E-mail is empty.");

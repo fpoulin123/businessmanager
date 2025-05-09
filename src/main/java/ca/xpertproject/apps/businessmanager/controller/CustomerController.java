@@ -32,6 +32,8 @@ import ca.xpertproject.apps.businessmanager.model.GenericBuilder;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
 import ca.xpertproject.apps.businessmanager.utils.PageUtils;
+import ca.xpertproject.apps.businessmanager.utils.SecurityUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
@@ -48,8 +50,10 @@ public class CustomerController {
 	@GetMapping("/allCustomers")
 	public String getCustomers(
 			@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,
-			@RequestParam(required = false, defaultValue = "1") String page, Model model)
+			@RequestParam(required = false, defaultValue = "1") String page, Model model, HttpServletRequest httpRequest)
 			throws AuthenticationException {
+		
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
 
 		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model)) {
 			
@@ -70,8 +74,11 @@ public class CustomerController {
 	@GetMapping("/customers")
 	public String getCustomersByName(
 			@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,
-			@RequestParam(required = false) String name, @RequestParam(required = false) String firstname, Model model)
+			@RequestParam(required = false) String name, @RequestParam(required = false) String firstname, Model model, HttpServletRequest httpRequest)
 			throws AuthenticationException {
+		
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
+		
 		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
 			return "noaccess";
 
@@ -96,7 +103,10 @@ public class CustomerController {
 	@GetMapping("/customer")
 	public String getCustomer(
 			@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,
-			@RequestParam(required = true) Long id, Model model) throws AuthenticationException {
+			@RequestParam(required = true) Long id, Model model, HttpServletRequest httpRequest) throws AuthenticationException {
+		
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
+		
 		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
 			return "noaccess";
 		Customer customer = customerRepository.findById(id);
@@ -111,7 +121,10 @@ public class CustomerController {
 	@GetMapping("/editCustomer")
 	public String getModifyCustomer(
 			@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,
-			@RequestParam(required = true) Long id, Model model) throws AuthenticationException {
+			@RequestParam(required = true) Long id, Model model, HttpServletRequest httpRequest) throws AuthenticationException {
+		
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
+		
 		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
 			return "noaccess";
 		Customer customer = customerRepository.findById(id);
@@ -123,8 +136,11 @@ public class CustomerController {
 
 	@GetMapping("/createCustomer")
 	public String getCreateCustomer(
-			@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model)
+			@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model, HttpServletRequest httpRequest)
 			throws AuthenticationException {
+		
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
+		
 		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
 			return "noaccess";
 		return "createCustomerform";
@@ -134,7 +150,10 @@ public class CustomerController {
 	public String createCustomer(
 			@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,
 			@RequestParam MultipartFile picture, @RequestParam Map<String, String> body, HttpServletResponse response,
-			Model model) throws ParseException, AuthenticationException, IllegalStateException, IOException {
+			Model model, HttpServletRequest httpRequest) throws ParseException, AuthenticationException, IllegalStateException, IOException {
+		
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
+		
 		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
 			return "noaccess";
 
@@ -145,13 +164,15 @@ public class CustomerController {
 
 			String fileExt = origName.substring(origName.lastIndexOf("."), origName.length());
 
-			String pictureFolder =PICTURES_DIR_PATH;
+			String pictureFolder = PICTURES_DIR_PATH;
 			
 			File picturesDir= new File(PICTURES_DIR_PATH);
 			if(!picturesDir.exists()) {
 				picturesDir.mkdirs();
 			}
+			
 			System.out.println("PICTURES: " + picturesDir.getAbsolutePath());
+			
 			fileName = UUID.randomUUID().toString() + fileExt;
 
 			String destFilePath = pictureFolder + "/" + fileName;
@@ -168,13 +189,12 @@ public class CustomerController {
 		
 		Integer weight = (weightValue!=null&&!weightValue.isEmpty())?Integer.parseInt(weightValue):null;
 		
-		String birthdateDateValue = body.get("birthdate");
-		Date birthdate = null;
+		String birthdateValue = body.get("birthdate");
+		Date birthDate = null;
 
-		if(birthdateDateValue!=null &&  !(birthdateDateValue.isEmpty())) {
-			birthdate = new SimpleDateFormat("yyyy-MM-dd").parse(birthdateDateValue);
+		if(birthdateValue!=null &&  !(birthdateValue.isEmpty())) {
+			birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(birthdateValue);
 		}
-
 		
 		Customer customer = GenericBuilder.of(Customer::new).with(Customer::setFirstName, body.get("firstname"))
 				.with(Customer::setLastName, body.get("lastname")).with(Customer::setAddress, body.get("address"))
@@ -184,7 +204,7 @@ public class CustomerController {
 				.with(Customer::setLevel, body.get("level"))
 				.with(Customer::setHeight, height)
 				.with(Customer::setWeight, weight)
-				.with(Customer::setBirthdate, birthdate)
+				.with(Customer::setBirthdate, birthDate)
 				.with(Customer::setPicture, fileName!=null?"./img/customerPictures/" + fileName:null).build();
 
 		Customer newCustomer = customerRepository.save(customer);
@@ -208,9 +228,11 @@ public class CustomerController {
 	@PostMapping(value = "/updateCustomer")
 	public String updateCustomer(
 			@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,
-			@RequestParam MultipartFile picture, @RequestParam Map<String, String> body, HttpServletResponse response, Model model)
+			@RequestParam MultipartFile picture, @RequestParam Map<String, String> body, HttpServletResponse response, Model model, HttpServletRequest httpRequest)
 			throws ParseException, AuthenticationException, IllegalStateException, IOException {
 
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
+		
 		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
 			return "noaccess";
 		
@@ -236,14 +258,6 @@ public class CustomerController {
 		}
 		
 		Customer customer = customerRepository.findById(Long.parseLong(body.get("id")));
-
-		String birthdateDateValue = body.get("birthdate");
-		Date birthdate = null;
-
-		if(birthdateDateValue!=null &&  !(birthdateDateValue.isEmpty())) {
-			birthdate = new SimpleDateFormat("yyyy-MM-dd").parse(birthdateDateValue);
-		}
-
 		
 		String barcodeValue = customer.getBarcodeValue();
 		if (barcodeValue == null || barcodeValue.isEmpty()) {
@@ -253,6 +267,7 @@ public class CustomerController {
 			barcodeValueLong = barcodeValueLong + customer.getId();
 			barcodeValue = barcodeValueLong.toString();
 		}
+
 		String heightValue = body.get("height");
 		
 		Integer height = (heightValue!=null&&!heightValue.isEmpty())?Integer.parseInt(heightValue):null;
@@ -260,17 +275,24 @@ public class CustomerController {
 		String weightValue = body.get("weight");
 		
 		Integer weight = (weightValue!=null&&!weightValue.isEmpty())?Integer.parseInt(weightValue):null;
+
+		String birthdateValue = body.get("birthdate");
+		Date birthDate = null;
 		
+		if(birthdateValue!=null&&!birthdateValue.isEmpty()) {
+			birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(birthdateValue);
+		}
+
 		customer = GenericBuilder.of(Customer::new).with(Customer::setId, customer.getId())
 				.with(Customer::setFirstName, body.get("firstname")).with(Customer::setLastName, body.get("lastname"))
 				.with(Customer::setAddress, body.get("address")).with(Customer::setCity, body.get("city"))
 				.with(Customer::setPhoneNumber, body.get("phonenumber")).with(Customer::setEmail, body.get("email"))
-				.with(Customer::setBarcodeValue, barcodeValue)
 				.with(Customer::setTitle, body.get("title"))
 				.with(Customer::setLevel, body.get("level"))
 				.with(Customer::setHeight, height)
 				.with(Customer::setWeight, weight)
-				.with(Customer::setBirthdate, birthdate)
+				.with(Customer::setBirthdate, birthDate)
+				.with(Customer::setBarcodeValue, barcodeValue)
 				.with(Customer::setPicture, fileName!=null?"./img/customerPictures/" + fileName:null).build();
 
 		customerRepository.save(customer);

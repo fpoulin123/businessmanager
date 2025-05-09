@@ -22,6 +22,8 @@ import ca.xpertproject.apps.businessmanager.objects.CustomerLight;
 import ca.xpertproject.apps.businessmanager.objects.mappers.CustomerMapper;
 import ca.xpertproject.apps.businessmanager.objects.mappers.EventMapper;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
+import ca.xpertproject.apps.businessmanager.utils.SecurityUtils;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 public class CalendarRestController {
@@ -37,7 +39,9 @@ public class CalendarRestController {
 	EventMapper mapper = new EventMapper();
 	
 	@GetMapping("calendarElts")
-	public CalendarData getCustomerList(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember){
+	public CalendarData getCustomerList(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, HttpServletRequest httpRequest){
+		
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
 		
 		if(!memberUtils.checkCookieMember(loggedMember, memberRepository)) return null;
 

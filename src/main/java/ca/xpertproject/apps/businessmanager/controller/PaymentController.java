@@ -32,6 +32,8 @@ import ca.xpertproject.apps.businessmanager.objects.PaymentExt;
 import ca.xpertproject.apps.businessmanager.objects.mappers.PaymentMapper;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
 import ca.xpertproject.apps.businessmanager.utils.PageUtils;
+import ca.xpertproject.apps.businessmanager.utils.SecurityUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
@@ -51,9 +53,9 @@ public class PaymentController {
 	MemberUtils memberUtils = new MemberUtils();
 	
 	@GetMapping("allPayments")
-	public String getAllPayments(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false, defaultValue = "1") String page, @RequestParam(required = false, defaultValue = "") String year, Model model) throws AuthenticationException {
+	public String getAllPayments(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false, defaultValue = "1") String page, @RequestParam(required = false, defaultValue = "") String year, Model model, HttpServletRequest httpRequest) throws AuthenticationException {
 		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		List<Payment> payments = paymentRepository.findAll();
 		
@@ -88,9 +90,9 @@ public class PaymentController {
 
 
 	@GetMapping("payments")
-	public String getPayments(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false, defaultValue = "1") String page, @RequestParam(required = true) Long subscriptionId ,Model model) {
+	public String getPayments(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false, defaultValue = "1") String page, @RequestParam(required = true) Long subscriptionId ,Model model, HttpServletRequest httpRequest) {
 		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		List<Payment> payments = paymentRepository.findBySubscriptionId(subscriptionId);
 		
@@ -102,9 +104,9 @@ public class PaymentController {
 	}
 	
 	@GetMapping("addPayment")
-	public String addPayment(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false, defaultValue = "1") String page, @RequestParam(required = true) Long subscriptionId ,Model model) {
+	public String addPayment(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false, defaultValue = "1") String page, @RequestParam(required = true) Long subscriptionId ,Model model, HttpServletRequest httpRequest) {
 		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		model.addAttribute("subscriptionId", subscriptionId);
 		
@@ -112,9 +114,9 @@ public class PaymentController {
 	}
 	
 	@PostMapping("addPayment")
-	public String addPayment(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model) throws ParseException {
+	public String addPayment(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model, HttpServletRequest httpRequest) throws ParseException {
 		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		Payment payment = new Payment();
 		
