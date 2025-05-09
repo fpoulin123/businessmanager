@@ -45,36 +45,31 @@ public class DashboardRestController {
 	
 	@GetMapping("paymentsData")
 	public List<Double> getPaymentsData(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,Model model, HttpServletRequest httpRequest){
-		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return null;
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository))return null;
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository))return null;
 		return dataFeeder.getPaymentsData(paymentRepository, subscriptionRepository);
 	}
 	
 	@GetMapping("validSubscriptionNumber")
 	public Integer getValidSubscriptionNumber(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,Model model, HttpServletRequest httpRequest) {
-		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return null;
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository))return null;
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository))return null;
 		return dataFeeder.getValidSubscriptionNumber(subscriptionRepository);
 	}
 	
 	@GetMapping("unpaidSubs")
 	public Integer getPartialOrUnpaidSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,Model model, HttpServletRequest httpRequest) {
-		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return null;
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository))return null;
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository))return null;
 		return dataFeeder.getPartialOrUnpaidSubscriptions(subscriptionRepository);
 	}
 	
 	@GetMapping("monthlyCA")
 	public List<MonthlyCA> getCAByMonth(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,Model model, HttpServletRequest httpRequest){
-		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return null;
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository))return null;
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository))return null;
 		return dataFeeder.getCAByMonth(paymentRepository, subscriptionRepository);
 	}
 	
 	@GetMapping("monthlySubs")
 	public List<MonthlySubNbr> getSubsByMonth(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,Model model, HttpServletRequest httpRequest){
-		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return null;
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository))return null;
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository))return null;
 		return dataFeeder.getSubsByMonth(subscriptionRepository);
 	}
 

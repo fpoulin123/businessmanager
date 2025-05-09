@@ -114,9 +114,9 @@ public class SubscriptionController {
 	}
 	
 	@GetMapping("/expiredSubscriptions")
-	public String getExpiredSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model) throws AuthenticationException {
+	public String getExpiredSubscriptions(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model, HttpServletRequest httpRequest) throws AuthenticationException {
 
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 
 		List<Subscription> subscriptions = subscriptionRepository.findAll();
 
@@ -127,9 +127,9 @@ public class SubscriptionController {
 		return "subscriptions";
 	}
 	@GetMapping("/subscriptionsCloseToEnd")
-	public String getSubscriptionsCloseToEnd(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model){
+	public String getSubscriptionsCloseToEnd(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model, HttpServletRequest httpRequest){
 		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		List<SubscriptionExt> subscriptionExtList = subscriptionRepository.findAll().stream().map(sub-> mapper.convert(sub)).filter(t -> willExpire(t)).collect(Collectors.toList());
 		
@@ -139,9 +139,9 @@ public class SubscriptionController {
 	}
 	
 	@GetMapping("/subscriptionsExpiredThirty")
-	public String getSubscriptionsExpiredThirty(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model){
+	public String getSubscriptionsExpiredThirty(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, Model model, HttpServletRequest httpRequest){
 		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		List<SubscriptionExt> subscriptionExtList = subscriptionRepository.findAll().stream().map(sub-> mapper.convert(sub)).filter(t -> hasExpired(t)).collect(Collectors.toList());
 		

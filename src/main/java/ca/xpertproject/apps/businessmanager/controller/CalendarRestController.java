@@ -41,9 +41,7 @@ public class CalendarRestController {
 	@GetMapping("calendarElts")
 	public CalendarData getCustomerList(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, HttpServletRequest httpRequest){
 		
-		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
-		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository)) return null;
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository)) return null;
 
 		List<CalendarEvent> calendarEventList = eventRepository.findAll().stream().map(event -> mapper.convert(event)).collect(Collectors.toList());
 		

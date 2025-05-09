@@ -46,22 +46,21 @@ public class GeneralController {
 	}
 	
 	@GetMapping("/monthlyRevenue")
-	public String getMonthlyRevenue(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model) throws AuthenticationException {
+	public String getMonthlyRevenue(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model, HttpServletRequest httpRequest) throws AuthenticationException {
 		
 		MemberUtils memberUtils = new MemberUtils();
-		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 				
 		return "monthlyRevenue";
 		
 	}
 	
 	@GetMapping("/monthlySubscriptions")
-	public String getMonthlySubscriptions(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model) throws AuthenticationException {
+	public String getMonthlySubscriptions(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model, HttpServletRequest httpRequest) throws AuthenticationException {
 		
 		MemberUtils memberUtils = new MemberUtils();
 		
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 				
 		return "monthlySubscriptions";
 		
@@ -69,6 +68,8 @@ public class GeneralController {
 	
 	@GetMapping("/navbar")
 	public String getNavbar(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model, HttpServletRequest httpRequest) {
+		
+		
 		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
 		
 		MemberUtils memberUtils = new MemberUtils();

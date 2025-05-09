@@ -43,9 +43,7 @@ public class CustomerRestController {
 	@GetMapping("getCustomerList")
 	public List<CustomerLight> getCustomerList(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, HttpServletRequest httpRequest){
 
-		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return null;
-
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository))return Collections.emptyList();
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository))return Collections.emptyList();
 
 
 		List<CustomerLight> customerList = (List<CustomerLight>) customerRepository.findAll().stream().map(customer-> CustomerMapper.convertForList(customer)).collect(Collectors.toList());
@@ -57,10 +55,8 @@ public class CustomerRestController {
 
 	@GetMapping("getACEventCustomerList")
 	public List<CustomerLight> getACEventCustomerList(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required=false) Long eventId, HttpServletRequest httpRequest){
-
-		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return null;
-
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository))return Collections.emptyList();
+		
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository))return Collections.emptyList();
 
 		System.out.println("Event id : " + eventId);
 

@@ -65,8 +65,8 @@ public class MemberController{
 	
 	
 	@GetMapping("/member")
-	public String getMember(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,@RequestParam(required=false, defaultValue="1") Long id, Model model) {
-		if(!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+	public String getMember(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,@RequestParam(required=false, defaultValue="1") Long id, Model model, HttpServletRequest httpRequest) {
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		Optional<Member> memberOpt = memberRepository.findById(id);
 		if(memberOpt.isPresent()) {
@@ -85,7 +85,11 @@ public class MemberController{
 	}
 	
 	@PostMapping("/signup")
-	public String createMember(@RequestParam Map<String, String> body) {
+	public String createMember(@RequestParam Map<String, String> body, HttpServletRequest httpRequest) {
+
+		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
+		
+		
 		String firstname = body.get("firstname");
 		String lastname = body.get("lastname");
 		String email = body.get("email");

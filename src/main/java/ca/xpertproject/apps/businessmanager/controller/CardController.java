@@ -21,6 +21,7 @@ import ca.xpertproject.apps.businessmanager.model.Customer;
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
 import ca.xpertproject.apps.businessmanager.utils.ImageFactory;
 import ca.xpertproject.apps.businessmanager.utils.SecurityUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import net.sourceforge.barbecue.Barcode;
 import net.sourceforge.barbecue.BarcodeFactory;
 import net.sourceforge.barbecue.BarcodeImageHandler;
@@ -32,7 +33,7 @@ public class CardController {
 	CustomerRepository customerRepository;
 	
 	@GetMapping("membercard")
-	public String getMemberCard(@RequestParam(required = true) Long id, Model model) throws Exception {
+	public String getMemberCard(@RequestParam(required = true) Long id, Model model, HttpServletRequest httpRequest) throws Exception {
 		
 		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
 		
