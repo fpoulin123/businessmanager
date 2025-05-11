@@ -46,6 +46,13 @@
 	<main class="m-auto">
 
 			<h2>CA Mensuel</h2>
+			<select id="revenueYear" onchange="javascript:displayMonthlyCA();">
+				<option></option>
+				<option>2025</option>
+				<option>2024</option>
+				<option>2023</option>
+				<option>2022</option>
+			</select>
 			<div style="max-width:900px;margin:auto;" >
 				<canvas id="myChart2"></canvas>
 			</div>			
@@ -54,22 +61,35 @@
 	<script type="text/javascript" src="./js/dashboard.js"></script>
 	<script type="text/javascript">
 		injectNavbar("page_home");
-				
-		$.getJSON("./monthlyCA", function(json){
+		
+		function displayMonthlyCA(){
 			
-			const months = [];
-			const amounts = [];
+			var monthlyCAUrl = "./monthlyCA";
 			
-			for(i=0;i<json.length;i++){
-				item = json[i];
-				console.log(item.month + ": " + item.amount);
-				months[i] = item.month;
-				amounts[i] = item.amount;
+			var year = $("#revenueYear").val();
+			
+			if(year!=null&&year.length>0){
+				monthlyCAUrl = "./monthlyCA?year=" + year;
 			}
-			
-			createBarChart("myChart2", "CA par mois","Montants cumulés", months, amounts);
-		});
 				
+			
+			$.getJSON(monthlyCAUrl, function(json){
+				
+				const months = [];
+				const amounts = [];
+				
+				for(i=0;i<json.length;i++){
+					item = json[i];
+					console.log(item.month + ": " + item.amount);
+					months[i] = item.month;
+					amounts[i] = item.amount;
+				}
+				
+				createBarChart("myChart2", "CA par mois","Montants cumulés", months, amounts);
+			});
+		}
+		
+		displayMonthlyCA();		
 	</script>
 
 </body>

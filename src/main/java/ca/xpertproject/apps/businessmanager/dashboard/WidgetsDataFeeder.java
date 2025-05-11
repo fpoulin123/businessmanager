@@ -1,7 +1,9 @@
 package ca.xpertproject.apps.businessmanager.dashboard;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
@@ -73,13 +75,23 @@ public class WidgetsDataFeeder implements IWidgetsDataFeeder{
 		return unpaidSubs;
 	}
 
-	public List<MonthlyCA> getCAByMonth(PaymentRepository paymentRepository, SubscriptionRepository subscriptionRepository){
+	public List<MonthlyCA> getCAByMonth(PaymentRepository paymentRepository, SubscriptionRepository subscriptionRepository, String year) throws ParseException{
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 
 		List<MonthlyCA> monthlyCAList = new ArrayList<>();
 
 		List<Payment> paymentList = paymentRepository.findAll();
+		
+		if(year!=null) {
+			SimpleDateFormat filterSdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+			Date afterDate = filterSdf.parse(year + "-01-01");
+			
+			Date beforeDate = filterSdf.parse(year + "-12-31");
+			
+			paymentList = paymentList.stream().filter(p->p.getPaymentDate().after(afterDate)&&p.getPaymentDate().before(beforeDate)).collect(Collectors.toList());
+		}
 
 		TreeMap<String, Double> monthlyCAMap = new TreeMap<String, Double>();
 

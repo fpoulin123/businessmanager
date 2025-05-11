@@ -19,7 +19,7 @@ public class SecurityUtils {
 		String url = request.getRequestURL().toString();
 		
 		for(String authHost:AUTHORIZED_HOST) {
-			System.out.println("URL : " + url + ", compare to " +authHost); 
+//			System.out.println("URL : " + url + ", compare to " +authHost); 
 			if(url.startsWith(authHost))hasAccess=true;
 		}
 		

@@ -4,7 +4,7 @@ function createDoughnutChart(data, legend, title){
 			const barColors = ["blue","red"];
 			
 			
-			new Chart("myChart", {
+			var chart = new Chart("myChart", {
 				  type: "doughnut",
 				  data: {
 				    labels: xValues,
@@ -22,6 +22,8 @@ function createDoughnutChart(data, legend, title){
 				    }
 				  }
 				});
+				
+			return chart;
 		}
 		
 		

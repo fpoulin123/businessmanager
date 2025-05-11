@@ -2,6 +2,8 @@ package ca.xpertproject.apps.businessmanager.controller;
 
 import static ca.xpertproject.apps.businessmanager.constant.ApplicationConstants.MEMBER_LOGGED_COOKIE_NAME;
 
+import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -62,9 +64,9 @@ public class DashboardRestController {
 	}
 	
 	@GetMapping("monthlyCA")
-	public List<MonthlyCA> getCAByMonth(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,Model model, HttpServletRequest httpRequest){
+	public List<MonthlyCA> getCAByMonth(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false) String year,Model model, HttpServletRequest httpRequest) throws ParseException{
 		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository))return null;
-		return dataFeeder.getCAByMonth(paymentRepository, subscriptionRepository);
+		return dataFeeder.getCAByMonth(paymentRepository, subscriptionRepository, year);
 	}
 	
 	@GetMapping("monthlySubs")

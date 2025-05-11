@@ -3,6 +3,7 @@ package ca.xpertproject.apps.businessmanager.dashboard;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,13 +41,13 @@ public class WidgetDataFeederTest {
 	EasyRandom easyRandom = new EasyRandom();
 
 	@Test
-	public void getCAByMonth_test() {
+	public void getCAByMonth_test() throws ParseException {
 		
 		List<Payment> payments = easyRandom.objects(Payment.class,5).collect(Collectors.toList());
 		
 		when(paymentRepository.findAll()).thenReturn(payments);
 		
-		List<MonthlyCA> monthlyCaList = wdf.getCAByMonth(paymentRepository, subscriptionRepository);
+		List<MonthlyCA> monthlyCaList = wdf.getCAByMonth(paymentRepository, subscriptionRepository,null);
 		
 		List<MonthlyCA> expected = new ArrayList<MonthlyCA>();
 		
