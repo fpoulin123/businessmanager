@@ -45,31 +45,56 @@
 
 	<main class="m-auto">
 
-			<h2>CA Mensuel</h2>
-			<select id="revenueYear" onchange="javascript:displayMonthlyCA();">
-				<option></option>
-				<option>2025</option>
-				<option>2024</option>
-				<option>2023</option>
-				<option>2022</option>
-			</select>
+			
 			<div style="max-width:900px;margin:auto;" >
+				<h2>CA Mensuel</h2>
+			
+			
+			
+				<div class="filter" style="display: inline;">
+				<label>Filtrer par année : </label>
+				<select id="revenueYear" onchange="javascript:changeYear();">
+					<option id="year0" value="0">All</option>
+					<option class="yearOpt" th:each="year : ${ yearList }"
+						th:value="${ year }" th:id="year + ${ year }" data-th-text="${ year }"></option>
+				</select>
+				</div>
+				
+				
+				
 				<canvas id="myChart2"></canvas>
-			</div>			
+				<div>
+					Montant total des revenus : <span data-th-text="${ totalPayments }"></span><span>&nbsp;CAD</span>
+				</div>	
+				
+			</div>	
+				
 	</main>
 
 	<script type="text/javascript" src="./js/dashboard.js"></script>
 	<script type="text/javascript">
 		injectNavbar("page_home");
 		
+		
+		function changeYear(){
+			var year = $("#revenueYear").val();
+			location = "./monthlyRevenue?year=" + year;
+		}
+		
 		function displayMonthlyCA(){
+
+			var year = "" + [[ ${year} ]];
+
+			console.log("YEAR : " + year);
 			
 			var monthlyCAUrl = "./monthlyCA";
 			
-			var year = $("#revenueYear").val();
+
+			$("#year" + year).attr('selected', true);
 			
-			if(year!=null&&year.length>0){
+			if(year!=null&&year.length>0 && year!="0"){
 				monthlyCAUrl = "./monthlyCA?year=" + year;
+				console.log("URL: " + monthlyCAUrl);
 			}
 				
 			

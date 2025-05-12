@@ -2,16 +2,23 @@ package ca.xpertproject.apps.businessmanager.controller;
 
 import java.net.URI;
 import java.net.http.HttpRequest;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import ca.xpertproject.apps.businessmanager.exception.AuthenticationException;
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
+import ca.xpertproject.apps.businessmanager.model.Payment;
+import ca.xpertproject.apps.businessmanager.model.PaymentRepository;
+import ca.xpertproject.apps.businessmanager.model.StringComparator;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
 import ca.xpertproject.apps.businessmanager.utils.SecurityUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,8 +34,13 @@ public class GeneralController {
 	@Autowired
 	MemberRepository memberRepository;
 	
-	@GetMapping("/home")
+	@Autowired
+	PaymentRepository paymentRepository;
+	
 
+	SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+	
+	@GetMapping("/home")
 	public String getEvent(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model, HttpServletRequest httpRequest) throws AuthenticationException {
 		
 		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
@@ -46,10 +58,46 @@ public class GeneralController {
 	}
 	
 	@GetMapping("/monthlyRevenue")
-	public String getMonthlyRevenue(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, Model model, HttpServletRequest httpRequest) throws AuthenticationException {
+	public String getMonthlyRevenue(@CookieValue(value = "mybusinessLoggedMember", defaultValue = "guest") String loggedMember, @RequestParam(required = false) String year, Model model, HttpServletRequest httpRequest) throws AuthenticationException {
 		
 		MemberUtils memberUtils = new MemberUtils();
 		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
+		if(year==null) {
+			year="0";
+			
+		}
+		model.addAttribute("year", year);
+		
+		
+		List<Payment> payments = paymentRepository.findAll();
+
+
+		
+		List<String> yearList = new ArrayList<String>();
+		
+		Double totalPayments = 0.0;
+		
+		for (Payment payment : payments) {
+			String yearStr = yearFormat.format(payment.getPaymentDate());
+			if(!yearList.contains(yearStr))yearList.add(yearStr);
+			if(yearStr.equals(year)||"0".equals(year)) {
+				totalPayments= totalPayments + payment.getAmount();
+			}
+			
+		}
+		
+		yearList.sort(new StringComparator());
+		
+		model.addAttribute("yearList",yearList);
+		
+		String tpStr = totalPayments.toString();
+		int pos = tpStr.lastIndexOf(".");
+		if(pos>0) {
+			tpStr = tpStr.substring(0, pos + 2);
+		}
+			
+		
+		model.addAttribute("totalPayments", tpStr);
 				
 		return "monthlyRevenue";
 		

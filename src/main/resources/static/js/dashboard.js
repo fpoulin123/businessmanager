@@ -22,14 +22,13 @@ function createDoughnutChart(data, legend, title){
 				    }
 				  }
 				});
-				
-			return chart;
+			
 		}
 		
 		
 function createBarChart(cnvId, title, legend, xData, yData){
 	
-	new Chart(cnvId, {
+	var chart = new Chart(cnvId, {
 	    type: 'bar',
 	    data: {
 	      labels: xData,
