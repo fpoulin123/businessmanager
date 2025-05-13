@@ -8,11 +8,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
+import ca.xpertproject.apps.businessmanager.model.EventAttendee;
+import ca.xpertproject.apps.businessmanager.model.EventAttendeeRepository;
 import ca.xpertproject.apps.businessmanager.model.Payment;
 import ca.xpertproject.apps.businessmanager.model.PaymentRepository;
 import ca.xpertproject.apps.businessmanager.model.Subscription;
@@ -75,7 +78,7 @@ public class WidgetsDataFeeder implements IWidgetsDataFeeder{
 		return unpaidSubs;
 	}
 
-	public List<MonthlyCA> getCAByMonth(PaymentRepository paymentRepository, SubscriptionRepository subscriptionRepository, String year) throws ParseException{
+	public List<MonthlyCA> getCAByMonth(PaymentRepository paymentRepository, SubscriptionRepository subscriptionRepository, EventAttendeeRepository eventAttendeeRepository, String year) throws ParseException{
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 
@@ -83,37 +86,59 @@ public class WidgetsDataFeeder implements IWidgetsDataFeeder{
 
 		List<Payment> paymentList = paymentRepository.findAll();
 		
+		List<EventAttendee> attendeeList = eventAttendeeRepository.findAll();
+		
 		if(year!=null) {
+			Integer yearInt = Integer.parseInt(year);
+			
 			SimpleDateFormat filterSdf = new SimpleDateFormat("yyyy-MM-dd");
 			
-			Date afterDate = filterSdf.parse(year + "-01-01");
+			Integer yearBefore = yearInt - 1;
 			
-			Date beforeDate = filterSdf.parse(year + "-12-31");
+			Integer yearAfter = yearInt + 1;
+			
+			Date afterDate = filterSdf.parse(yearBefore  + "-12-31");
+			
+			Date beforeDate = filterSdf.parse(yearAfter + "-01-01");
 			
 			paymentList = paymentList.stream().filter(p->p.getPaymentDate().after(afterDate)&&p.getPaymentDate().before(beforeDate)).collect(Collectors.toList());
+			
+			attendeeList = attendeeList.stream().filter(a->a.getEvent().getEventDate().after(afterDate)&&a.getEvent().getEventDate().before(beforeDate)).collect(Collectors.toList());
 		}
 
 		TreeMap<String, Double> monthlyCAMap = new TreeMap<String, Double>();
-
+		
 		for (Payment payment : paymentList) {
-			String paymentMonthStr = sdf.format(payment.getPaymentDate());
-
-			Double monthlyCAAmount = monthlyCAMap.get(paymentMonthStr);
-
-			if(monthlyCAAmount == null) {
-				monthlyCAAmount = 0.0;
+			if(payment.amount>0.0) {
+				String paymentMonthStr = sdf.format(payment.getPaymentDate());
 			}
-
-			monthlyCAAmount += payment.amount;
-			monthlyCAMap.put(paymentMonthStr, monthlyCAAmount);
+		}
+		
+		
+		
+		for (Payment payment : paymentList) {
+			if(payment.amount>0.0) {
+				String paymentMonthStr = sdf.format(payment.getPaymentDate());
+	
+				Double monthlyCAAmount = monthlyCAMap.get(paymentMonthStr);
+	
+				if(monthlyCAAmount == null) {
+					monthlyCAAmount = 0.0;
+				}
+	
+				monthlyCAAmount += payment.amount;
+				monthlyCAMap.put(paymentMonthStr, monthlyCAAmount);
+			}
 		}
 
 		Iterator<Entry<String, Double>> mapItr = monthlyCAMap.entrySet().iterator();
 
 		while (mapItr.hasNext()) {
+			
+			
 			Entry<String, Double> entry = (Entry<String, Double>) mapItr
 					.next();
-			MonthlyCA monthlyCA = new MonthlyCA(entry.getKey(), entry.getValue());
+			MonthlyCA monthlyCA = new MonthlyCA(entry.getKey(), entry.getValue(), Double.valueOf(250.0), Double.valueOf(150));
 
 			monthlyCAList.add(monthlyCA);
 		}

@@ -15,7 +15,11 @@ public class MonthlyCA {
 	
 	String month;
 	
-	Double amount;
+	Double subsamount;
+	
+	Double eventsamount;
+	
+	Double merchsamount;
 	
 	
 	

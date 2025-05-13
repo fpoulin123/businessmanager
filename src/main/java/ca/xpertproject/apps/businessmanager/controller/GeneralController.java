@@ -79,7 +79,7 @@ public class GeneralController {
 		
 		for (Payment payment : payments) {
 			String yearStr = yearFormat.format(payment.getPaymentDate());
-			if(!yearList.contains(yearStr))yearList.add(yearStr);
+			if(!yearList.contains(yearStr)&&payment.getAmount()>0)yearList.add(yearStr);
 			if(yearStr.equals(year)||"0".equals(year)) {
 				totalPayments= totalPayments + payment.getAmount();
 			}
@@ -91,11 +91,6 @@ public class GeneralController {
 		model.addAttribute("yearList",yearList);
 		
 		String tpStr = totalPayments.toString();
-		int pos = tpStr.lastIndexOf(".");
-		if(pos>0) {
-			tpStr = tpStr.substring(0, pos + 2);
-		}
-			
 		
 		model.addAttribute("totalPayments", tpStr);
 				

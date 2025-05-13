@@ -18,6 +18,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
+import ca.xpertproject.apps.businessmanager.model.EventAttendee;
+import ca.xpertproject.apps.businessmanager.model.EventAttendeeRepository;
 import ca.xpertproject.apps.businessmanager.model.Payment;
 import ca.xpertproject.apps.businessmanager.model.PaymentRepository;
 import ca.xpertproject.apps.businessmanager.model.Subscription;
@@ -36,6 +38,9 @@ public class WidgetDataFeederTest {
 	@MockitoBean
 	private SubscriptionRepository subscriptionRepository;
 	
+	@MockitoBean
+	private EventAttendeeRepository eventAttendeeRepository;
+	
 	IWidgetsDataFeeder wdf = new WidgetsDataFeeder();
 	
 	EasyRandom easyRandom = new EasyRandom();
@@ -45,9 +50,13 @@ public class WidgetDataFeederTest {
 		
 		List<Payment> payments = easyRandom.objects(Payment.class,5).collect(Collectors.toList());
 		
+		List<EventAttendee> attendees = easyRandom.objects(EventAttendee.class,5).collect(Collectors.toList());
+		
 		when(paymentRepository.findAll()).thenReturn(payments);
 		
-		List<MonthlyCA> monthlyCaList = wdf.getCAByMonth(paymentRepository, subscriptionRepository,null);
+		when(eventAttendeeRepository.findAll()).thenReturn(attendees);
+		
+		List<MonthlyCA> monthlyCaList = wdf.getCAByMonth(paymentRepository, subscriptionRepository, eventAttendeeRepository,null);
 		
 		List<MonthlyCA> expected = new ArrayList<MonthlyCA>();
 		
@@ -73,14 +82,14 @@ public class WidgetDataFeederTest {
 		while (mapItr.hasNext()) {
 			Entry<String, Double> entry = (Entry<String, Double>) mapItr
 					.next();
-			MonthlyCA monthlyCA = new MonthlyCA(entry.getKey(), entry.getValue());
+			MonthlyCA monthlyCA = new MonthlyCA(entry.getKey(), entry.getValue(), Double.valueOf(25.0), Double.valueOf(35.0));
 
 			expected.add(monthlyCA);
 		}
 		
 		int listIdx = 0;
 		for (MonthlyCA monthlyCA : expected) {
-			assertEquals(expected.get(listIdx).getAmount().doubleValue(), monthlyCaList.get(listIdx).getAmount().doubleValue());
+			assertEquals(expected.get(listIdx).getSubsamount().doubleValue(), monthlyCaList.get(listIdx).getSubsamount().doubleValue());
 			
 			assertEquals(expected.get(listIdx).getMonth(), monthlyCaList.get(listIdx).getMonth());
 			listIdx++;

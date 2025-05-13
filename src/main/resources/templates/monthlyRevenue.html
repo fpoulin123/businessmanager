@@ -63,8 +63,8 @@
 				
 				
 				<canvas id="myChart2"></canvas>
-				<div>
-					Montant total des revenus : <span data-th-text="${ totalPayments }"></span><span>&nbsp;CAD</span>
+				<div class="filter">
+					<label>Montant total des revenus sur l'année : </label><span style="color:green; font-weight:bold;" data-th-text="${ #numbers.formatDecimal( totalPayments,1,2,'POINT' )}"></span><span>&nbsp;CAD</span>
 				</div>	
 				
 			</div>	
@@ -101,16 +101,21 @@
 			$.getJSON(monthlyCAUrl, function(json){
 				
 				const months = [];
-				const amounts = [];
+				const amounts1 = [];
+				const amounts2 = [];
+				const amounts3 = [];
 				
 				for(i=0;i<json.length;i++){
 					item = json[i];
-					console.log(item.month + ": " + item.amount);
+					console.log(item.month + ": " + item.subsamount + " - " + item.eventsamount + " - " + item.merchsamount);
 					months[i] = item.month;
-					amounts[i] = item.amount;
+					amounts1[i] = item.subsamount;
+					amounts2[i] = item.eventsamount;
+					amounts3[i] = item.merchsamount;
+					
 				}
 				
-				createBarChart("myChart2", "CA par mois","Montants cumulés", months, amounts);
+				createBarChart2Series("myChart2", "CA par mois",months, "Abonnements", amounts1, "Evenements", amounts2, "Articles", amounts3);
 			});
 		}
 		

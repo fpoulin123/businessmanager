@@ -140,16 +140,21 @@
 		$.getJSON("./monthlyCA", function(json){
 			
 			const months = [];
-			const amounts = [];
+			const amounts1 = [];
+			const amounts2 = [];
+			const amounts3 = [];
 			
 			for(i=0;i<json.length;i++){
 				item = json[i];
 				console.log(item.month + ": " + item.amount);
 				months[i] = item.month;
-				amounts[i] = item.amount;
-			}
+				amounts1[i] = item.subsamount;
+				amounts2[i] = item.eventsamount;
+				amounts3[i] = item.merchsamount;
+ 			}
 			
-			createBarChart("myChart2", "CA par mois","Montants cumulés", months, amounts);
+			createBarChart2Series("myChart2", "CA par mois",months, "Abonn.", amounts1, "Even.", amounts2, "Articles", amounts3);
+			
 		});
 		
 		$.getJSON("./monthlySubs", function(json){
