@@ -38,12 +38,9 @@ public class Purchase {
 	@ManyToOne
 	public Customer customer;
 	
-	@Column(name="article_id", insertable = false, updatable = false)
+	@Column(name="article_id")
 	private Long articleId;
-	
-	@ManyToOne
-	private Article article;
-	
+
 	@Column(name="number")
 	private Integer number;
 	

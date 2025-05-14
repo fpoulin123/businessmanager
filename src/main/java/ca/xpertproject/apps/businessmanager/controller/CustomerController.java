@@ -53,9 +53,7 @@ public class CustomerController {
 			@RequestParam(required = false, defaultValue = "1") String page, Model model, HttpServletRequest httpRequest)
 			throws AuthenticationException {
 		
-		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
-
-		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model)) {
+		if (!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model)) {
 			
 			return "noaccess";
 		}
@@ -77,9 +75,7 @@ public class CustomerController {
 			@RequestParam(required = false) String name, @RequestParam(required = false) String firstname, Model model, HttpServletRequest httpRequest)
 			throws AuthenticationException {
 		
-		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
-		
-		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
+		if (!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
 			return "noaccess";
 
 		List<Customer> customers = new ArrayList<Customer>();
@@ -105,9 +101,7 @@ public class CustomerController {
 			@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,
 			@RequestParam(required = true) Long id, Model model, HttpServletRequest httpRequest) throws AuthenticationException {
 		
-		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
-		
-		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
+		if (!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
 			return "noaccess";
 		Customer customer = customerRepository.findById(id);
 		
@@ -123,9 +117,7 @@ public class CustomerController {
 			@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember,
 			@RequestParam(required = true) Long id, Model model, HttpServletRequest httpRequest) throws AuthenticationException {
 		
-		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
-		
-		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
+		if (!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
 			return "noaccess";
 		Customer customer = customerRepository.findById(id);
 
@@ -152,9 +144,7 @@ public class CustomerController {
 			@RequestParam MultipartFile picture, @RequestParam Map<String, String> body, HttpServletResponse response,
 			Model model, HttpServletRequest httpRequest) throws ParseException, AuthenticationException, IllegalStateException, IOException {
 		
-		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
-		
-		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
+		if (!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
 			return "noaccess";
 
 		String fileName = null;
@@ -231,9 +221,7 @@ public class CustomerController {
 			@RequestParam MultipartFile picture, @RequestParam Map<String, String> body, HttpServletResponse response, Model model, HttpServletRequest httpRequest)
 			throws ParseException, AuthenticationException, IllegalStateException, IOException {
 
-		if(!SecurityUtils.checkAuthorizedHost(httpRequest))return "noaccess";
-		
-		if (!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
+		if (!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))
 			return "noaccess";
 		
 		String fileName = null;
