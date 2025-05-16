@@ -1,5 +1,7 @@
 package ca.xpertproject.apps.businessmanager.model;
 
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,13 +40,19 @@ public class Purchase {
 	@ManyToOne
 	public Customer customer;
 	
-	@Column(name="article_id")
+	@Column(name="article_id",insertable = false, updatable = false)
 	private Long articleId;
+	
+	@ManyToOne
+	public Article article;
 
 	@Column(name="number")
 	private Integer number;
 	
 	@Column(name="discount")	
 	private Double discount;
+	
+	@Column(name="purchase_date")
+	private Date purchaseDate;
 
 }

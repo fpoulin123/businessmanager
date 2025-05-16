@@ -13,8 +13,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
+import ca.xpertproject.apps.businessmanager.model.EventAttendeeRepository;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.model.PaymentRepository;
+import ca.xpertproject.apps.businessmanager.model.PurchaseRepository;
 import ca.xpertproject.apps.businessmanager.model.SubscriptionRepository;
 import ca.xpertproject.apps.businessmanager.objects.MonthlyCA;
 import ca.xpertproject.apps.businessmanager.objects.MonthlySubNbr;
@@ -37,6 +39,11 @@ public class DashboardRestControllerTest {
 	@MockitoBean
 	private MemberRepository memberRepository;
 	
+	@MockitoBean
+	private EventAttendeeRepository eventAttendeeRepository;
+	
+	@MockitoBean
+	private PurchaseRepository purchaseRepository;
 	
 	@Test
 	public void getPaymentsData() throws Exception {

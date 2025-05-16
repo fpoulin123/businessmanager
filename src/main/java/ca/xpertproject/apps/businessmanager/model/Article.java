@@ -28,7 +28,6 @@ import lombok.Setter;
 
 public class Article {
 
-	
 	@Id
 	@GeneratedValue(generator = "article_id_seq")
 	@SequenceGenerator(name="article_id_seq", sequenceName = "article_id_seq", allocationSize = 1)
@@ -43,5 +42,8 @@ public class Article {
 
 	@Column(name="price")
 	private Double price;
+	
+	@OneToMany(mappedBy="articleId")
+	public List<Purchase> purchaseList;
 
 }

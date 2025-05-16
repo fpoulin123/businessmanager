@@ -84,7 +84,7 @@ public class Customer implements CSVTransformable{
 	@OneToMany(mappedBy="customerId")
 	public List<Subscription> subscriptions;
 	
-	@OneToMany(mappedBy="purchaseId")
+	@OneToMany(mappedBy="customerId")
 	public List<Purchase> purchaseList;
 	
 	@Column(name="title")

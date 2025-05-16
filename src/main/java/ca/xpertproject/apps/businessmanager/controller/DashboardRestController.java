@@ -19,6 +19,7 @@ import ca.xpertproject.apps.businessmanager.dashboard.WidgetsDataFeeder;
 import ca.xpertproject.apps.businessmanager.model.EventAttendeeRepository;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.model.PaymentRepository;
+import ca.xpertproject.apps.businessmanager.model.PurchaseRepository;
 import ca.xpertproject.apps.businessmanager.model.SubscriptionRepository;
 import ca.xpertproject.apps.businessmanager.objects.MonthlyCA;
 import ca.xpertproject.apps.businessmanager.objects.MonthlySubNbr;
@@ -40,6 +41,9 @@ public class DashboardRestController {
 	
 	@Autowired
 	private EventAttendeeRepository eventAttendeeRepository;
+	
+	@Autowired
+	private PurchaseRepository purchaseRepository;
 	
 	MemberUtils memberUtils = new MemberUtils();
 	
@@ -66,7 +70,7 @@ public class DashboardRestController {
 	@GetMapping("monthlyCA")
 	public List<MonthlyCA> getCAByMonth(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam(required = false) String year,Model model, HttpServletRequest httpRequest) throws ParseException{
 		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository))return null;
-		return dataFeeder.getCAByMonth(paymentRepository, subscriptionRepository, eventAttendeeRepository, year);
+		return dataFeeder.getCAByMonth(paymentRepository, subscriptionRepository, eventAttendeeRepository, purchaseRepository , year);
 	}
 	
 	@GetMapping("monthlySubs")

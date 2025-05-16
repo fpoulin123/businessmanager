@@ -30,7 +30,7 @@
 <body>
 
 
-	<input type="hidden" id="currentPage" value="page_payments" />
+	<input type="hidden" id="currentPage" value="page_articles" />
 	<input type="hidden" id="yearfiltered" th:value="${ year }" />
 
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4"
@@ -38,17 +38,12 @@
 
 	<main class="container">
 		<div class="bg-body-tertiary p-3 rounded">
-			<div class="form-floating filter">
-				<select id="yearFilter" onchange="javascript:filter();">
-					<option class="yearOpt" th:each="year : ${ yearList }"
-						th:value="${ year }" th:id="${ year }" data-th-text="${ year }"></option>
-
-				</select>
-
-			</div>
+			
 			<div class="form-floating filter">
 				<button class="btn btn-lg btn-primary" role="button"
 					onclick="exportCsv()">Export CSV</button>
+				<button class="btn btn-lg btn-primary" role="button"
+					onclick="createArticle()">Nouvel article</button>
 			</div>
 		</div>
 		<div class="bg-body-tertiary p-3 rounded">
@@ -68,24 +63,20 @@
 					<!-- 	     	<th>Id</th> -->
 					<!-- 	     	<th>Numéro client</th> -->
 					<th>Numéro</th>
-					<th>Abonnement</th>
-					<th>Prénom</th>
 					<th>Nom</th>
-					<th>Montant</th>
-					<th>Date de paiement</th>
+					<th>Description</th>
+					<th>Prix</th>
 					<th>Actions</th>
 				</thead>
-				<tbody data-th-each="payment : ${ payments }">
+				<tbody data-th-each="article : ${ articles }">
 					<tr>
-						<td data-th-text="${ payment.id }"></td>
-						<td data-th-text="${ payment.subscriptionId }"></td>
-						<td data-th-text="${ payment.customerFirstName }"></td>
-						<td data-th-text="${ payment.customerLastName }"></td>
-						<td data-th-text="${ payment.amount }"></td>
-						<td
-							data-th-text="${#dates.format(payment.paymentDate, 'dd-MM-yyyy')}"></td>
+						<td data-th-text="${ article.id }"></td>
+						<td data-th-text="${ article.name }"></td>
+						<td data-th-text="${ article.description }"></td>
+						<td data-th-text="${ article.price }"></td>
+						
 						<td><button class="btn btn-lg btn-primary btn-view"
-								role="button" th:onclick="viewPayment([[${ payment.id }]])"></button></td>
+								role="button" th:onclick="viewArticle([[${ article.id }]])"></button></td>
 
 					</tr>
 				</tbody>
@@ -112,28 +103,20 @@
 </body>
 <script th:inline="javascript">
 		
- 		var yearOptionId = [[ ${ year }]];
- 		
-		$('.yearOpt').removeAttr('selected');
-		
-		if(yearOptionId!=""){
-			$("#" + yearOptionId).removeAttr('selected').attr('selected', true);
-		}
-			
     	injectNavbar();
   	 	
-  		function viewPayment(id){
-			location="./payment?id=" + id;
+  		function viewArticle(id){
+			location="./article?id=" + id;
 		}
   		
-  		function exportCsv(){
-  			location="downloadPayments";
+  		function createArticle(){
+  			location="./createArticle"
   		}
   		
-  		function filter(){
-  			var year = $("#yearFilter").val();
-  			location="./allPayments?year=" + year;
+  		function exportCsv(){
+  			location="downloadArticles";
   		}
+  		
 
   </script>
 </html>

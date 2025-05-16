@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+<head>
+<script src="../assets/js/color-modes.js"></script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author"
+	content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+<meta name="generator" content="Hugo 0.122.0">
+<title>My Business</title>
+
+<link rel="canonical"
+	href="https://getbootstrap.com/docs/5.3/examples/navbar-static/">
+
+
+
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+<link href="./css/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="./css/jquery/jquery-ui.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="./css/navbar-static.css" rel="stylesheet">
+<link href="./css/sign-in.css" rel="stylesheet">
+<link href="./css/custom.css" rel="stylesheet">
+</head>
+
+
+<body>
+
+
+	<input type="hidden" id="currentPage" value="page_sales" />
+	<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4"
+		style="min-height: 56px;" id="navbar"></nav>
+
+
+	<main class="form-signin w-100 m-auto">
+		<form action="./addSale" method="post" name="saleForm"
+			id="saleForm">
+
+			<p class="errorMsg" data-th-text="${ errorMessage }"></p>
+			<h1 class="h3 mb-3 fw-normal">Nouvelle vente d'article</h1>
+			
+			<div class="form-floating">
+				<input type="text" class="form-control" id="floatingCustomerDisplay"
+					name="customerDisplay" placeholder="customerDisplay"> <label
+					for="floatingInput">Client</label>
+			</div>
+
+			<div class="form-floating">
+				<input type="text" class="form-control" id="floatingCustomerId"
+					name="customerId" placeholder="customerId"
+					th:value="${ customerId }" required="required"> <label
+					for="floatingInput">Numéro client</label>
+			</div>
+			
+			<div class="form-floating">
+				<input type="text" class="form-control" id="floatingArticleDisplay"
+					name="articleDisplay" placeholder="articleDisplay"> <label
+					for="floatingInput">Article</label>
+			</div>
+			
+			<div class="form-floating">
+				<input type="text" class="form-control" id="floatingArticleId"
+					name="articleId" placeholder="articleId"
+					th:value="${ articleId }" required="required"> <label
+					for="floatingInput">Numéro article</label>
+			</div>
+			
+			<div class="form-floating">
+				<input type="text" class="form-control" id="floatingDiscount"
+					name="discount" placeholder="discount" required value="0.0"><label
+					for="floatingInput">Discount</label>
+			</div>
+
+			<div class="form-floating">
+				<input type="text" class="form-control" id="floatingNumber"
+					name="number" placeholder="number" required> <label
+					for="floatingInput">Nombre</label>
+			</div>
+
+
+			<div class="form-floating">
+				<input type="date" class="form-control" id="floatingPurchaseDate"
+					name="purchaseDate" placeholder="purchaseDate" required> <label
+					for="floatingPurchaseDate">Date d'achat</label>
+			</div>
+
+			<button class="btn btn-primary py-2" type="submit">Créer</button>
+			<p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2024</p>
+		</form>
+	</main>
+
+	<script src="./js/bootstrap.bundle.min.js"></script>
+
+	<script src="./js/jquery/jquery.js"></script>
+	<script src="./js/jquery/jquery-ui.js"></script>
+	<script src="./js/sign.js"></script>
+	<script src="./js/inject.js"></script>
+
+	<script type="text/javascript">
+		injectNavbar();
+		
+		$.getJSON("./getCustomerList", function(data){
+			$( "#floatingCustomerDisplay" ).autocomplete({
+				source: data,
+				select: function(event,ui){
+					var label = ui.item.label;
+					 var value = ui.item.value;
+					 
+					 $( "#floatingCustomerDisplay" ).val(label);
+					 $( "#floatingCustomerId" ).val(value);
+					 
+					 return false;					
+				}
+			});
+		});
+		
+
+		$.getJSON("./getArticleList", function(data){
+			$( "#floatingArticleDisplay" ).autocomplete({
+				source: data,
+				select: function(event,ui){
+					var label = ui.item.label;
+					 var value = ui.item.value;
+					 
+					 $( "#floatingArticleDisplay" ).val(label);
+					 $( "#floatingArticleId" ).val(value);
+					 
+					 return false;					
+				}
+			});
+		});
+	</script>
+</body>
+
+</html>

@@ -31,7 +31,7 @@ public class EventAttendee {
 	@Column(name="id")
 	Long id;
 	
-	@Column(name="event_id")
+	@Column(name="event_id",insertable = false, updatable = false)
 	Long eventId;
 	
 	@ManyToOne

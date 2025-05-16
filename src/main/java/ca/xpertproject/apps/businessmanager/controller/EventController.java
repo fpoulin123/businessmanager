@@ -230,6 +230,8 @@ public class EventController {
 	@PostMapping("/addAttendee")
 	public String addAttendee(@CookieValue(value = MEMBER_LOGGED_COOKIE_NAME, defaultValue = "guest") String loggedMember, @RequestParam Map<String, String> body, HttpServletResponse response, Model model, HttpServletRequest httpRequest) {
 
+		body.entrySet().stream().forEach(param -> System.out.println(param.getKey() + param.getValue()));
+		
 		if(!SecurityUtils.checkAuthorizedHost(httpRequest)||!memberUtils.checkCookieMember(loggedMember, memberRepository, model))return "noaccess";
 		
 		body.entrySet().forEach(attr -> System.out.println(attr.getKey() + " : " + attr.getValue()));
@@ -237,6 +239,10 @@ public class EventController {
 		EventAttendee attendee = new EventAttendee();
 		
 		attendee.setEventId(Long.parseLong(body.get("eventId")));
+
+		Event event = eventRepository.findById(attendee.getEventId());
+		
+		attendee.setEvent(event);
 		
 		Customer customer = customerRepository.findById(Long.parseLong(body.get("customerId")));
 		
