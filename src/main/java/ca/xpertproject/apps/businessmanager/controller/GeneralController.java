@@ -71,7 +71,7 @@ public class GeneralController {
 		
 		List<Payment> payments = paymentRepository.findAll();
 
-
+		
 		
 		List<String> yearList = new ArrayList<String>();
 		
@@ -85,6 +85,7 @@ public class GeneralController {
 			}
 			
 		}
+		
 		
 		yearList.sort(new StringComparator());
 		
