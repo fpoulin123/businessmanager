@@ -5,6 +5,7 @@ import java.net.http.HttpRequest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,10 +16,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ca.xpertproject.apps.businessmanager.exception.AuthenticationException;
 import ca.xpertproject.apps.businessmanager.model.CustomerRepository;
+import ca.xpertproject.apps.businessmanager.model.EventAttendee;
+import ca.xpertproject.apps.businessmanager.model.EventAttendeeRepository;
 import ca.xpertproject.apps.businessmanager.model.MemberRepository;
 import ca.xpertproject.apps.businessmanager.model.Payment;
 import ca.xpertproject.apps.businessmanager.model.PaymentRepository;
+import ca.xpertproject.apps.businessmanager.model.Purchase;
+import ca.xpertproject.apps.businessmanager.model.PurchaseRepository;
 import ca.xpertproject.apps.businessmanager.model.StringComparator;
+import ca.xpertproject.apps.businessmanager.objects.PurchaseExt;
+import ca.xpertproject.apps.businessmanager.objects.mappers.PurchaseMapper;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
 import ca.xpertproject.apps.businessmanager.utils.SecurityUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,6 +44,11 @@ public class GeneralController {
 	@Autowired
 	PaymentRepository paymentRepository;
 	
+	@Autowired
+	PurchaseRepository purchaseRepository;
+	
+	@Autowired
+	EventAttendeeRepository eventAttendeeRepository;
 
 	SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
 	
@@ -70,8 +82,10 @@ public class GeneralController {
 		
 		
 		List<Payment> payments = paymentRepository.findAll();
-
 		
+		List<EventAttendee> eventAttendees = eventAttendeeRepository.findAll();
+
+		List<PurchaseExt> purchases = purchaseRepository.findAll().stream().map(PurchaseMapper::convert).collect(Collectors.toList());
 		
 		List<String> yearList = new ArrayList<String>();
 		
@@ -85,8 +99,29 @@ public class GeneralController {
 			}
 			
 		}
-		
-		
+		System.out.println("TOTAL Payments : " + totalPayments);
+		for (EventAttendee eventAttendee : eventAttendees) {
+			System.out.println("Attendee: "+ eventAttendee.getAmount());
+			
+			String yearStr = yearFormat.format(eventAttendee.getEvent().getEventDate());
+			if(!yearList.contains(yearStr)&&eventAttendee.getAmount()>0&&eventAttendee.getPayed())yearList.add(yearStr);
+			if(yearStr.equals(year)||"0".equals(year)) {
+				totalPayments= totalPayments + eventAttendee.getAmount();
+			}
+			
+		}
+		System.out.println("TOTAL Payments : " + totalPayments);
+		for (PurchaseExt purchase : purchases) {
+			System.out.println("Purchase: " +purchase.getPurchaseAmount());
+			
+			String yearStr = yearFormat.format(purchase.getPurchaseDate());
+			if(!yearList.contains(yearStr)&&purchase.getPurchaseAmount()>0)yearList.add(yearStr);
+			if(yearStr.equals(year)||"0".equals(year)) {
+				totalPayments= totalPayments + purchase.getPurchaseAmount();
+			}
+			
+		}
+		System.out.println("TOTAL Payments : " + totalPayments);
 		yearList.sort(new StringComparator());
 		
 		model.addAttribute("yearList",yearList);
@@ -125,7 +160,11 @@ public class GeneralController {
 	}
 	
 	
-	
+	@GetMapping("/testurl")
+	public String testUrl() {
+		
+		return "home";
+	}
 	
 
 }

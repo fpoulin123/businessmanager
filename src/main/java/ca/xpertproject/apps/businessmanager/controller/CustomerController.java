@@ -177,7 +177,7 @@ public class CustomerController {
 		
 		String weightValue = body.get("weight");
 		
-		Integer weight = (weightValue!=null&&!weightValue.isEmpty())?Integer.parseInt(weightValue):null;
+		Double weight = (weightValue!=null&&!weightValue.isEmpty())?Double.parseDouble(weightValue):null;
 		
 		String birthdateValue = body.get("birthdate");
 		Date birthDate = null;
@@ -262,7 +262,7 @@ public class CustomerController {
 		
 		String weightValue = body.get("weight");
 		
-		Integer weight = (weightValue!=null&&!weightValue.isEmpty())?Integer.parseInt(weightValue):null;
+		Double weight = (weightValue!=null&&!weightValue.isEmpty())?Double.parseDouble(weightValue):null;
 
 		String birthdateValue = body.get("birthdate");
 		Date birthDate = null;

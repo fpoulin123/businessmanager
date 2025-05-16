@@ -125,7 +125,7 @@ public class CustomerTest {
 			String title = stringRdmz.getRandomValue();
 			String level = stringRdmz.getRandomValue();
 			Integer height = 180;
-			Integer weight = 178;
+			Double weight = 178.0;
 			Date birthdate = new SimpleDateFormat("yyyy-MM-dd").parse("1970-01-01");
 			Customer customerFull = new Customer(
 					Long.valueOf(1), 
@@ -182,7 +182,7 @@ public class CustomerTest {
 		String title = stringRdmz.getRandomValue();
 		String level = stringRdmz.getRandomValue();
 		Integer height = 180;
-		Integer weight = 178;
+		Double weight = 178.0;
 		Date birthdate = new SimpleDateFormat("yyyy-MM-dd").parse("1970-01-01");
 		Customer customerFull = new Customer(
 				Long.valueOf(1), 

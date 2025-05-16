@@ -29,6 +29,7 @@ import ca.xpertproject.apps.businessmanager.model.Subscription;
 import ca.xpertproject.apps.businessmanager.objects.PurchaseExt;
 import ca.xpertproject.apps.businessmanager.objects.mappers.PurchaseMapper;
 import ca.xpertproject.apps.businessmanager.utils.MemberUtils;
+import ca.xpertproject.apps.businessmanager.utils.PageUtils;
 import ca.xpertproject.apps.businessmanager.utils.SecurityUtils;
 import ca.xpertproject.apps.businessmanager.utils.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -61,7 +62,7 @@ public class SalesController {
 		
 		List<Article> articleList = articleRepository.findAll();
 		
-		model.addAttribute("articles", articleList );
+		PageUtils.getPagedItems(articleList, model, page, "articles");
 		
 		return "articles";
 	}
@@ -112,6 +113,8 @@ public class SalesController {
 		List<PurchaseExt> purchaseExtList = purchaseList.stream().map(PurchaseMapper::convert).collect(Collectors.toList());
 		
 		model.addAttribute("purchases", purchaseExtList );
+		
+		PageUtils.getPagedItems(purchaseExtList, model, page, "purchase");
 		
 		return "sales";
 	}

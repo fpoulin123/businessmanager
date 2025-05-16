@@ -64,7 +64,7 @@
 			<div class="form-floating">
 				<input type="text" class="form-control" id="floatingLastname"
 					name="lastname" placeholder="Last name"
-					th:value="${ customer.lastName }" required="required"> <label
+					th:value="${ customer.lastName }" required="required" > <label
 					for="floatingInput">Nom</label>
 			</div>
 			
@@ -75,13 +75,13 @@
 			</div>
 			
 			<div class="form-floating">
-				<input type="text" class="form-control" id="floatingHeight"
+				<input type="number" class="form-control" id="floatingHeight"
 					name="height" placeholder="Height" th:value="${ customer.height }" >
 				<label for="floatingHeight">Taille en cm</label>
 			</div>
 			
 			<div class="form-floating">
-				<input type="text" class="form-control" id="floatingWeight"
+				<input type="number" class="form-control" id="floatingWeight"
 					name="weight" placeholder="Weight" th:value="${ customer.weight }" >
 				<label for="floatingWeight">Poid en lbs</label>
 			</div>

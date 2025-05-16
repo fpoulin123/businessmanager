@@ -29,7 +29,7 @@ public class Customer implements CSVTransformable{
 
 	public Customer(Long id, String firstName, String lastName, String address, String city, String phoneNumber,
 			String email, String picture, String barcodeValue, List<Subscription> subscriptions, String title,
-			String level, Integer height, Integer weight, Date birthdate, boolean active) {
+			String level, Integer height, Double weight, Date birthdate, boolean active) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -97,7 +97,7 @@ public class Customer implements CSVTransformable{
 	public Integer height;
 	
 	@Column(name="weight")
-	public Integer weight;
+	public Double weight;
 	
 	@Column(name="birthdate")
 	public Date birthdate;
@@ -254,11 +254,11 @@ public class Customer implements CSVTransformable{
 		this.height=height;
 	}
 
-	public Integer getWeight() {
+	public Double getWeight() {
 		return weight;
 	}
 
-	public void setWeight(Integer weight) {
+	public void setWeight(Double weight) {
 		this.weight = weight;
 	}
 

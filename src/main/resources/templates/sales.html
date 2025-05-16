@@ -54,7 +54,7 @@
 			</div>
 		</div>
 		<div class="bg-body-tertiary p-3 rounded">
-			<div class="pagesNavigator">
+			<div class="pagesNavigator" th:if="${ pages!=1 }">
 				<button th:if="${ prevPage!=null }" class="navPage previousPage"
 					role="button" th:onclick="previousPage()"></button>
 				<div class="navPage" th:text="${ currentPage }"></div>
@@ -98,7 +98,7 @@
 			</table>
 		</div>
 		<div class="bg-body-tertiary p-3 rounded">
-			<div class="pagesNavigator">
+			<div class="pagesNavigator" th:if="${ pages!=1 }">
 				<button th:if="${ prevPage!=null }" class="navPage previousPage"
 					role="button" th:onclick="previousPage()"></button>
 				<div class="navPage" th:text="${ currentPage }"></div>
@@ -127,6 +127,17 @@
   		
   		function exportCsv(){
   			location="downloadArticles";
+  		}
+  		
+  		function previousPage() {
+
+  			location = "sales?page=[[${prevPage}]]";
+  		}
+
+  		function nextPage() {
+
+  			location = "sales?page=[[${nextPage}]]";
+
   		}
   		
 
