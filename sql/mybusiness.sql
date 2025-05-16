@@ -2,10 +2,10 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 16.8 (Ubuntu 16.8-0ubuntu0.24.04.1)
--- Dumped by pg_dump version 17.4
+-- Dumped from database version 17.2
+-- Dumped by pg_dump version 17.2
 
--- Started on 2025-05-09 13:06:53
+-- Started on 2025-05-15 21:07:20
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -19,33 +19,53 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- TOC entry 238 (class 1255 OID 73951)
--- Name: isvalidsubscription(date, integer); Type: FUNCTION; Schema: public; Owner: postgres
---
-
-CREATE FUNCTION public.isvalidsubscription(subscriptiondate date, duration integer) RETURNS boolean
-    LANGUAGE plpgsql
-    AS $$
-
-DECLARE expirationdate date;
-BEGIN
-	expirationdate = subscriptiondate + duration;
-
-	RETURN expirationdate > now();
-
-END;
-$$;
-
-
-ALTER FUNCTION public.isvalidsubscription(subscriptiondate date, duration integer) OWNER TO postgres;
-
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
 --
--- TOC entry 215 (class 1259 OID 73952)
+-- TOC entry 241 (class 1259 OID 20023)
+-- Name: accesslog; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.accesslog (
+    id bigint NOT NULL,
+    date date NOT NULL,
+    customer_number character varying NOT NULL,
+    firstname character varying NOT NULL,
+    lastname character varying NOT NULL,
+    granted boolean NOT NULL
+);
+
+
+ALTER TABLE public.accesslog OWNER TO postgres;
+
+--
+-- TOC entry 240 (class 1259 OID 20022)
+-- Name: accesslog_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.accesslog_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.accesslog_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4954 (class 0 OID 0)
+-- Dependencies: 240
+-- Name: accesslog_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.accesslog_id_seq OWNED BY public.accesslog.id;
+
+
+--
+-- TOC entry 217 (class 1259 OID 19890)
 -- Name: alldata; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -74,7 +94,7 @@ CREATE TABLE public.alldata (
 ALTER TABLE public.alldata OWNER TO postgres;
 
 --
--- TOC entry 216 (class 1259 OID 73957)
+-- TOC entry 218 (class 1259 OID 19895)
 -- Name: alldata_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -89,8 +109,8 @@ CREATE SEQUENCE public.alldata_id_seq
 ALTER SEQUENCE public.alldata_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3517 (class 0 OID 0)
--- Dependencies: 216
+-- TOC entry 4955 (class 0 OID 0)
+-- Dependencies: 218
 -- Name: alldata_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -98,7 +118,46 @@ ALTER SEQUENCE public.alldata_id_seq OWNED BY public.alldata.id;
 
 
 --
--- TOC entry 230 (class 1259 OID 74018)
+-- TOC entry 245 (class 1259 OID 20041)
+-- Name: article; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.article (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    description character varying NOT NULL,
+    price double precision NOT NULL
+);
+
+
+ALTER TABLE public.article OWNER TO postgres;
+
+--
+-- TOC entry 244 (class 1259 OID 20040)
+-- Name: article_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.article_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.article_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4956 (class 0 OID 0)
+-- Dependencies: 244
+-- Name: article_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.article_id_seq OWNED BY public.article.id;
+
+
+--
+-- TOC entry 219 (class 1259 OID 19896)
 -- Name: batch_job_execution; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -119,7 +178,7 @@ CREATE TABLE public.batch_job_execution (
 ALTER TABLE public.batch_job_execution OWNER TO postgres;
 
 --
--- TOC entry 234 (class 1259 OID 74064)
+-- TOC entry 220 (class 1259 OID 19901)
 -- Name: batch_job_execution_context; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -133,7 +192,7 @@ CREATE TABLE public.batch_job_execution_context (
 ALTER TABLE public.batch_job_execution_context OWNER TO postgres;
 
 --
--- TOC entry 231 (class 1259 OID 74030)
+-- TOC entry 221 (class 1259 OID 19906)
 -- Name: batch_job_execution_params; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -149,7 +208,7 @@ CREATE TABLE public.batch_job_execution_params (
 ALTER TABLE public.batch_job_execution_params OWNER TO postgres;
 
 --
--- TOC entry 236 (class 1259 OID 74077)
+-- TOC entry 222 (class 1259 OID 19911)
 -- Name: batch_job_execution_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -164,7 +223,7 @@ CREATE SEQUENCE public.batch_job_execution_seq
 ALTER SEQUENCE public.batch_job_execution_seq OWNER TO postgres;
 
 --
--- TOC entry 229 (class 1259 OID 74011)
+-- TOC entry 223 (class 1259 OID 19912)
 -- Name: batch_job_instance; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -179,7 +238,7 @@ CREATE TABLE public.batch_job_instance (
 ALTER TABLE public.batch_job_instance OWNER TO postgres;
 
 --
--- TOC entry 237 (class 1259 OID 74078)
+-- TOC entry 224 (class 1259 OID 19915)
 -- Name: batch_job_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -194,7 +253,7 @@ CREATE SEQUENCE public.batch_job_seq
 ALTER SEQUENCE public.batch_job_seq OWNER TO postgres;
 
 --
--- TOC entry 232 (class 1259 OID 74040)
+-- TOC entry 225 (class 1259 OID 19916)
 -- Name: batch_step_execution; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -224,7 +283,7 @@ CREATE TABLE public.batch_step_execution (
 ALTER TABLE public.batch_step_execution OWNER TO postgres;
 
 --
--- TOC entry 233 (class 1259 OID 74052)
+-- TOC entry 226 (class 1259 OID 19921)
 -- Name: batch_step_execution_context; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -238,7 +297,7 @@ CREATE TABLE public.batch_step_execution_context (
 ALTER TABLE public.batch_step_execution_context OWNER TO postgres;
 
 --
--- TOC entry 235 (class 1259 OID 74076)
+-- TOC entry 227 (class 1259 OID 19926)
 -- Name: batch_step_execution_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -253,7 +312,7 @@ CREATE SEQUENCE public.batch_step_execution_seq
 ALTER SEQUENCE public.batch_step_execution_seq OWNER TO postgres;
 
 --
--- TOC entry 217 (class 1259 OID 73958)
+-- TOC entry 228 (class 1259 OID 19927)
 -- Name: customer; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -271,15 +330,15 @@ CREATE TABLE public.customer (
     level character varying(100),
     height integer,
     weight integer,
-    birthdate date,
-    active boolean DEFAULT true NOT NULL
+    active boolean DEFAULT true NOT NULL,
+    birthdate date
 );
 
 
 ALTER TABLE public.customer OWNER TO postgres;
 
 --
--- TOC entry 218 (class 1259 OID 73963)
+-- TOC entry 229 (class 1259 OID 19932)
 -- Name: customer_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -294,8 +353,8 @@ CREATE SEQUENCE public.customer_id_seq
 ALTER SEQUENCE public.customer_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3518 (class 0 OID 0)
--- Dependencies: 218
+-- TOC entry 4957 (class 0 OID 0)
+-- Dependencies: 229
 -- Name: customer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -303,7 +362,7 @@ ALTER SEQUENCE public.customer_id_seq OWNED BY public.customer.id;
 
 
 --
--- TOC entry 219 (class 1259 OID 73964)
+-- TOC entry 230 (class 1259 OID 19933)
 -- Name: event; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -320,7 +379,7 @@ CREATE TABLE public.event (
 ALTER TABLE public.event OWNER TO postgres;
 
 --
--- TOC entry 220 (class 1259 OID 73970)
+-- TOC entry 231 (class 1259 OID 19939)
 -- Name: event_attendee; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -336,7 +395,7 @@ CREATE TABLE public.event_attendee (
 ALTER TABLE public.event_attendee OWNER TO postgres;
 
 --
--- TOC entry 221 (class 1259 OID 73973)
+-- TOC entry 232 (class 1259 OID 19942)
 -- Name: event_attendee_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -351,8 +410,8 @@ CREATE SEQUENCE public.event_attendee_id_seq
 ALTER SEQUENCE public.event_attendee_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3519 (class 0 OID 0)
--- Dependencies: 221
+-- TOC entry 4958 (class 0 OID 0)
+-- Dependencies: 232
 -- Name: event_attendee_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -360,7 +419,7 @@ ALTER SEQUENCE public.event_attendee_id_seq OWNED BY public.event_attendee.id;
 
 
 --
--- TOC entry 222 (class 1259 OID 73974)
+-- TOC entry 233 (class 1259 OID 19943)
 -- Name: event_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -375,8 +434,8 @@ CREATE SEQUENCE public.event_id_seq
 ALTER SEQUENCE public.event_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3520 (class 0 OID 0)
--- Dependencies: 222
+-- TOC entry 4959 (class 0 OID 0)
+-- Dependencies: 233
 -- Name: event_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -384,7 +443,7 @@ ALTER SEQUENCE public.event_id_seq OWNED BY public.event.id;
 
 
 --
--- TOC entry 223 (class 1259 OID 73975)
+-- TOC entry 234 (class 1259 OID 19944)
 -- Name: member; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -401,7 +460,7 @@ CREATE TABLE public.member (
 ALTER TABLE public.member OWNER TO postgres;
 
 --
--- TOC entry 224 (class 1259 OID 73981)
+-- TOC entry 235 (class 1259 OID 19950)
 -- Name: member_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -416,8 +475,8 @@ CREATE SEQUENCE public.member_id_seq
 ALTER SEQUENCE public.member_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3521 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 4960 (class 0 OID 0)
+-- Dependencies: 235
 -- Name: member_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -425,7 +484,7 @@ ALTER SEQUENCE public.member_id_seq OWNED BY public.member.id;
 
 
 --
--- TOC entry 225 (class 1259 OID 73982)
+-- TOC entry 236 (class 1259 OID 19951)
 -- Name: payment; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -440,7 +499,7 @@ CREATE TABLE public.payment (
 ALTER TABLE public.payment OWNER TO postgres;
 
 --
--- TOC entry 226 (class 1259 OID 73985)
+-- TOC entry 237 (class 1259 OID 19954)
 -- Name: payment_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -455,8 +514,8 @@ CREATE SEQUENCE public.payment_id_seq
 ALTER SEQUENCE public.payment_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3522 (class 0 OID 0)
--- Dependencies: 226
+-- TOC entry 4961 (class 0 OID 0)
+-- Dependencies: 237
 -- Name: payment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -464,7 +523,48 @@ ALTER SEQUENCE public.payment_id_seq OWNED BY public.payment.id;
 
 
 --
--- TOC entry 227 (class 1259 OID 73986)
+-- TOC entry 247 (class 1259 OID 20050)
+-- Name: purchase; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.purchase (
+    id bigint NOT NULL,
+    customer_id bigint NOT NULL,
+    article_id bigint NOT NULL,
+    number integer NOT NULL,
+    discount double precision DEFAULT 0 NOT NULL,
+    purchase_date timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE public.purchase OWNER TO postgres;
+
+--
+-- TOC entry 246 (class 1259 OID 20049)
+-- Name: purchase_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.purchase_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.purchase_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4962 (class 0 OID 0)
+-- Dependencies: 246
+-- Name: purchase_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.purchase_id_seq OWNED BY public.purchase.id;
+
+
+--
+-- TOC entry 238 (class 1259 OID 19955)
 -- Name: subscription; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -483,7 +583,7 @@ CREATE TABLE public.subscription (
 ALTER TABLE public.subscription OWNER TO postgres;
 
 --
--- TOC entry 228 (class 1259 OID 73989)
+-- TOC entry 239 (class 1259 OID 19958)
 -- Name: subscription_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -498,8 +598,8 @@ CREATE SEQUENCE public.subscription_id_seq
 ALTER SEQUENCE public.subscription_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3523 (class 0 OID 0)
--- Dependencies: 228
+-- TOC entry 4963 (class 0 OID 0)
+-- Dependencies: 239
 -- Name: subscription_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -507,7 +607,57 @@ ALTER SEQUENCE public.subscription_id_seq OWNED BY public.subscription.id;
 
 
 --
--- TOC entry 3305 (class 2604 OID 73990)
+-- TOC entry 243 (class 1259 OID 20032)
+-- Name: weight_category; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.weight_category (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    gender character varying NOT NULL,
+    sport character varying NOT NULL,
+    federation character varying NOT NULL,
+    above_limit character varying NOT NULL,
+    below_limit character varying NOT NULL
+);
+
+
+ALTER TABLE public.weight_category OWNER TO postgres;
+
+--
+-- TOC entry 242 (class 1259 OID 20031)
+-- Name: weight_category_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.weight_category_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.weight_category_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4964 (class 0 OID 0)
+-- Dependencies: 242
+-- Name: weight_category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.weight_category_id_seq OWNED BY public.weight_category.id;
+
+
+--
+-- TOC entry 4728 (class 2604 OID 20026)
+-- Name: accesslog id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.accesslog ALTER COLUMN id SET DEFAULT nextval('public.accesslog_id_seq'::regclass);
+
+
+--
+-- TOC entry 4718 (class 2604 OID 19959)
 -- Name: alldata id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -515,7 +665,15 @@ ALTER TABLE ONLY public.alldata ALTER COLUMN id SET DEFAULT nextval('public.alld
 
 
 --
--- TOC entry 3306 (class 2604 OID 73991)
+-- TOC entry 4730 (class 2604 OID 20044)
+-- Name: article id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.article ALTER COLUMN id SET DEFAULT nextval('public.article_id_seq'::regclass);
+
+
+--
+-- TOC entry 4719 (class 2604 OID 19960)
 -- Name: customer id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -523,7 +681,7 @@ ALTER TABLE ONLY public.customer ALTER COLUMN id SET DEFAULT nextval('public.cus
 
 
 --
--- TOC entry 3308 (class 2604 OID 73992)
+-- TOC entry 4721 (class 2604 OID 19961)
 -- Name: event id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -531,7 +689,7 @@ ALTER TABLE ONLY public.event ALTER COLUMN id SET DEFAULT nextval('public.event_
 
 
 --
--- TOC entry 3310 (class 2604 OID 73993)
+-- TOC entry 4723 (class 2604 OID 19962)
 -- Name: event_attendee id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -539,7 +697,7 @@ ALTER TABLE ONLY public.event_attendee ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
--- TOC entry 3311 (class 2604 OID 73994)
+-- TOC entry 4724 (class 2604 OID 19963)
 -- Name: member id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -547,7 +705,7 @@ ALTER TABLE ONLY public.member ALTER COLUMN id SET DEFAULT nextval('public.membe
 
 
 --
--- TOC entry 3313 (class 2604 OID 73995)
+-- TOC entry 4726 (class 2604 OID 19964)
 -- Name: payment id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -555,7 +713,15 @@ ALTER TABLE ONLY public.payment ALTER COLUMN id SET DEFAULT nextval('public.paym
 
 
 --
--- TOC entry 3314 (class 2604 OID 73996)
+-- TOC entry 4731 (class 2604 OID 20053)
+-- Name: purchase id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.purchase ALTER COLUMN id SET DEFAULT nextval('public.purchase_id_seq'::regclass);
+
+
+--
+-- TOC entry 4727 (class 2604 OID 19965)
 -- Name: subscription id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -563,8 +729,27 @@ ALTER TABLE ONLY public.subscription ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- TOC entry 3489 (class 0 OID 73952)
--- Dependencies: 215
+-- TOC entry 4729 (class 2604 OID 20035)
+-- Name: weight_category id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.weight_category ALTER COLUMN id SET DEFAULT nextval('public.weight_category_id_seq'::regclass);
+
+
+--
+-- TOC entry 4942 (class 0 OID 20023)
+-- Dependencies: 241
+-- Data for Name: accesslog; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.accesslog (id, date, customer_number, firstname, lastname, granted) FROM stdin;
+1	2025-05-05	202504020416	Abderrahi	BOUDOUMA	t
+\.
+
+
+--
+-- TOC entry 4918 (class 0 OID 19890)
+-- Dependencies: 217
 -- Data for Name: alldata; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -989,19 +1174,33 @@ COPY public.alldata (id, firstname, lastname, address, city, phonenumber, course
 
 
 --
--- TOC entry 3504 (class 0 OID 74018)
--- Dependencies: 230
--- Data for Name: batch_job_execution; Type: TABLE DATA; Schema: public; Owner: postgres
+-- TOC entry 4946 (class 0 OID 20041)
+-- Dependencies: 245
+-- Data for Name: article; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.batch_job_execution (job_execution_id, version, job_instance_id, create_time, start_time, end_time, status, exit_code, exit_message, last_updated) FROM stdin;
-1	2	1	2025-04-24 17:30:37.169583	2025-04-24 17:30:37.200552	2025-04-24 17:30:39.216191	COMPLETED	COMPLETED		2025-04-24 17:30:39.217417
+COPY public.article (id, name, description, price) FROM stdin;
+2	Gants boxe ATF	Gants de boxe ATF, cuir rouge, fermeture par velcro, 14oz	120
+3	Protège dent	Protège dents thermo formable	25
+4	Jambières ATF	Jambières de protection ATF, mousse et polyuréthane, couleur noire, tibia et pied	60
+5	Bandes boxe	Bandes de protection pour les mains	25
 \.
 
 
 --
--- TOC entry 3508 (class 0 OID 74064)
--- Dependencies: 234
+-- TOC entry 4920 (class 0 OID 19896)
+-- Dependencies: 219
+-- Data for Name: batch_job_execution; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.batch_job_execution (job_execution_id, version, job_instance_id, create_time, start_time, end_time, status, exit_code, exit_message, last_updated) FROM stdin;
+1	2	1	2025-05-05 16:27:38.945417	2025-05-05 16:27:38.995282	2025-05-05 16:27:42.145861	COMPLETED	COMPLETED		2025-05-05 16:27:42.146858
+\.
+
+
+--
+-- TOC entry 4921 (class 0 OID 19901)
+-- Dependencies: 220
 -- Data for Name: batch_job_execution_context; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1011,8 +1210,8 @@ COPY public.batch_job_execution_context (job_execution_id, short_context, serial
 
 
 --
--- TOC entry 3505 (class 0 OID 74030)
--- Dependencies: 231
+-- TOC entry 4922 (class 0 OID 19906)
+-- Dependencies: 221
 -- Data for Name: batch_job_execution_params; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1022,8 +1221,8 @@ COPY public.batch_job_execution_params (job_execution_id, parameter_name, parame
 
 
 --
--- TOC entry 3503 (class 0 OID 74011)
--- Dependencies: 229
+-- TOC entry 4924 (class 0 OID 19912)
+-- Dependencies: 223
 -- Data for Name: batch_job_instance; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1033,22 +1232,22 @@ COPY public.batch_job_instance (job_instance_id, version, job_name, job_key) FRO
 
 
 --
--- TOC entry 3506 (class 0 OID 74040)
--- Dependencies: 232
+-- TOC entry 4926 (class 0 OID 19916)
+-- Dependencies: 225
 -- Data for Name: batch_step_execution; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.batch_step_execution (step_execution_id, version, step_name, job_execution_id, create_time, start_time, end_time, status, commit_count, read_count, filter_count, write_count, read_skip_count, write_skip_count, process_skip_count, rollback_count, exit_code, exit_message, last_updated) FROM stdin;
-1	44	step1	1	2025-04-24 17:30:37.22255	2025-04-24 17:30:37.23155	2025-04-24 17:30:38.173787	COMPLETED	42	417	1	416	0	0	0	0	COMPLETED		2025-04-24 17:30:38.174786
-2	44	step2	1	2025-04-24 17:30:38.186198	2025-04-24 17:30:38.190258	2025-04-24 17:30:38.504197	COMPLETED	42	416	0	416	0	0	0	0	COMPLETED		2025-04-24 17:30:38.504197
-3	44	step3	1	2025-04-24 17:30:38.517198	2025-04-24 17:30:38.524195	2025-04-24 17:30:38.881338	COMPLETED	42	416	0	416	0	0	0	0	COMPLETED		2025-04-24 17:30:38.881338
-4	44	step4	1	2025-04-24 17:30:38.892194	2025-04-24 17:30:38.897198	2025-04-24 17:30:39.207329	COMPLETED	42	416	0	416	0	0	0	0	COMPLETED		2025-04-24 17:30:39.208198
+1	44	step1	1	2025-05-05 16:27:39.016228	2025-05-05 16:27:39.025216	2025-05-05 16:27:40.789487	COMPLETED	42	417	1	416	0	0	0	0	COMPLETED		2025-05-05 16:27:40.790486
+2	44	step2	1	2025-05-05 16:27:40.799461	2025-05-05 16:27:40.80345	2025-05-05 16:27:41.384894	COMPLETED	42	416	0	416	0	0	0	0	COMPLETED		2025-05-05 16:27:41.387888
+3	44	step3	1	2025-05-05 16:27:41.399856	2025-05-05 16:27:41.409828	2025-05-05 16:27:41.883561	COMPLETED	42	416	0	416	0	0	0	0	COMPLETED		2025-05-05 16:27:41.883561
+4	44	step4	1	2025-05-05 16:27:41.894532	2025-05-05 16:27:41.898523	2025-05-05 16:27:42.137896	COMPLETED	42	416	0	416	0	0	0	0	COMPLETED		2025-05-05 16:27:42.13888
 \.
 
 
 --
--- TOC entry 3507 (class 0 OID 74052)
--- Dependencies: 233
+-- TOC entry 4927 (class 0 OID 19921)
+-- Dependencies: 226
 -- Data for Name: batch_step_execution_context; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1061,471 +1260,458 @@ COPY public.batch_step_execution_context (step_execution_id, short_context, seri
 
 
 --
--- TOC entry 3491 (class 0 OID 73958)
--- Dependencies: 217
+-- TOC entry 4929 (class 0 OID 19927)
+-- Dependencies: 228
 -- Data for Name: customer; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.customer (id, firstname, lastname, address, city, phonenumber, picture, barcodevalue, email, title, level, height, weight, birthdate, active) FROM stdin;
-1	Med amin	GARRAOUI	8262RUE LONARDO	SLN	514-4414609	\N	\N	\N	\N	\N	\N	\N	\N	t
-2	Rassi	ABDELBARI	8107 RUEDE NICE	STL	7254260 /  6382935	\N	\N	\N	\N	\N	\N	\N	\N	t
-3	Sadi	ABDELBARI	8107 RUEDE NICE	STL	7254260 /  6382935	\N	\N	\N	\N	\N	\N	\N	\N	t
-5	Hssain	ABDESSAMAD	11515 BL LANGELIER	MN	514-2602912	\N	\N	\N	\N	\N	\N	\N	\N	t
-6	Angel	ACETO	855 CREMARIEST	MTL	514-205-9134	\N	\N	\N	\N	\N	\N	\N	\N	t
-7	Kaei aiss	ADAM	10178 KARL LEVEQUE	MTL	438-464-2108	\N	\N	\N	\N	\N	\N	\N	\N	t
-8	Ada	ADDIYA	12180 16E,AVENUE	MTL	514-9629008	\N	\N	\N	\N	\N	\N	\N	\N	t
-9	Loua	AHMIME	12050 AV PIERRE BLANCHET	MTL	438-8336250	\N	\N	\N	\N	\N	\N	\N	\N	t
-10	Ani	AIT SI MOHAMED	12530 FERDINAND BASTIEN	MTL	438-396-9219	\N	\N	\N	\N	\N	\N	\N	\N	t
-11	Youce	AIT-HAMMOUDI	2096351 BLV Joseph Renaud	MTL	438-509-9110	\N	\N	\N	\N	\N	\N	\N	\N	t
-12	Mani razin	AIT-HAMMOUDI	2096351 BLV Joseph Renaud	MTL	438-509-9110	\N	\N	\N	\N	\N	\N	\N	\N	t
-13	Yousse	AJROUDI	10953 AVENUDROPEAU	MN	514-5571211	\N	\N	\N	\N	\N	\N	\N	\N	t
-14	Mera	AMAZICH	6955 26É AVENUE	MTL	514-2366046	\N	\N	\N	\N	\N	\N	\N	\N	t
-15	Amyass	AMGHAR	7351 B. MORICE-DUPLISSIS	MTL	438-8703632	\N	\N	\N	\N	\N	\N	\N	\N	t
-16	Debora	APOLLON ROY	12,315 J.A. Rouleau	MTL	8810334 /  917-4987	\N	\N	\N	\N	\N	\N	\N	\N	t
-17	Kati	ARAB	7380 AV DE L,ALSACE	ANJOU	3519523 /  7972040	\N	\N	\N	\N	\N	\N	\N	\N	t
-18	Rachid	ARRID	8440-25/AVENU-N5	M-N	514-5935668	\N	\N	\N	\N	\N	\N	\N	\N	t
-19	Ri	ARRID	8440-25/AVENU-N5	M-N	514-5935668	\N	\N	\N	\N	\N	\N	\N	\N	t
-20	Steven	AUGUSTE	12758 PLACE LOUIS CHARTIER	MTL	514-2951041	\N	\N	\N	\N	\N	\N	\N	\N	t
-21	Anso	AZIMYT	12155RUE PHILIPPE LEBON	MTL	2946536 /  5017016	\N	\N	\N	\N	\N	\N	\N	\N	t
-22	Kari	BACHAND	11482 AV OLIER	MTL	438-9676170	\N	\N	\N	\N	\N	\N	\N	\N	t
-23	Nadha el iman	BAHEDDI	7960 AVE TREMOLIERES	ANJOU	438-9209118	\N	\N	\N	\N	\N	\N	\N	\N	t
-24	Isla	BAHOUCHE	11427 RUE ALLARD	MTL	438-2278922	\N	\N	\N	\N	\N	\N	\N	\N	t
-25	Ilia	BAKHLUCH		MTL	3542166 /  6520700	\N	\N	\N	\N	\N	\N	\N	\N	t
-26	Nassi	BARAKAT	64580 18ÉAVENU	MTL	514-5816019	\N	\N	\N	\N	\N	\N	\N	\N	t
-27	Bria	BARDI	8385BOUL GOUIN EST	MTL	514-4944068	\N	\N	\N	\N	\N	\N	\N	\N	t
-28	Ana	BEGOUG	9792  3E RUE	MTL	438-5226190	\N	\N	\N	\N	\N	\N	\N	\N	t
-29	Youce	BELDJOUDI	9184 RUE MASSE	STL	514-8849159	\N	\N	\N	\N	\N	\N	\N	\N	t
-30	Djame	BELIAOVAR	6393 RUE BELLEAU	MTL	514-9619615	\N	\N	\N	\N	\N	\N	\N	\N	t
-31	Ahre	BELKASSEM	1164 BOULEVARD LACORDAIRE	MTL	 /  5538190	\N	\N	\N	\N	\N	\N	\N	\N	t
-32	Baha eddin	BEN MASOUD	7489 RUE MONPETIT	STL	514-7915621	\N	\N	\N	\N	\N	\N	\N	\N	t
-33	Ahme	BEN SALAH	9015 RUE BOISSONNEAULT	MTL	514-	\N	\N	\N	\N	\N	\N	\N	\N	t
-34	Mohamed amin	BEN SALAH	9015 RUE BOISSONNEAULT	MTL	514-	\N	\N	\N	\N	\N	\N	\N	\N	t
-35	Amin	BENAMARA	12174 RUE CATELLI	MTL	438-8379538	\N	\N	\N	\N	\N	\N	\N	\N	t
-36	Yasmin	BENHAOUA	8792RUE DARRAS	st leo	7255713 /  5466022	\N	\N	\N	\N	\N	\N	\N	\N	t
-37	Mohame	BENISSE	4220 RUE D'HIRELLE	MTL	438-9201314	\N	\N	\N	\N	\N	\N	\N	\N	t
-38	Rafae	BENTO	12341 4É AVENUE	MTL	514-6487502	\N	\N	\N	\N	\N	\N	\N	\N	t
-39	Kamili	BENYAMINA	6363 BLV ROBER	SL	438-8739437	\N	\N	\N	\N	\N	\N	\N	\N	t
-40	Zineb khadij	BENYAMINA	6363 BLV ROBER	SL	438-8739437	\N	\N	\N	\N	\N	\N	\N	\N	t
-41	Aksi	BERKANE	6240 RENOIRE A 15	MTL	438-3085488	\N	\N	\N	\N	\N	\N	\N	\N	t
-42	Missa	BERROUCHE	12131 61E AVENUE	MTL	438-9934213	\N	\N	\N	\N	\N	\N	\N	\N	t
-43	Fah	BETTACH	12005 6E AVENU	MTL	514-5130402	\N	\N	\N	\N	\N	\N	\N	\N	t
-44	Kevi	BOSSE	8581RUE JEROME-LALEMANT	MTL	438-3896662	\N	\N	\N	\N	\N	\N	\N	\N	t
-45	Yassin	BOUALLA	12535RUEALBER MORIN	MTL	438-4093911	\N	\N	\N	\N	\N	\N	\N	\N	t
-46	Ade	BOUAMEUR	12258ELIE BEUREGARDI	MTL	438-4091295	\N	\N	\N	\N	\N	\N	\N	\N	t
-47	Ayou	BOUDHINA	11677 BOUL GOUMSIN	MTL	514-4970272	\N	\N	\N	\N	\N	\N	\N	\N	t
-48	Ada	BOUJRAD	660 PLACE DISRALI	LAV	438-4948293	\N	\N	\N	\N	\N	\N	\N	\N	t
-49	Foua	BOUJRAD	660 PLACE DISRALI	LAV	438-4948293	\N	\N	\N	\N	\N	\N	\N	\N	t
-50	Mohamed rid	BOUJRAD	660 PLACE DISRALI	LAV	438-4948293	\N	\N	\N	\N	\N	\N	\N	\N	t
-51	Ylia	BOUSLAH	11956 RUE MATTE N8	MTL	438-9901345	\N	\N	\N	\N	\N	\N	\N	\N	t
-52	Ismai	BOUTERFA	8466LEVRAVEL	STL	514-3269221	\N	\N	\N	\N	\N	\N	\N	\N	t
-53	Mala	BOUTOUILI	5800ARTHURE-CHEVIER	MTL	2983282 /  3262268	\N	\N	\N	\N	\N	\N	\N	\N	t
-54	Ismai	BOUZAIR	8363 BOUL CHTEAU NEUF	MTL	438-5242142	\N	\N	\N	\N	\N	\N	\N	\N	t
-55	Zy	BRIZARD	141CAR DU RUISSELET	TERR	514-7039989	\N	\N	\N	\N	\N	\N	\N	\N	t
-56	Méliss	BRUNELLE	150 RUE DES SORBIERS	MTL	514-4240241	\N	\N	\N	\N	\N	\N	\N	\N	t
-57	Michae	CADEMARTORI	3840 Villeray	MTL	514-9964179	\N	\N	\N	\N	\N	\N	\N	\N	t
-58	Anthon	CALABRETTA	8375 DANIEL DONY	MTL	514-9270133	\N	\N	\N	\N	\N	\N	\N	\N	t
-59	Ahme	CANLI	12300 AV HURTEAU	MTL	438-4020304	\N	\N	\N	\N	\N	\N	\N	\N	t
-60	Ismai	CANLI	12300 AV HURTEAU	MTL	438-4020304	\N	\N	\N	\N	\N	\N	\N	\N	t
-121	Nawfe	FARAJ	8991 GIOVANNI-CABOTO	SL	514-9297663	\N	\N	\N	\N	\N	\N	\N	\N	t
-61	Antoni	CAPPELLO	3882boul-chomedy	lAV	9445717 /  6619346	\N	\N	\N	\N	\N	\N	\N	\N	t
-62	Madiso	CARRERA	12535 57AVE	MTL	514-473-3584	\N	\N	\N	\N	\N	\N	\N	\N	t
-63	Anthon	CARRERA	12077 70 E AVENUE	MTL	514-7727706	\N	\N	\N	\N	\N	\N	\N	\N	t
-64	Emm	CARRERA	12077 70 E AVENUE	MTL	514-7727706	\N	\N	\N	\N	\N	\N	\N	\N	t
-65	Simo	CHAKUVINGN	12148 AV ALLARD	MN	514-6071872	\N	\N	\N	\N	\N	\N	\N	\N	t
-66	Hug	CHARPENTIER	6901RUE MARIE-VICTORIN	MTL	336-85291536	\N	\N	\N	\N	\N	\N	\N	\N	t
-67	Raia	CHBICHER	9610 PERRAS	MTL	514-6259052	\N	\N	\N	\N	\N	\N	\N	\N	t
-68	Sam	CHEKFIAI	4403 RUE DELASE	MTL	438-9236885	\N	\N	\N	\N	\N	\N	\N	\N	t
-69	Abdl-kari	CHEMLAL	11761 BOUL LANGELIER	MTL	438-9932157	\N	\N	\N	\N	\N	\N	\N	\N	t
-70	Aksi	CHERIFI	5592MARCEAL MONETTE	MTL	438-5215927	\N	\N	\N	\N	\N	\N	\N	\N	t
-71	Arri	CHERRAT	12143 AV CHARLES RENARD	MTL	514-972-4949	\N	\N	\N	\N	\N	\N	\N	\N	t
-72	Massi	CHERRAT	12143 AV CHARLES RENARD	MTL	514-972-4949	\N	\N	\N	\N	\N	\N	\N	\N	t
-73	Arri	CHERRAT	12143 AV CHARLES RENARD	MTL	514-972-4949	\N	\N	\N	\N	\N	\N	\N	\N	t
-74	Masi	CHERRAT	12143 AV CHARLES RENARD	MTL	514-972-4949	\N	\N	\N	\N	\N	\N	\N	\N	t
-75	Ade	CHRIGUI	8570 25É AVENUE N3	MTL	514-3264702	\N	\N	\N	\N	\N	\N	\N	\N	t
-76	Ram	COIRAZZA	10313RUE DES EGLLANTIERS	MTL	514-8928748	\N	\N	\N	\N	\N	\N	\N	\N	t
-77	Letizi	COMPARSI	11835 MARCEL.SAVA	MTL	8819081 /  8084137	\N	\N	\N	\N	\N	\N	\N	\N	t
-78	Wali	DAKTOURI	8483 HUGUET-LATOUR	MTL	438-9925920	\N	\N	\N	\N	\N	\N	\N	\N	t
-79	Claud	DAKVIN	5528 CHARLEVOI	MTL	514-6089539	\N	\N	\N	\N	\N	\N	\N	\N	t
-80	Giann	DE VIVO	11614 EDITH-SEREI	MTL	514-7071765	\N	\N	\N	\N	\N	\N	\N	\N	t
-81	Fabric	DECOSSE	8970 AV DE BRETAGE	MTL	514-5865522	\N	\N	\N	\N	\N	\N	\N	\N	t
-82	Emir hamz	DEMIRCI	12701-3LONGELIER	MN	438-8268707	\N	\N	\N	\N	\N	\N	\N	\N	t
-83	Yigit ef	DEMIRCI	12701-3LONGELIER	MN	438-8268707	\N	\N	\N	\N	\N	\N	\N	\N	t
-84	Samue	DERIENZO	5160 LEO OUELETTE	SLO	7213809 /  4388280158	\N	\N	\N	\N	\N	\N	\N	\N	t
-85	Victori	DERIENZO	5160 LEO OUELETTE	SLO	7213809 /  4388280158	\N	\N	\N	\N	\N	\N	\N	\N	t
-86	Pascal	DES SANTOS	12210JEAN-YVES BIGRAS	MTL	514-8380444	\N	\N	\N	\N	\N	\N	\N	\N	t
-87	D	DI PALOA	7141rue Merlot	LAV	450-936-1241	\N	\N	\N	\N	\N	\N	\N	\N	t
-88	Linn	DI PALOA	7141 rue Merlot	LAV	450-936-1241	\N	\N	\N	\N	\N	\N	\N	\N	t
-89	Valentin	DI PISA	12592  48É AVNUE	MTL	514-4634540	\N	\N	\N	\N	\N	\N	\N	\N	t
-90	Emma-le	DIGIOVANNI	11901 PAUL EMILE LAMARCHE	MTL	4945152 /  8084277	\N	\N	\N	\N	\N	\N	\N	\N	t
-91	Giovann	DIGIOVANNI	11901 PAUL EMILE LAMARCHE	MTL	4945152 /  8084277	\N	\N	\N	\N	\N	\N	\N	\N	t
-92	Michae	DITILO	3210CHAGALL	LAVAL	514-7122257	\N	\N	\N	\N	\N	\N	\N	\N	t
-93	Junior dibri	DJAMBOU	12037 55EME AVE	MTL	514-8623894	\N	\N	\N	\N	\N	\N	\N	\N	t
-94	Leonel yva	DJAMBOU	12037 55EME AVE	MTL	514-8623894	\N	\N	\N	\N	\N	\N	\N	\N	t
-95	Muriell	DJAMBOU	12037 55EME AVE	MTL	514-8623894	\N	\N	\N	\N	\N	\N	\N	\N	t
-96	Ada	DJEBLI	5222 BOUL DES GRANDS PRAIRIS	STL	3262758 /  5865509	\N	\N	\N	\N	\N	\N	\N	\N	t
-97	Ry	DJEBLI	5222 BOUL DES GRANDS PRAIRIS	STL	3262758 /  5865509	\N	\N	\N	\N	\N	\N	\N	\N	t
-98	Nicola	DOMIANOVICH	12065 AV COPOMIS	MTL	514-5769397	\N	\N	\N	\N	\N	\N	\N	\N	t
-99	Fare	DRIDI	4487RUE PLINGUET	SL	438-9923690	\N	\N	\N	\N	\N	\N	\N	\N	t
-100	Jessic	DU ROSEAU	43 rue Gilles Boisbriand	MTL	4333320 /  830-5843	\N	\N	\N	\N	\N	\N	\N	\N	t
-101	Fede	DURSO	9267LAUIS DESSUNES	MTL	514-8244158	\N	\N	\N	\N	\N	\N	\N	\N	t
-102	Janett	EL BADAOUI	6362 RUE ARTHUR-CHVIER	MTL	438-8781135	\N	\N	\N	\N	\N	\N	\N	\N	t
-103	Raya	EL BADAOUI	6362 RUE ARTHUR-CHVIER	MTL	438-8781135	\N	\N	\N	\N	\N	\N	\N	\N	t
-104	Yasmin	EL HABIBI	8235 PIERRE MOQUET	MTL	514-7708987	\N	\N	\N	\N	\N	\N	\N	\N	t
-105	Yousse	EL HABIBI	8235 PIERRE MOQUET	MTL	514-7708987	\N	\N	\N	\N	\N	\N	\N	\N	t
-106	Mohamed amin	EL HADJ MOUSSA	6943 RUE DETOMAINE	MTL	514-8035620	\N	\N	\N	\N	\N	\N	\N	\N	t
-107	Nadi	EL HADJ MOUSSA	6220 RUE DE LA VILLANELLE	MTL	514-9245695	\N	\N	\N	\N	\N	\N	\N	\N	t
-108	Kari	EL JUNDI	2458 RUE SAINT-ZOTIQUE	MTL	438-8884436	\N	\N	\N	\N	\N	\N	\N	\N	t
-109	Salm	EL MAATAOUI	9161AV EMILE LEGAULT	MTL	514-9742824	\N	\N	\N	\N	\N	\N	\N	\N	t
-110	Ibrahi	ELASSAAD	11830 LOUIS-SICOTTE	MTL	438-4510311	\N	\N	\N	\N	\N	\N	\N	\N	t
-111	Moaa	ELBANNAOUI	12312 6É AVENU	MTL	514-3276902	\N	\N	\N	\N	\N	\N	\N	\N	t
-112	Ada	ELKHARRAZ	12002BOUL LACORDAIRE	MTL	438-9783096	\N	\N	\N	\N	\N	\N	\N	\N	t
-113	Zine	ELMELHAOUI	6945 AV CHAMPCHEVRIER	ANJOU	514-7185823	\N	\N	\N	\N	\N	\N	\N	\N	t
-114	Ay	ELOUELLAD	6815RUE ETIENNE BOUCHARD	MTL	514-5182765	\N	\N	\N	\N	\N	\N	\N	\N	t
-115	Ilyas	ELOUELLAD	6815RUE ETIENNE BOUCHARD	MTL	514-5182765	\N	\N	\N	\N	\N	\N	\N	\N	t
-116	Filipp	ENEA	12062PL.PIERRE BLANCHET	MTL	8811562 /  7307000	\N	\N	\N	\N	\N	\N	\N	\N	t
-117	Ami	ESSAFI	11514 AV BOXUET	MTL	514-5501882	\N	\N	\N	\N	\N	\N	\N	\N	t
-118	Tra	EUGENE	11529 RUE ALLARD	MTL	514-8273378	\N	\N	\N	\N	\N	\N	\N	\N	t
-119	Kimi	EVRAIRE-MBOYO	1891-N3 RUEBOSSVET	MTL	438-4975147	\N	\N	\N	\N	\N	\N	\N	\N	t
-120	Male	FAJRAOUI	11559 AV BRUNET	MTL	514-3275013	\N	\N	\N	\N	\N	\N	\N	\N	t
-122	Chad	FARAZDAG	12369 LAPIERRE 305	MN	514-2450083	\N	\N	\N	\N	\N	\N	\N	\N	t
-123	Sam	FARAZDAG	12369 LAPIERRE 305	MN	514-2450083	\N	\N	\N	\N	\N	\N	\N	\N	t
-124	Ayman	FARESS	11611 LACORDAIRE N3	MTL	438-9365350	\N	\N	\N	\N	\N	\N	\N	\N	t
-125	Ala	FATTAH	4937 AMOS	MTL	438-8383994	\N	\N	\N	\N	\N	\N	\N	\N	t
-126	Ine	FATTAH	4937 AMOS	MTL	438-8383994	\N	\N	\N	\N	\N	\N	\N	\N	t
-127	Ismae	FATTAH	4937 AMOS	MTL	438-8383994	\N	\N	\N	\N	\N	\N	\N	\N	t
-128	Yanni	FEKHAR	7881AV JEAN VINCENT	MTL	514-6046810	\N	\N	\N	\N	\N	\N	\N	\N	t
-129	Pasgualin	FRAGOLA	12085 CHARKS DIONNE	MTL	514-9491952	\N	\N	\N	\N	\N	\N	\N	\N	t
-130	Anthon	FRAGOLA	12085 CHARKS DIONNE	MTL	514-9491952	\N	\N	\N	\N	\N	\N	\N	\N	t
-131	Nour el houd	FREJ	9072 RUE DEL,AIGLAN	st leo	514-2508942	\N	\N	\N	\N	\N	\N	\N	\N	t
-132	Carmill	FRESCO	7380RAFPHAEL-BELLMARE	MTL	514-2421444	\N	\N	\N	\N	\N	\N	\N	\N	t
-133	Soni	FRESCO	7380RAFPHAEL-BELLMARE	MTL	514-2421444	\N	\N	\N	\N	\N	\N	\N	\N	t
-134	Noh	FRIKHA	12269 RUE MARCELL GOVEAUD	MTL	514-2094839	\N	\N	\N	\N	\N	\N	\N	\N	t
-135	Souleiman	GADIRI	6641 RUEFRONCOIS BOIVIN	MTL	514-9957313	\N	\N	\N	\N	\N	\N	\N	\N	t
-136	Ana	GADIRI	6641 RUEFRONCOIS BOIVIN	MTL	514-5617313	\N	\N	\N	\N	\N	\N	\N	\N	t
-137	Yacin	GAOUA	1617RUEPERCEVAL	REP	438-9901866	\N	\N	\N	\N	\N	\N	\N	\N	t
-138	Ada	GAROVALO	12290 J.A.ROULEAU	RDP	514-4944967	\N	\N	\N	\N	\N	\N	\N	\N	t
-139	Yassin	GARRAOUI	8262 RUE LEORD	SAT	514-4414609	\N	\N	\N	\N	\N	\N	\N	\N	t
-140	Mohame	GARRAOUI	8262 RUE LEVRARD	SAT	514-4414609	\N	\N	\N	\N	\N	\N	\N	\N	t
-141	Vite	GERMAN	9730 BOULPERRAS	MTL	514-4314401	\N	\N	\N	\N	\N	\N	\N	\N	t
-143	Al	GHAIS	8332 AV NICOLAS LEBLANC	MTL	438-5078096	\N	\N	\N	\N	\N	\N	\N	\N	t
-144	Mari	GHARIANI	7515 MARIANA-JODIN	MTL	438-4016516	\N	\N	\N	\N	\N	\N	\N	\N	t
-145	Sirin	GHARIANI	7515 MARIANA-JODIN	MTL	438-4016516	\N	\N	\N	\N	\N	\N	\N	\N	t
-146	Domenic	GIUNTA			514-3286991	\N	\N	\N	\N	\N	\N	\N	\N	t
-147	Santiag	GRISELDA	12050 5E AVENUE	MTL	514-560-0087	\N	\N	\N	\N	\N	\N	\N	\N	t
-148	Mohamed amin	GUEMAUNI	8080RUE CHTAIGNIERS	LAV	438-4092724	\N	\N	\N	\N	\N	\N	\N	\N	t
-149	Wissam jona	GUEMMAH                           WISSAM	12093 AV PIERRE BLANCHET	MTL	2974734 /  4389924750	\N	\N	\N	\N	\N	\N	\N	\N	t
-150	Samir	HAGUI	12100 BLV LACOR	MN	514-6638519	\N	\N	\N	\N	\N	\N	\N	\N	t
-151	Ahme	HAMADENI	4669VALCOURT	SL	514-6492388	\N	\N	\N	\N	\N	\N	\N	\N	t
-152	Myria	HAMADENI	4669VALCOURT	SL	514-6492388	\N	\N	\N	\N	\N	\N	\N	\N	t
-153	Ait ahme	HAMID ABDELHAC	11740 FERNAND GAUTHIER 6	MTL	514-882-8080	\N	\N	\N	\N	\N	\N	\N	\N	t
-154	Dal	HAMMOUCHE	9710 3É RUE	MTL	438-4904983	\N	\N	\N	\N	\N	\N	\N	\N	t
-155	Mohame	HANINE	11991 AVE LAPENE	MTL	514-3295144	\N	\N	\N	\N	\N	\N	\N	\N	t
-156	Eba	HASSAN	8477DECLUY-	STL	514-4585541	\N	\N	\N	\N	\N	\N	\N	\N	t
-157	Zhacri	HAYA	2685RUE DES FAUCONS	MTL	514-2662695	\N	\N	\N	\N	\N	\N	\N	\N	t
-158	Maria	HIJAZI	6155BOUL LEGO N2	MTL	514-4312200	\N	\N	\N	\N	\N	\N	\N	\N	t
-159	Zeina	HIJAZI	6155BOUL LEGO N2	MTL	514-4312200	\N	\N	\N	\N	\N	\N	\N	\N	t
-160	Fatim	HIJAZI	6155BOUL LEGO N2	MTL	514-4312200	\N	\N	\N	\N	\N	\N	\N	\N	t
-161	Ada	HLEL	11426 Avenue Alfred	MNR	514-827-5578	\N	\N	\N	\N	\N	\N	\N	\N	t
-162	Neil	HLEL	11426 Avenue Alfred	MNR	514-827-5578	\N	\N	\N	\N	\N	\N	\N	\N	t
-163	Tra	HUNG VAN	12018 BOUL ARMAND BAMBARDIER	MTL	514-8828200	\N	\N	\N	\N	\N	\N	\N	\N	t
-164	Ann	IACONO	8235 NANETS	st leo	514-5020377	\N	\N	\N	\N	\N	\N	\N	\N	t
-165	Antoin	IACONO	12120PIERRE-BAILLARGEAN	MTL	9777235 /  5853294	\N	\N	\N	\N	\N	\N	\N	\N	t
-166	Luc	IAZURLO	3426AVE DESAMBASSADEUR	LAV	514-5919628	\N	\N	\N	\N	\N	\N	\N	\N	t
-167	Carl	IOANNONE	12114PIERRE BLANCHET	MTL	6485699 /  2125344	\N	\N	\N	\N	\N	\N	\N	\N	t
-168	Othman	JAAFOUR	11461 AVE ROME	MN	514-3272193	\N	\N	\N	\N	\N	\N	\N	\N	t
-170	Ada	JULID	693 RUE BLAISE	MTL	514-7587963	\N	\N	\N	\N	\N	\N	\N	\N	t
-171	Mohame	KAHLI	8777RUE NARBONNE	MTL	438-8366194	\N	\N	\N	\N	\N	\N	\N	\N	t
-172	Hib	KAHLI	8777RUE NARBONNE	MTL	438-8366194	\N	\N	\N	\N	\N	\N	\N	\N	t
-173	Ale	KAREL	102DULUTH EST	MTL	514-6214747	\N	\N	\N	\N	\N	\N	\N	\N	t
-174	Ahmed ram	KETTOUCHE		MTL	514-7754416	\N	\N	\N	\N	\N	\N	\N	\N	t
-175	Moua	KHAIR	7478RUE JOSEP-MORIN	MTL	438-6805810	\N	\N	\N	\N	\N	\N	\N	\N	t
-176	Al	KHALAF	8840 MAURICE DUPLISSIS  8	MTL	4946634 /  9197766	\N	\N	\N	\N	\N	\N	\N	\N	t
-177	Mohame	KHALAF	8840 MAURICE DUPLISSIS  8	MTL	4946634 /  9197766	\N	\N	\N	\N	\N	\N	\N	\N	t
-178	Oma	KHLALBEL	4015SAINT-JOSEPH	MTL	438-7771015	\N	\N	\N	\N	\N	\N	\N	\N	t
-179	Beyre	KOBBI	12636 AV CORBEIL	MTL	514-8922565	\N	\N	\N	\N	\N	\N	\N	\N	t
-180	Bouberagi	LAETICIA	12047 ELIE-BEAUREGARD	MTL	438-9234208	\N	\N	\N	\N	\N	\N	\N	\N	t
-181	Lin	LAHLOLI	12454 BO.ROLLAND	MTL	5854313 /  2984039	\N	\N	\N	\N	\N	\N	\N	\N	t
-182	Lili	LAHLOLI	12454 BO.ROLLAND	MTL	4414542 /  2984039	\N	\N	\N	\N	\N	\N	\N	\N	t
-183	Lorenz	LAMOLINARA	3430 N-301 PIE IX	LAV	514-2428992	\N	\N	\N	\N	\N	\N	\N	\N	t
-184	Fadi skanda	LARIBI	12152 5É AVENU	MTL	514-466-9660	\N	\N	\N	\N	\N	\N	\N	\N	t
-185	Ja	LARIBI	12152 5É AVENU	MTL	514-4674675	\N	\N	\N	\N	\N	\N	\N	\N	t
-186	Aureli	LATELLA	8930 LAVERDIERE	st leo	514-9999666	\N	\N	\N	\N	\N	\N	\N	\N	t
-187	Bogi	LOICLE	11830LANGELIER	MN	438-5261170	\N	\N	\N	\N	\N	\N	\N	\N	t
-188	Jenna	MAHDI	6020 AV DES ANGEVINS	ANJOU	514-9425789	\N	\N	\N	\N	\N	\N	\N	\N	t
-189	Akra	MAKHLOUF	1061 rue noiseux	MTL	514-2344301	\N	\N	\N	\N	\N	\N	\N	\N	t
-190	Christia	MARINELLI	3830 MAJISTAT	LAV	514-9832100	\N	\N	\N	\N	\N	\N	\N	\N	t
-191	Dann	MARTINS	12215 ALEXIS CORROLL	MTL	514-889599	\N	\N	\N	\N	\N	\N	\N	\N	t
-192	Mali	MASNOUR TUIZO	12740	MTL	514-8721693	\N	\N	\N	\N	\N	\N	\N	\N	t
-193	Fabi	MATAS	12550 58 AVENU	MTL	514-8851442	\N	\N	\N	\N	\N	\N	\N	\N	t
-194	Arew	MAYOUF	12-12055 BOUL ARMAND BOMBA	MTL	514-8032633	\N	\N	\N	\N	\N	\N	\N	\N	t
-195	Mohamed yacou	MAYOUF	12-12055 BOUL ARMAND BOMBA	MTL	514-8032633	\N	\N	\N	\N	\N	\N	\N	\N	t
-196	Moamed luo	MAYOUF	12-12055 BOUL ARMAND BOMBA	MTL	514-8032633	\N	\N	\N	\N	\N	\N	\N	\N	t
-197	Mohame	MAYOUF	12-12055 BOUL ARMAND BOMBA	MTL	514-8032633	\N	\N	\N	\N	\N	\N	\N	\N	t
-198	Raya	MAZOUZ	6361 RUE NORMANDIE	MNR	3212515 /  5469141	\N	\N	\N	\N	\N	\N	\N	\N	t
-199	Syrin	MAZOUZ	6361 RUE NORMANDIE	MNR	3212515 /  5469141	\N	\N	\N	\N	\N	\N	\N	\N	t
-200	Pedr	MCKELVEY		MTL	514-4654054	\N	\N	\N	\N	\N	\N	\N	\N	t
-201	Jess	MECCIA	6014 MAURICE-DEPESSIS	MTL	514-9092368	\N	\N	\N	\N	\N	\N	\N	\N	t
-202	Mustaph	MERAD	12189 AV GILBERT-BARBIER	MTL	438-8711034	\N	\N	\N	\N	\N	\N	\N	\N	t
-203	Eanz	MERAD	12189 AV GILBERT-BARBIER	MTL	9681034 /  8711034	\N	\N	\N	\N	\N	\N	\N	\N	t
-204	Emm	MERAD	12189 AV GILBERT-BARBIER	MTL	9681034 /  8711034	\N	\N	\N	\N	\N	\N	\N	\N	t
-205	Mohamed djame	MERZOUG	12144 RUE ALLAND	MTL	8151492 /  4620019	\N	\N	\N	\N	\N	\N	\N	\N	t
-206	Ada	MEZARI	4515 RUE BOYA	SL	514-3460906	\N	\N	\N	\N	\N	\N	\N	\N	t
-207	Abdalla	MEZHOUD	5651JOSEPHE DUFRIME	M NO	8859260 /  3899160	\N	\N	\N	\N	\N	\N	\N	\N	t
-208	Yace	MEZHOUD	5651JOSEPHE DUFRIME	M NO	8859260 /  3899160	\N	\N	\N	\N	\N	\N	\N	\N	t
-209	Lu	MINH TUAN	12435 A 4É	MTL	514-7131502	\N	\N	\N	\N	\N	\N	\N	\N	t
-210	Jonatha	MIRARCHI	331 KINDERSLEY	MTL	7393270 /  916-1162	\N	\N	\N	\N	\N	\N	\N	\N	t
-211	Aima	MOKKADEM	11860AV BRUNET	MTL	438-4082018	\N	\N	\N	\N	\N	\N	\N	\N	t
-212	Mohamed sam	MOKRI	8010AVE JOLIOT CURIE	MTL	514-8819231	\N	\N	\N	\N	\N	\N	\N	\N	t
-213	Neill	MOKRI	8010AVE JOLIOT CURIE	MTL	514-8819231	\N	\N	\N	\N	\N	\N	\N	\N	t
-214	Sebasti	MORIN	6901RUE MARIE-VICTORIN	MTL	438-9858523	\N	\N	\N	\N	\N	\N	\N	\N	t
-215	Gabrie	MORIN-LAPORTE	7474MAURICE DEPLESSISE	MTL	514-7010348	\N	\N	\N	\N	\N	\N	\N	\N	t
-216	Brahi	MOUATIF	RUE BLEAU 1003	LAV	514-2599634	\N	\N	\N	\N	\N	\N	\N	\N	t
-217	Yasmin	MOUATIF	RUE BLEAU 1003	LAV	450-9368185	\N	\N	\N	\N	\N	\N	\N	\N	t
-218	Yacin	MOUSSAOUI	7020 RUE JARRY EST	MTL	438-5402686	\N	\N	\N	\N	\N	\N	\N	\N	t
-219	Raya	MOUZOUNI	11515 RUE LANGELIER AP4	MTL	438-8210188	\N	\N	\N	\N	\N	\N	\N	\N	t
-220	Achera	NAIT DAOUD	8841AVEUE GEORGES	ENJ	514-7796114	\N	\N	\N	\N	\N	\N	\N	\N	t
-221	Abdelmaji	NEGGAZI	11529 AV LAURIER	MTL	514-6192017	\N	\N	\N	\N	\N	\N	\N	\N	t
-223	Tyra	NEPTUNE	12245 56É AVENU	RDP	514-8355439	\N	\N	\N	\N	\N	\N	\N	\N	t
-224	Kenn	NGUYEN	12577GERTRUDE GENDREAU	MTL	514-4738438	\N	\N	\N	\N	\N	\N	\N	\N	t
-225	Vincen	NGUYEN	11725 ALLARD	MTL	514-8368850	\N	\N	\N	\N	\N	\N	\N	\N	t
-226	L	NICK	12445 4É AVE	MTL	514-2338809	\N	\N	\N	\N	\N	\N	\N	\N	t
-227	Novee	NOROZI ALLAM	24É AVE 12607	MTL	514-5789102	\N	\N	\N	\N	\N	\N	\N	\N	t
-228	Oha	OCAMP	7500ANDRE-AMPERE	MTL	438-7776527	\N	\N	\N	\N	\N	\N	\N	\N	t
-229	Alejandr	OCVIL-GALVEZ	7800 Maurice Duplessis	MTL	438-8873282	\N	\N	\N	\N	\N	\N	\N	\N	t
-230	Tatian	OSMAN	12396 ELIE BEOUREGARD	MTL	514-2674723	\N	\N	\N	\N	\N	\N	\N	\N	t
-231		OTHMAN ALAOUI			514-	\N	\N	\N	\N	\N	\N	\N	\N	t
-232	Massi	OUHEB	6090 REMOIR	MTL	438-7652929	\N	\N	\N	\N	\N	\N	\N	\N	t
-233	Anis elya	OULD ALI	5978RUEPORTEL	LAV	514-9630211	\N	\N	\N	\N	\N	\N	\N	\N	t
-234	Cerin	OUSSADA	10991L,ACHEVEQUE	MTL	514-5887467	\N	\N	\N	\N	\N	\N	\N	\N	t
-235	Emm	PELUSO	12164 REU ANNA-PAQUIN	MTL	514-8810345	\N	\N	\N	\N	\N	\N	\N	\N	t
-236	Ann-sara	PERDRIEL	12077 6È AVENUE	MTL	3189315 /  4472966	\N	\N	\N	\N	\N	\N	\N	\N	t
-237	Angell	PHAN	12480 54ÉAVENU	MTL	438-7251982	\N	\N	\N	\N	\N	\N	\N	\N	t
-238	Rick	PHAN	12480 54ÉAVENU	MTL	438-7251982	\N	\N	\N	\N	\N	\N	\N	\N	t
-239	Jayle	PHANORD	7525 BV PERRAS	MTL	438-8841542	\N	\N	\N	\N	\N	\N	\N	\N	t
-240	Marle	PHANORD	6533ROI RENEÉ	ANJ	514-7915839	\N	\N	\N	\N	\N	\N	\N	\N	t
-241	Cipeiiet	PHILIPPE	9676GALERIES D,ANJOU	ANJOU	514-5707980	\N	\N	\N	\N	\N	\N	\N	\N	t
-242	Djahmee	PHILOSCA	1250 PHILIPPE-LEBON	MTL	514-297-3759	\N	\N	\N	\N	\N	\N	\N	\N	t
-243	Damian	PICCOLI	9247LAUIS LUMMIER	MTL	438-4920873	\N	\N	\N	\N	\N	\N	\N	\N	t
-244	Giordan	PICCOLI	9247LAUIS LUMMIER	MTL	438-4920873	\N	\N	\N	\N	\N	\N	\N	\N	t
-245	St-for	PIERRE	9151BOUL DES GALERIES  806	ANJOU	514-5507560	\N	\N	\N	\N	\N	\N	\N	\N	t
-246	Cristia	PINTO	12050ARMAND BOMBADIER	MTL	514-7558804	\N	\N	\N	\N	\N	\N	\N	\N	t
-248	Ilia	RACHID	4606BDGIN EST	MTL	514-5134298	\N	\N	\N	\N	\N	\N	\N	\N	t
-169	Wassi	JELIDI	7842 AVE PIGEON	MTL	438-860-3048	\N	202504240169	aimedjelidi@hotmail.com	\N	\N	\N	\N	\N	t
-249	Michae	RAFFAELE	8080PHILIPPE DE CARION	MTL	6431832 /  7181832	\N	\N	\N	\N	\N	\N	\N	\N	t
-250	Kaei aiss	RAMY	10178 KARL LEVEQUE	MTL	438-464-2108	\N	\N	\N	\N	\N	\N	\N	\N	t
-251	Fira	REKDAL	12550 EDMONT	MTL	514-4517756	\N	\N	\N	\N	\N	\N	\N	\N	t
-252	Oma	REKDAL	12550 EDMONT	MTL	514-4517756	\N	\N	\N	\N	\N	\N	\N	\N	t
-253	Abde rm	SAAD-M	11792 AV NICOLAS	MTL	514-2550319	\N	\N	\N	\N	\N	\N	\N	\N	t
-254	Wassi	SAAD-M	11792 AV NICOLAS	MTL	514-2550319	\N	\N	\N	\N	\N	\N	\N	\N	t
-255	Marw	SAHAL	6390 LEGER   N9	MTL	438-4023350	\N	\N	\N	\N	\N	\N	\N	\N	t
-256	Mohamed amin	SAHAL	6390 LEGER   N9	MTL	438-4023350	\N	\N	\N	\N	\N	\N	\N	\N	t
-257	Amin	SAHIL	7705 RUE SHERBROOKE. EST	MTL	514-889-1986	\N	\N	\N	\N	\N	\N	\N	\N	t
-258	Ismae	SAHLI	7705 RUE SHERBROOKE.EST	MTL	514-889-1986	\N	\N	\N	\N	\N	\N	\N	\N	t
-259	Ahme	SAIDI	5083 RUE DECASTILLE	MTL	514-6912512	\N	\N	\N	\N	\N	\N	\N	\N	t
-260	Wassi	SALHI	11720FERNAND GAUTHIER	MTL	514-5185005	\N	\N	\N	\N	\N	\N	\N	\N	t
-261	Wassi	SALHI	11720FERNAND GAUTHIER	MTL	514-5185005	\N	\N	\N	\N	\N	\N	\N	\N	t
-262	Wassi	SALHI	11720FERNAND GAUTHIER	MTL	514-5185005	\N	\N	\N	\N	\N	\N	\N	\N	t
-263	Eberso	SALVANT	12305 54E   AVENU	MTL	9833697 /  6489313	\N	\N	\N	\N	\N	\N	\N	\N	t
-264	Eberss	SALVANT	12305 54E   AVENU	MTL	9833697 /  6489313	\N	\N	\N	\N	\N	\N	\N	\N	t
-265	Lucely	SALVANT	12305 54E   AVENU	MTL	9833697 /  6489313	\N	\N	\N	\N	\N	\N	\N	\N	t
-266	Marc	SANELLI	5621 AUBIN	MTL	3238034 /  8954100	\N	\N	\N	\N	\N	\N	\N	\N	t
-267	Alessi	SANTONE	12255 42É AVENU	MTL	514-4975694	\N	\N	\N	\N	\N	\N	\N	\N	t
-268	Vaness	SARACINO	6619BOUL LEVESQUE	LAV	514-7121065	\N	\N	\N	\N	\N	\N	\N	\N	t
-269	Mickae	SERGERIE	12732 26E AVENU	MTL	8130205 /  8272981	\N	\N	\N	\N	\N	\N	\N	\N	t
-270	Oma	SHARIF			514-	\N	\N	\N	\N	\N	\N	\N	\N	t
-271	Douny	SHEIKH	12740 27É AVENU	MTL	514-2983099	\N	\N	\N	\N	\N	\N	\N	\N	t
-272	Zachari	SHEIKH	12740 27É AVENU	MTL	514-2983099	\N	\N	\N	\N	\N	\N	\N	\N	t
-273	Hassa	SHEIKH	12250 41È AVE	MTL	514-7812451	\N	\N	\N	\N	\N	\N	\N	\N	t
-274	Samue	SILVA	12090BOUL-RDP	MTL	514-8028776	\N	\N	\N	\N	\N	\N	\N	\N	t
-275	Adolf	SIMEONE	10705 DRAPEAU	MTL	514-8986556	\N	\N	\N	\N	\N	\N	\N	\N	t
-276	Emili	SIMEONE	10705 DRAPEAU	MTL	514-8986556	\N	\N	\N	\N	\N	\N	\N	\N	t
-277	Soni	SIMEONE	10705 DRAPEAU	MTL	514-8986556	\N	\N	\N	\N	\N	\N	\N	\N	t
-278	Davi	SOGORE	12379AVENU CLEMENT-ADER	MTL	514-5619044	\N	\N	\N	\N	\N	\N	\N	\N	t
-279	Mate	SPERANO	8658 TIBIDEAU	MTL	514-9735865	\N	\N	\N	\N	\N	\N	\N	\N	t
-280	Hussei	TAHA	10-6950 AVENUDE CHAMPCHERRIER	ANJOU	514-7463090	\N	\N	\N	\N	\N	\N	\N	\N	t
-281	Anger	TAHANI	3869 MONSELET	MTL	438-8601212	\N	\N	\N	\N	\N	\N	\N	\N	t
-282	Rani	TAHIRI	12530AV PAUL-DUFAULT	MTL	514-7223810	\N	\N	\N	\N	\N	\N	\N	\N	t
-283	Yacin	TAHIRI	12530AV PAUL-DUFAULT	MTL	514-7223810	\N	\N	\N	\N	\N	\N	\N	\N	t
-284	An	TAHIRI	12530AV PAUL-DUFAULT	MTL	514-7223810	\N	\N	\N	\N	\N	\N	\N	\N	t
-285	Jose	TALBOT			514-	\N	\N	\N	\N	\N	\N	\N	\N	t
-286	Achraf rost	TOUIL	11517 AV ALLARD	MTL	438-3892750	\N	\N	\N	\N	\N	\N	\N	\N	t
-287	Cioban	TUDOR	9212BOUL-GOUIN	MTL	514-6055872	\N	\N	\N	\N	\N	\N	\N	\N	t
-288	Angel mirell	URBAN	3-6100 MAURICE-DUPLESSIS	MN	438-9983455	\N	\N	\N	\N	\N	\N	\N	\N	t
-289	Rebecc	URBAN	3-6100 MAURICE-DUPLESSIS	MN	438-9983455	\N	\N	\N	\N	\N	\N	\N	\N	t
-290	Isabell	VACCARO	72 BOUL-ST-ELZEAR	LAV	450-4904705	\N	\N	\N	\N	\N	\N	\N	\N	t
-291	Juleeana jo	VALERY	9159 BOUL. PERRA	MTL	514-649-0640	\N	\N	\N	\N	\N	\N	\N	\N	t
-292	Lyonnel evry	VALERY	9156 BOUL .PERRA	MTL	514-649-0640	\N	\N	\N	\N	\N	\N	\N	\N	t
-293	Salvator	VARODARO	12529 VOLTAIRE	MTL	5449409 /  8042375	\N	\N	\N	\N	\N	\N	\N	\N	t
-294	Jeremia	VERNELUS	12034 BOUL LOCORDAIRE	MTL	3779960 /  2678908	\N	\N	\N	\N	\N	\N	\N	\N	t
-295	Bebecc	VERNELUS	12034 BOUL LOCORDAIRE	MTL	3779960 /  2678908	\N	\N	\N	\N	\N	\N	\N	\N	t
-296	L	WINSTON	12445 4É AVE	MTL	514-2338809	\N	\N	\N	\N	\N	\N	\N	\N	t
-297	Mehd	YAHYOUI	7762 BOU PERRAS	MTL	438-9284890	\N	\N	\N	\N	\N	\N	\N	\N	t
-298	Ank	YELYAN	7051 AVE BARDWIN	MTL	514-5135429	\N	\N	\N	\N	\N	\N	\N	\N	t
-299	Mess	YANI	12395 RUE	MTL	438-9896251	\N	\N	\N	\N	\N	\N	\N	\N	t
-300	Rayan	YOUBI	5844 RUEDES TULIPES	MTL	438-9942305	\N	\N	\N	\N	\N	\N	\N	\N	t
-301	Bile	ZEMZEMI	UUUUUUUT	TU	514-7777777	\N	\N	\N	\N	\N	\N	\N	\N	t
-303	Mon	ZEMZEMI	7238 Maurice Duplessis	MTL	514-7777777	\N	\N	\N	\N	\N	\N	\N	\N	t
-304	Bad	ZINDINE	190 MURRAY	MTL	514-9242272	\N	\N	\N	\N	\N	\N	\N	\N	t
-305	Ada	ZORDANE	6351 BOUL MAURICE-DUPLESSI	MTL	514-5018058	\N	\N	\N	\N	\N	\N	\N	\N	t
-306	Lily	ZORDANE	6351 BOUL MAURICE-DUPLESSI	MTL	514-5018058	\N	\N	\N	\N	\N	\N	\N	\N	t
-307	Neyli arezk	ZOUAOUI	12310 62É AVENU	MTL	438-9225585	\N	\N	\N	\N	\N	\N	\N	\N	t
-308	Jonatha	BUFFONO	7540MAURICE-DUPLESSIS	MTL	514-2490304	\N	\N	\N	\N	\N	\N	\N	\N	t
-309	Yacin	EL MAATAOUI		MTL	514-45162	\N	\N	\N	\N	\N	\N	\N	\N	t
-310	Edouar	GAGNÉ	11865 RUE MAUDE-ABBOTT	MTL	514-2666127	\N	\N	\N	\N	\N	\N	\N	\N	t
-311	Cristian	MATUES	2203LEPAILLEUVE	MTL	514-8040186	\N	\N	\N	\N	\N	\N	\N	\N	t
-312	Natali	MATUES	2203LEPAILLEUVE	MTL	514-8040186	\N	\N	\N	\N	\N	\N	\N	\N	t
-313	Alperen ane	BOLAT	6463 RUEDE NORMANDIE	MTL	514-6387953	\N	\N	\N	\N	\N	\N	\N	\N	t
-314	Kuzey-ce	BARDAKCI	6463 RUEDE NORMANDIE	MTL	514-6387953	\N	\N	\N	\N	\N	\N	\N	\N	t
-316	Game	RUDY	12072 AV COPERNIC	MTL	514-7951209	\N	\N	\N	\N	\N	\N	\N	\N	t
-317	Pap	TRAN	11529 RUE ALLARD	MTL	514-8273378	\N	\N	\N	\N	\N	\N	\N	\N	t
-318	Ani	OUHADJ	4455 RUE DOMIENS	MTN	438-6998383	\N	\N	\N	\N	\N	\N	\N	\N	t
-319	Vincenz	VACCARO	11793 AV NICOLAS-APPERT	MTL	514-4750784	\N	\N	\N	\N	\N	\N	\N	\N	t
-320	Alessandr	VACCARO	11793 AV NICOLAS-APPERT	MTL	514-4750784	\N	\N	\N	\N	\N	\N	\N	\N	t
-321	Sofhi	JARROUCHE	12753 AV PIERRE-BAILLGER	MTL	514-2961679	\N	\N	\N	\N	\N	\N	\N	\N	t
-322	Alexande	JARROUCHE	12753 AV PIERRE-BAILLGER	MTL	514-2961679	\N	\N	\N	\N	\N	\N	\N	\N	t
-323	Safy	DIBS	8893RUE MARITAIN	MTL	438-5093236	\N	\N	\N	\N	\N	\N	\N	\N	t
-324	Cssaendr	GRENIER	527  111ÉAV	ST-JÉ	438-8801043	\N	\N	\N	\N	\N	\N	\N	\N	t
-325	Kari	BACHAND	11482 AV OLIER	MTL	438-4676170	\N	\N	\N	\N	\N	\N	\N	\N	t
-326	Ada	MEEIDJI	7380 RUE DES ORMEAUT	MTL	438-4027301	\N	\N	\N	\N	\N	\N	\N	\N	t
-327	Giann	QUATTROCIOCCHI	8885 RUE D'ARRAS	MTL	514-2204399	\N	\N	\N	\N	\N	\N	\N	\N	t
-328	Rober	GRENIER	527  111ÉAV	ST-JÉ	514-222986	\N	\N	\N	\N	\N	\N	\N	\N	t
-330	Germina	DON GERSON	9085 RUE SHERBROOK-EST	MTL	438-2330799	\N	\N	\N	\N	\N	\N	\N	\N	t
-331	Errouiss	MICHAEL	2215 RUE MONTE	LAV	514-834-6300	\N	\N	\N	\N	\N	\N	\N	\N	t
-332	Yassin	MEHDI	15555 RUE SHERBROOK-EST	MTL	514-709-1086	\N	\N	\N	\N	\N	\N	\N	\N	t
-329	Adriano	LO BIANCO	8656 RUE LOUIS-HAINAULT	MTL	514-662-1686	\N	202504240329	patlobianco666@gmail.com			\N	\N	\N	f
-333	Alexi	LARA SOHO	2-11980LUNGELIER	MTL	514-4495433	\N	\N	\N	\N	\N	\N	\N	\N	t
-334	Fernand	LARA SOHO	2-11980LUNGELIER	MTL	514-4495433	\N	\N	\N	\N	\N	\N	\N	\N	t
-335	Ada	BOURAGBI	12019 BOUL SAINTE-COLETTE	MTL	514-8063801	\N	\N	\N	\N	\N	\N	\N	\N	t
-336	Ayou	SABIR	12330 BOUL RODOLPHE FORGET	MTL	438-9243930	\N	\N	\N	\N	\N	\N	\N	\N	t
-337	Gristia	PELUSO	12164 REU ANNA-PAQUIN	MTL	514-8810345	\N	\N	\N	\N	\N	\N	\N	\N	t
-338	Albert	DI BUONO	4516 SOLIDANOS	MTL	514-2457332	\N	\N	\N	\N	\N	\N	\N	\N	t
-339	Jenna	PISCOPO	9280RUE GABRIELLE ROY	MTL	514-8382802	\N	\N	\N	\N	\N	\N	\N	\N	t
-340	Samanth	PISCOPO	9280RUE GABRIELLE ROY	MTL	514-8382802	\N	\N	\N	\N	\N	\N	\N	\N	t
-341	Antoni	GUEUARA	1802 RENE DESCARTES	MTL	514-5576569	\N	\N	\N	\N	\N	\N	\N	\N	t
-342	Moua	YAHIAOUI	11571 BOU ROLLANT	MN	514-4623453	\N	\N	\N	\N	\N	\N	\N	\N	t
-343	Djen	RAMDANE-BEY	11700 AVE DAMASE-POTVIN	MTL	514-2964782	\N	\N	\N	\N	\N	\N	\N	\N	t
-344	Ange-wilfri	KANGA	11478 AVE ALLARD	MTL	438-4653801	\N	\N	\N	\N	\N	\N	\N	\N	t
-345	Aksi	CHERIFI	5592 RUE MARCEL MONETTE	MTL	438-5219527	\N	\N	\N	\N	\N	\N	\N	\N	t
-346	Fatim	KHALIL	11872 MARCEL SAVARY	MTL	 /  5465504	\N	\N	\N	\N	\N	\N	\N	\N	t
-347	Tal	KHALIL	11872 MARCEL-SAVARY	MTL	 /  5465504	\N	\N	\N	\N	\N	\N	\N	\N	t
-348	Mahmou	EL-ASSAAD	1972 BOUL DES LAERENTIDES	LAV	514-7126179	\N	\N	\N	\N	\N	\N	\N	\N	t
-349	Al	JOUDAD	10649 AV DE LONDON	MTL	514-9123768	\N	\N	\N	\N	\N	\N	\N	\N	t
-350	Nicola	LEMIEUX	9191AVTOURELLES	ANJ	438-4931306	\N	\N	\N	\N	\N	\N	\N	\N	t
-351	Tah	ALHYAN	8165 RUE DNENT	MTL	514-5707735	\N	\N	\N	\N	\N	\N	\N	\N	t
-352	Fernand	FVATAUCANGELI	12642 24 AVENUE	MTL	514-8817207	\N	\N	\N	\N	\N	\N	\N	\N	t
-353	Isabell	LO DICO	12070 42É AVE	MTL	438-7645024	\N	\N	\N	\N	\N	\N	\N	\N	t
-354	Mala	KHOUDARI	11782 AVENUE MATTE	MTL	438-6993862	\N	\N	\N	\N	\N	\N	\N	\N	t
-355	Ahme	BELAID	7457 RUE DOLLIER	MTL	514-4415924	\N	\N	\N	\N	\N	\N	\N	\N	t
-356	Ouway	TOUMI	20 AVENIE QUWTAL	LAV	514-9432407	\N	\N	\N	\N	\N	\N	\N	\N	t
-357	Yousse	EL HABIBI	8235PIERRE MAGUET	MTL	514-8158987	\N	\N	\N	\N	\N	\N	\N	\N	t
-358	Huji	HOPE	12473RUEVOLTAIRE	MTL	514-7744105	\N	\N	\N	\N	\N	\N	\N	\N	t
-359	Sebastie	PEROMBELON	11635 5È AVENUE	MTL	514-4398152	\N	\N	\N	\N	\N	\N	\N	\N	t
-360	Dyla	ALLEN	12534 PIER BLANCHETE	MTL	514-7430955	\N	\N	\N	\N	\N	\N	\N	\N	t
-361	Chiar	TUTINO	40 JEAN PIERRE FERLAND	BOIS BRIAND	514-7818846	\N	\N	\N	\N	\N	\N	\N	\N	t
-362	Dor	TUTINO	40 JEAN PIERRE FERLAND	BOIS BRIAND	514-7818846	\N	\N	\N	\N	\N	\N	\N	\N	t
-363	Elizabet	TRIASSI	40 JEAN PIERRE FERLAND	BOIS BRIAND	514-7818846	\N	\N	\N	\N	\N	\N	\N	\N	t
-364	Ram	BELKHOUJA	12291 LEPOL-HOULE	MTL	6550109 /  5733232	\N	\N	\N	\N	\N	\N	\N	\N	t
-365	Mohamed kali	LENGLIZ	12260 64É AVENU	MTL	514-5763126	\N	\N	\N	\N	\N	\N	\N	\N	t
-366	Ty	AL,HAJJM	VENU CHRARL GEE	MTL	514-6411104	\N	\N	\N	\N	\N	\N	\N	\N	t
-367	Le	AL,HAJJM	VENU CHRARL GEE	MTL	514-6411104	\N	\N	\N	\N	\N	\N	\N	\N	t
-368	Nazim raya	HAFINNE	8543 AVENUE DANIEL DOUY	MTL	514-5865384	\N	\N	\N	\N	\N	\N	\N	\N	t
-369	Alessi	DISCIULLO	10289 RUE DES EGANTIERS	RDP	514-8146195	\N	\N	\N	\N	\N	\N	\N	\N	t
-370	Alexande	VISUONE	91 33É BOIS-DES-FILON	MTL	514-4674299	\N	\N	\N	\N	\N	\N	\N	\N	t
-371	Alou	ADDIME	602 RUE MON PETIT	LONG	514-4310568	\N	\N	\N	\N	\N	\N	\N	\N	t
-372	Henr	DAYAIN	6710 RUE TERDIF APP 8	MTL	438-6994511	\N	\N	\N	\N	\N	\N	\N	\N	t
-373	Saa	LYASSAMI	8053 RUE PHILLIPE-DE-CARION	MTL	438-4029970	\N	\N	\N	\N	\N	\N	\N	\N	t
-374	Pasqual	DOS SANTOS	12210 JEN-YVES BIGIAS	MTL	514-8380444	\N	\N	\N	\N	\N	\N	\N	\N	t
-375	Samue	CELESTIN	9322 GABRIELLE-ROY	MTL	438-9921050	\N	\N	\N	\N	\N	\N	\N	\N	t
-376	Waae	KEKAGHEL	12385 AVENUE-MATTE	MTL	 /  462-7020	\N	\N	\N	\N	\N	\N	\N	\N	t
-377	Mezhou	ABDALLAH	5657 JOSEPH DUFORESN	MTL-N	 /  578-6572	\N	\N	\N	\N	\N	\N	\N	\N	t
-378	Imen	AMAKOUCHE			 /  836-3964	\N	\N	\N	\N	\N	\N	\N	\N	t
-379	Fadi	GOUDA			 /  823-8985	\N	\N	\N	\N	\N	\N	\N	\N	t
-380	Oma	BELKHOUJA	12291 AV LEOPOLD HOULÉ	MTL	514-5733232	\N	\N	\N	\N	\N	\N	\N	\N	t
-381	Foua	ATMANI	10151 RUE KARL LÉVEQUE	MTL	438-9909351	\N	\N	\N	\N	\N	\N	\N	\N	t
-382	Youse	ATMANI	10151 RUE KARL LÉVEQUE	MTL	438-9909351	\N	\N	\N	\N	\N	\N	\N	\N	t
-383	Anas ahme	ATMANI	10151 RUE KARL LÉVEQUE	MTL	438-9909351	\N	\N	\N	\N	\N	\N	\N	\N	t
-384	Dalto	DANY			514-4488006	\N	\N	\N	\N	\N	\N	\N	\N	t
-385	Datilm	VRONSKY	7550 JACQUES ROUSSENU		514-7727206	\N	\N	\N	\N	\N	\N	\N	\N	t
-388	Rache	TARHOUI	7415BAUDELAIRE	ST-JÉ	514-9296025	\N	\N	\N	\N	\N	\N	\N	\N	t
-389	Amin maile	OUAJDI	263 RUE DE PIGALLE	REP	514-2669558	\N	\N	\N	\N	\N	\N	\N	\N	t
-390	Sar	MOR	8771 AVENUE LOUIS-LUMIERE	MTL	514-9689428	\N	\N	\N	\N	\N	\N	\N	\N	t
-391	Mohamed-amen	ABALLOUL	9224 RUE DUSGUENAY	MTL	514-9981604	\N	\N	\N	\N	\N	\N	\N	\N	t
-392	Ahmed-tare	ABALLOUL	9224 RUE DUSGUENAY	MTL	514-9981604	\N	\N	\N	\N	\N	\N	\N	\N	t
-393	Marya	ABALLOUL	9224 RUE DUSGUENAY	MTL	514-9981604	\N	\N	\N	\N	\N	\N	\N	\N	t
-394	Ayoub-nabi	ABALLOUL	9224 RUE DUSGUENAY	MTL	514-9981604	\N	\N	\N	\N	\N	\N	\N	\N	t
-395	Ade	BENCHEIKH	2447RUEYOLD	MTL	514-2492518	\N	\N	\N	\N	\N	\N	\N	\N	t
-396	Ay	MARZAQ	11894AV LARCHEVÉQUE	MTL	438-9883989	\N	\N	\N	\N	\N	\N	\N	\N	t
-397	Nadi	ZID	7415BAUDELAIRE	MTL	514-9296025	\N	\N	\N	\N	\N	\N	\N	\N	t
-398	Yasmin	TARHOUNI	7415BAUDELAIRE	MTL	514-9296025	\N	\N	\N	\N	\N	\N	\N	\N	t
-399	Sirin	TARHOUNI	7415BAUDELAIRE	MTL	514-9296025	\N	\N	\N	\N	\N	\N	\N	\N	t
-400	Sohai	BOUCEKKINE	12112 27ÉAVENU	MTL	514-4730849	\N	\N	\N	\N	\N	\N	\N	\N	t
-401	Sale	NAZIM	12186EMMANELBRIFFA	MTL	514-3188485	\N	\N	\N	\N	\N	\N	\N	\N	t
-402	Ada	OUALI	7225 MICHELET   N29	MTL	514-7138081	\N	\N	\N	\N	\N	\N	\N	\N	t
-403	Kayde	PETIT-TRERE	7585BOULPERRES	MTL	438-2237379	\N	\N	\N	\N	\N	\N	\N	\N	t
-404	Ayman	BENJELLOUN	11497 BOUL  LANGELIER N 1	MTL	514-4732991	\N	\N	\N	\N	\N	\N	\N	\N	t
-405	Mala	BENJELLOUN	11497 BOUL  LANGELIER N 1	MTL	514-4732991	\N	\N	\N	\N	\N	\N	\N	\N	t
-407	Mirk	VENDITTI	12391 VOLTAIRE	MTL	514-9933469	\N	\N	\N	\N	\N	\N	\N	\N	t
-408	Alessandr	BOZZO	12245 RUE DES IRIS	MTL	438-4908000	\N	\N	\N	\N	\N	\N	\N	\N	t
-409	Christophe	BOZZO	12245 RUE DES IRIS	MTL	438-4908000	\N	\N	\N	\N	\N	\N	\N	\N	t
-410	Pineaul	VERONIQUE		MTL	514-4388359376	\N	\N	\N	\N	\N	\N	\N	\N	t
-411	Ildris	REMY	8855 BOUL PERRAS	MTL	438-8880420	\N	\N	\N	\N	\N	\N	\N	\N	t
-412	Benjami	FILARISMA	11610 AVE ALLARD	MTL	438-4018703	\N	\N	\N	\N	\N	\N	\N	\N	t
-413	Ney	ZOIAOUI	12556 CROISSANT ALICE-GUY	MTL	438-9248888	\N	\N	\N	\N	\N	\N	\N	\N	t
-414	Matte	PICCOLI	12391  94 AVENU	MTL	514-9136314	\N	\N	\N	\N	\N	\N	\N	\N	t
-415	Giulian	PICCOLI	12391  94 AVENU	MTL	514-9136314	\N	\N	\N	\N	\N	\N	\N	\N	t
-406	Yehea	HALAWA	12132 AV FERNARD-GAUTHIER	MTL	514-518-0273	\N	202504270406	halawayehea2@gmail.com			178	\N	2010-10-13	f
-416	Abderrahi	BOUDOUMA	8814 DIARRAS	MTL	514-8161835	\N	\N	\N	\N	\N	\N	\N	\N	t
-315	Mohamed-haithe	BENHOCINE	7375 RUE MAURICE COURTOI	MTL	438-3547493	\N	202504240315	amir.benhocine@gmail.com	\N	\N	\N	\N	\N	t
-222	Jahnel	NEPTUNE	12245 56ème AVENUE	RDP	514-835-5439	\N	202504240222	nadz.80@hotmail.com	\N	\N	\N	\N	\N	t
-4	Abdelrahmane	ARAMI	12554 64e avenue	MTL	514-323-9892	\N	202504260004	nomail@nomail.com			\N	\N	\N	f
-247	Fabrice	POULIN	6472 Av. Pérodeau	MTL	418-558-5106	\N	202504260247	fabrice.poulin7@gmail.com		KBX Ceint. jaune	183	194	1978-02-25	f
-417	Omar	ZEMZEMI	12171 Riue Anna Paquin	MTL	514-881-1013	\N	202504270417	omarzemzemi7@gmail.com	Maître	Tkwd Cent. Noire 2ème DAN	172	132	2010-07-11	f
-302	Mohamed  Aziz	ZEMZEMI	12171 Rue Anna Paquin	Montréal	514-881-1013	\N	202504260302	aziz.zemzemi@gmail.com	Maître	Tkwd Ceint. Noire 4e DAN	180	132	\N	f
-386	Emile	LAURIER	8545 ERNEST OUINNET	MTL	514-625-8377	\N	202504270386	emilelaurier@hotmail.com			178	148	2005-10-14	f
-387	Jerry	TEGUIMDJE ZEBA	6369, Rue Arthur CHEVRIER	MTL	819-598-6436	\N	202505060387	nomail@mybusiness.com			170	119	1997-07-29	f
-142	Don Gerson	GERMINAL	9085 Sherbrook Est  n1	MTL	438-233-0799	\N	202504260142	test@test.com			181	184	1996-09-19	f
+COPY public.customer (id, firstname, lastname, address, city, phonenumber, picture, barcodevalue, email, title, level, height, weight, active, birthdate) FROM stdin;
+1	Med amin	GARRAOUI	8262RUE LONARDO	SLN	514-4414609	\N	202309220001	\N	\N	\N	\N	\N	t	\N
+2	Rassi	ABDELBARI	8107 RUEDE NICE	STL	7254260 /  6382935	\N	201810020002	\N	\N	\N	\N	\N	t	\N
+3	Sadi	ABDELBARI	8107 RUEDE NICE	STL	7254260 /  6382935	\N	201810020003	\N	\N	\N	\N	\N	t	\N
+4	Aram	ABDELRAHMANNE	12554 64ÉAVENUE	MTL	514-3239892	\N	202402010004	\N	\N	\N	\N	\N	t	\N
+5	Hssain	ABDESSAMAD	11515 BL LANGELIER	MN	514-2602912	\N	202309200005	\N	\N	\N	\N	\N	t	\N
+6	Angel	ACETO	855 CREMARIEST	MTL	514-205-9134	\N	200508010006	\N	\N	\N	\N	\N	t	\N
+7	Kaei aiss	ADAM	10178 KARL LEVEQUE	MTL	438-464-2108	\N	202309110007	\N	\N	\N	\N	\N	t	\N
+8	Ada	ADDIYA	12180 16E,AVENUE	MTL	514-9629008	\N	202111260008	\N	\N	\N	\N	\N	t	\N
+9	Loua	AHMIME	12050 AV PIERRE BLANCHET	MTL	438-8336250	\N	202311090009	\N	\N	\N	\N	\N	t	\N
+10	Ani	AIT SI MOHAMED	12530 FERDINAND BASTIEN	MTL	438-396-9219	\N	202312010010	\N	\N	\N	\N	\N	t	\N
+11	Youce	AIT-HAMMOUDI	2096351 BLV Joseph Renaud	MTL	438-509-9110	\N	202309070011	\N	\N	\N	\N	\N	t	\N
+12	Mani razin	AIT-HAMMOUDI	2096351 BLV Joseph Renaud	MTL	438-509-9110	\N	202309070012	\N	\N	\N	\N	\N	t	\N
+13	Yousse	AJROUDI	10953 AVENUDROPEAU	MN	514-5571211	\N	201909100013	\N	\N	\N	\N	\N	t	\N
+14	Mera	AMAZICH	6955 26É AVENUE	MTL	514-2366046	\N	202211150014	\N	\N	\N	\N	\N	t	\N
+15	Amyass	AMGHAR	7351 B. MORICE-DUPLISSIS	MTL	438-8703632	\N	202002200015	\N	\N	\N	\N	\N	t	\N
+16	Debora	APOLLON ROY	12,315 J.A. Rouleau	MTL	8810334 /  917-4987	\N	200909010016	\N	\N	\N	\N	\N	t	\N
+17	Kati	ARAB	7380 AV DE L,ALSACE	ANJOU	3519523 /  7972040	\N	201710010017	\N	\N	\N	\N	\N	t	\N
+18	Rachid	ARRID	8440-25/AVENU-N5	M-N	514-5935668	\N	201604160018	\N	\N	\N	\N	\N	t	\N
+19	Ri	ARRID	8440-25/AVENU-N5	M-N	514-5935668	\N	201604160019	\N	\N	\N	\N	\N	t	\N
+20	Steven	AUGUSTE	12758 PLACE LOUIS CHARTIER	MTL	514-2951041	\N	202311010020	\N	\N	\N	\N	\N	t	\N
+21	Anso	AZIMYT	12155RUE PHILIPPE LEBON	MTL	2946536 /  5017016	\N	201702080021	\N	\N	\N	\N	\N	t	\N
+22	Kari	BACHAND	11482 AV OLIER	MTL	438-9676170	\N	202401110022	\N	\N	\N	\N	\N	t	\N
+23	Nadha el iman	BAHEDDI	7960 AVE TREMOLIERES	ANJOU	438-9209118	\N	201910250023	\N	\N	\N	\N	\N	t	\N
+24	Isla	BAHOUCHE	11427 RUE ALLARD	MTL	438-2278922	\N	202112070024	\N	\N	\N	\N	\N	t	\N
+25	Ilia	BAKHLUCH		MTL	3542166 /  6520700	\N	202106120025	\N	\N	\N	\N	\N	t	\N
+26	Nassi	BARAKAT	64580 18ÉAVENU	MTL	514-5816019	\N	202007030026	\N	\N	\N	\N	\N	t	\N
+27	Bria	BARDI	8385BOUL GOUIN EST	MTL	514-4944068	\N	202401010027	\N	\N	\N	\N	\N	t	\N
+28	Ana	BEGOUG	9792  3E RUE	MTL	438-5226190	\N	202305010028	\N	\N	\N	\N	\N	t	\N
+29	Youce	BELDJOUDI	9184 RUE MASSE	STL	514-8849159	\N	202308080029	\N	\N	\N	\N	\N	t	\N
+30	Djame	BELIAOVAR	6393 RUE BELLEAU	MTL	514-9619615	\N	202107050030	\N	\N	\N	\N	\N	t	\N
+31	Ahre	BELKASSEM	1164 BOULEVARD LACORDAIRE	MTL	 /  5538190	\N	202309120031	\N	\N	\N	\N	\N	t	\N
+32	Baha eddin	BEN MASOUD	7489 RUE MONPETIT	STL	514-7915621	\N	202311200032	\N	\N	\N	\N	\N	t	\N
+33	Ahme	BEN SALAH	9015 RUE BOISSONNEAULT	MTL	514-	\N	201803150033	\N	\N	\N	\N	\N	t	\N
+34	Mohamed amin	BEN SALAH	9015 RUE BOISSONNEAULT	MTL	514-	\N	201803150034	\N	\N	\N	\N	\N	t	\N
+35	Amin	BENAMARA	12174 RUE CATELLI	MTL	438-8379538	\N	202404240035	\N	\N	\N	\N	\N	t	\N
+36	Yasmin	BENHAOUA	8792RUE DARRAS	st leo	7255713 /  5466022	\N	201504300036	\N	\N	\N	\N	\N	t	\N
+37	Mohame	BENISSE	4220 RUE D'HIRELLE	MTL	438-9201314	\N	201810110037	\N	\N	\N	\N	\N	t	\N
+38	Rafae	BENTO	12341 4É AVENUE	MTL	514-6487502	\N	202302080038	\N	\N	\N	\N	\N	t	\N
+39	Kamili	BENYAMINA	6363 BLV ROBER	SL	438-8739437	\N	202211220039	\N	\N	\N	\N	\N	t	\N
+40	Zineb khadij	BENYAMINA	6363 BLV ROBER	SL	438-8739437	\N	202211220040	\N	\N	\N	\N	\N	t	\N
+41	Aksi	BERKANE	6240 RENOIRE A 15	MTL	438-3085488	\N	202501230041	\N	\N	\N	\N	\N	t	\N
+42	Missa	BERROUCHE	12131 61E AVENUE	MTL	438-9934213	\N	202309250042	\N	\N	\N	\N	\N	t	\N
+43	Fah	BETTACH	12005 6E AVENU	MTL	514-5130402	\N	202210160043	\N	\N	\N	\N	\N	t	\N
+44	Kevi	BOSSE	8581RUE JEROME-LALEMANT	MTL	438-3896662	\N	202210120044	\N	\N	\N	\N	\N	t	\N
+45	Yassin	BOUALLA	12535RUEALBER MORIN	MTL	438-4093911	\N	202401160045	\N	\N	\N	\N	\N	t	\N
+46	Ade	BOUAMEUR	12258ELIE BEUREGARDI	MTL	438-4091295	\N	202408020046	\N	\N	\N	\N	\N	t	\N
+47	Ayou	BOUDHINA	11677 BOUL GOUMSIN	MTL	514-4970272	\N	202406130047	\N	\N	\N	\N	\N	t	\N
+48	Ada	BOUJRAD	660 PLACE DISRALI	LAV	438-4948293	\N	201609300048	\N	\N	\N	\N	\N	t	\N
+49	Foua	BOUJRAD	660 PLACE DISRALI	LAV	438-4948293	\N	201609300049	\N	\N	\N	\N	\N	t	\N
+50	Mohamed rid	BOUJRAD	660 PLACE DISRALI	LAV	438-4948293	\N	201609300050	\N	\N	\N	\N	\N	t	\N
+51	Ylia	BOUSLAH	11956 RUE MATTE N8	MTL	438-9901345	\N	201904190051	\N	\N	\N	\N	\N	t	\N
+52	Ismai	BOUTERFA	8466LEVRAVEL	STL	514-3269221	\N	202410300052	\N	\N	\N	\N	\N	t	\N
+53	Mala	BOUTOUILI	5800ARTHURE-CHEVIER	MTL	2983282 /  3262268	\N	202302040053	\N	\N	\N	\N	\N	t	\N
+54	Ismai	BOUZAIR	8363 BOUL CHTEAU NEUF	MTL	438-5242142	\N	202109150054	\N	\N	\N	\N	\N	t	\N
+55	Zy	BRIZARD	141CAR DU RUISSELET	TERR	514-7039989	\N	202002030055	\N	\N	\N	\N	\N	t	\N
+56	Méliss	BRUNELLE	150 RUE DES SORBIERS	MTL	514-4240241	\N	201911010056	\N	\N	\N	\N	\N	t	\N
+57	Michae	CADEMARTORI	3840 Villeray	MTL	514-9964179	\N	201401070057	\N	\N	\N	\N	\N	t	\N
+58	Anthon	CALABRETTA	8375 DANIEL DONY	MTL	514-9270133	\N	202211010058	\N	\N	\N	\N	\N	t	\N
+59	Ahme	CANLI	12300 AV HURTEAU	MTL	438-4020304	\N	202310250059	\N	\N	\N	\N	\N	t	\N
+60	Ismai	CANLI	12300 AV HURTEAU	MTL	438-4020304	\N	202310250060	\N	\N	\N	\N	\N	t	\N
+121	Nawfe	FARAJ	8991 GIOVANNI-CABOTO	SL	514-9297663	\N	201810010121	\N	\N	\N	\N	\N	t	\N
+61	Antoni	CAPPELLO	3882boul-chomedy	lAV	9445717 /  6619346	\N	202208050061	\N	\N	\N	\N	\N	t	\N
+62	Madiso	CARRERA	12535 57AVE	MTL	514-473-3584	\N	202109050062	\N	\N	\N	\N	\N	t	\N
+63	Anthon	CARRERA	12077 70 E AVENUE	MTL	514-7727706	\N	202304110063	\N	\N	\N	\N	\N	t	\N
+64	Emm	CARRERA	12077 70 E AVENUE	MTL	514-7727706	\N	202304110064	\N	\N	\N	\N	\N	t	\N
+65	Simo	CHAKUVINGN	12148 AV ALLARD	MN	514-6071872	\N	202306090065	\N	\N	\N	\N	\N	t	\N
+66	Hug	CHARPENTIER	6901RUE MARIE-VICTORIN	MTL	336-85291536	\N	202203090066	\N	\N	\N	\N	\N	t	\N
+67	Raia	CHBICHER	9610 PERRAS	MTL	514-6259052	\N	202210130067	\N	\N	\N	\N	\N	t	\N
+68	Sam	CHEKFIAI	4403 RUE DELASE	MTL	438-9236885	\N	202209160068	\N	\N	\N	\N	\N	t	\N
+69	Abdl-kari	CHEMLAL	11761 BOUL LANGELIER	MTL	438-9932157	\N	202110090069	\N	\N	\N	\N	\N	t	\N
+70	Aksi	CHERIFI	5592MARCEAL MONETTE	MTL	438-5215927	\N	202403050070	\N	\N	\N	\N	\N	t	\N
+71	Arri	CHERRAT	12143 AV CHARLES RENARD	MTL	514-972-4949	\N	202201120071	\N	\N	\N	\N	\N	t	\N
+72	Massi	CHERRAT	12143 AV CHARLES RENARD	MTL	514-972-4949	\N	202201120072	\N	\N	\N	\N	\N	t	\N
+73	Arri	CHERRAT	12143 AV CHARLES RENARD	MTL	514-972-4949	\N	202201010073	\N	\N	\N	\N	\N	t	\N
+74	Masi	CHERRAT	12143 AV CHARLES RENARD	MTL	514-972-4949	\N	202201010074	\N	\N	\N	\N	\N	t	\N
+75	Ade	CHRIGUI	8570 25É AVENUE N3	MTL	514-3264702	\N	201904060075	\N	\N	\N	\N	\N	t	\N
+76	Ram	COIRAZZA	10313RUE DES EGLLANTIERS	MTL	514-8928748	\N	202204090076	\N	\N	\N	\N	\N	t	\N
+77	Letizi	COMPARSI	11835 MARCEL.SAVA	MTL	8819081 /  8084137	\N	200511060077	\N	\N	\N	\N	\N	t	\N
+78	Wali	DAKTOURI	8483 HUGUET-LATOUR	MTL	438-9925920	\N	202311060078	\N	\N	\N	\N	\N	t	\N
+79	Claud	DAKVIN	5528 CHARLEVOI	MTL	514-6089539	\N	202008260079	\N	\N	\N	\N	\N	t	\N
+80	Giann	DE VIVO	11614 EDITH-SEREI	MTL	514-7071765	\N	202308160080	\N	\N	\N	\N	\N	t	\N
+81	Fabric	DECOSSE	8970 AV DE BRETAGE	MTL	514-5865522	\N	202301120081	\N	\N	\N	\N	\N	t	\N
+82	Emir hamz	DEMIRCI	12701-3LONGELIER	MN	438-8268707	\N	202308020082	\N	\N	\N	\N	\N	t	\N
+83	Yigit ef	DEMIRCI	12701-3LONGELIER	MN	438-8268707	\N	202308020083	\N	\N	\N	\N	\N	t	\N
+84	Samue	DERIENZO	5160 LEO OUELETTE	SLO	7213809 /  4388280158	\N	201910220084	\N	\N	\N	\N	\N	t	\N
+85	Victori	DERIENZO	5160 LEO OUELETTE	SLO	7213809 /  4388280158	\N	202002100085	\N	\N	\N	\N	\N	t	\N
+86	Pascal	DES SANTOS	12210JEAN-YVES BIGRAS	MTL	514-8380444	\N	202308080086	\N	\N	\N	\N	\N	t	\N
+87	D	DI PALOA	7141rue Merlot	LAV	450-936-1241	\N	202108210087	\N	\N	\N	\N	\N	t	\N
+88	Linn	DI PALOA	7141 rue Merlot	LAV	450-936-1241	\N	202208210088	\N	\N	\N	\N	\N	t	\N
+89	Valentin	DI PISA	12592  48É AVNUE	MTL	514-4634540	\N	202311010089	\N	\N	\N	\N	\N	t	\N
+90	Emma-le	DIGIOVANNI	11901 PAUL EMILE LAMARCHE	MTL	4945152 /  8084277	\N	201005050090	\N	\N	\N	\N	\N	t	\N
+91	Giovann	DIGIOVANNI	11901 PAUL EMILE LAMARCHE	MTL	4945152 /  8084277	\N	201005050091	\N	\N	\N	\N	\N	t	\N
+92	Michae	DITILO	3210CHAGALL	LAVAL	514-7122257	\N	202305020092	\N	\N	\N	\N	\N	t	\N
+93	Junior dibri	DJAMBOU	12037 55EME AVE	MTL	514-8623894	\N	201709010093	\N	\N	\N	\N	\N	t	\N
+94	Leonel yva	DJAMBOU	12037 55EME AVE	MTL	514-8623894	\N	201709010094	\N	\N	\N	\N	\N	t	\N
+95	Muriell	DJAMBOU	12037 55EME AVE	MTL	514-8623894	\N	201709010095	\N	\N	\N	\N	\N	t	\N
+96	Ada	DJEBLI	5222 BOUL DES GRANDS PRAIRIS	STL	3262758 /  5865509	\N	202411240096	\N	\N	\N	\N	\N	t	\N
+97	Ry	DJEBLI	5222 BOUL DES GRANDS PRAIRIS	STL	3262758 /  5865509	\N	202301050097	\N	\N	\N	\N	\N	t	\N
+98	Nicola	DOMIANOVICH	12065 AV COPOMIS	MTL	514-5769397	\N	202307100098	\N	\N	\N	\N	\N	t	\N
+99	Fare	DRIDI	4487RUE PLINGUET	SL	438-9923690	\N	202109150099	\N	\N	\N	\N	\N	t	\N
+100	Jessic	DU ROSEAU	43 rue Gilles Boisbriand	MTL	4333320 /  830-5843	\N	200412310100	\N	\N	\N	\N	\N	t	\N
+101	Fede	DURSO	9267LAUIS DESSUNES	MTL	514-8244158	\N	202203180101	\N	\N	\N	\N	\N	t	\N
+102	Janett	EL BADAOUI	6362 RUE ARTHUR-CHVIER	MTL	438-8781135	\N	202009180102	\N	\N	\N	\N	\N	t	\N
+103	Raya	EL BADAOUI	6362 RUE ARTHUR-CHVIER	MTL	438-8781135	\N	202009180103	\N	\N	\N	\N	\N	t	\N
+104	Yasmin	EL HABIBI	8235 PIERRE MOQUET	MTL	514-7708987	\N	202109160104	\N	\N	\N	\N	\N	t	\N
+105	Yousse	EL HABIBI	8235 PIERRE MOQUET	MTL	514-7708987	\N	202109160105	\N	\N	\N	\N	\N	t	\N
+106	Mohamed amin	EL HADJ MOUSSA	6943 RUE DETOMAINE	MTL	514-8035620	\N	201712190106	\N	\N	\N	\N	\N	t	\N
+107	Nadi	EL HADJ MOUSSA	6220 RUE DE LA VILLANELLE	MTL	514-9245695	\N	202306150107	\N	\N	\N	\N	\N	t	\N
+108	Kari	EL JUNDI	2458 RUE SAINT-ZOTIQUE	MTL	438-8884436	\N	202111050108	\N	\N	\N	\N	\N	t	\N
+109	Salm	EL MAATAOUI	9161AV EMILE LEGAULT	MTL	514-9742824	\N	202211230109	\N	\N	\N	\N	\N	t	\N
+110	Ibrahi	ELASSAAD	11830 LOUIS-SICOTTE	MTL	438-4510311	\N	202408040110	\N	\N	\N	\N	\N	t	\N
+111	Moaa	ELBANNAOUI	12312 6É AVENU	MTL	514-3276902	\N	202002050111	\N	\N	\N	\N	\N	t	\N
+112	Ada	ELKHARRAZ	12002BOUL LACORDAIRE	MTL	438-9783096	\N	202308200112	\N	\N	\N	\N	\N	t	\N
+113	Zine	ELMELHAOUI	6945 AV CHAMPCHEVRIER	ANJOU	514-7185823	\N	202209230113	\N	\N	\N	\N	\N	t	\N
+114	Ay	ELOUELLAD	6815RUE ETIENNE BOUCHARD	MTL	514-5182765	\N	202003010114	\N	\N	\N	\N	\N	t	\N
+115	Ilyas	ELOUELLAD	6815RUE ETIENNE BOUCHARD	MTL	514-5182765	\N	202003010115	\N	\N	\N	\N	\N	t	\N
+116	Filipp	ENEA	12062PL.PIERRE BLANCHET	MTL	8811562 /  7307000	\N	202208080116	\N	\N	\N	\N	\N	t	\N
+117	Ami	ESSAFI	11514 AV BOXUET	MTL	514-5501882	\N	202211100117	\N	\N	\N	\N	\N	t	\N
+118	Tra	EUGENE	11529 RUE ALLARD	MTL	514-8273378	\N	202503290118	\N	\N	\N	\N	\N	t	\N
+119	Kimi	EVRAIRE-MBOYO	1891-N3 RUEBOSSVET	MTL	438-4975147	\N	202206200119	\N	\N	\N	\N	\N	t	\N
+120	Male	FAJRAOUI	11559 AV BRUNET	MTL	514-3275013	\N	202208200120	\N	\N	\N	\N	\N	t	\N
+122	Chad	FARAZDAG	12369 LAPIERRE 305	MN	514-2450083	\N	202010010122	\N	\N	\N	\N	\N	t	\N
+123	Sam	FARAZDAG	12369 LAPIERRE 305	MN	514-2450083	\N	202010010123	\N	\N	\N	\N	\N	t	\N
+124	Ayman	FARESS	11611 LACORDAIRE N3	MTL	438-9365350	\N	201810030124	\N	\N	\N	\N	\N	t	\N
+125	Ala	FATTAH	4937 AMOS	MTL	438-8383994	\N	201902060125	\N	\N	\N	\N	\N	t	\N
+126	Ine	FATTAH	4937 AMOS	MTL	438-8383994	\N	201902060126	\N	\N	\N	\N	\N	t	\N
+127	Ismae	FATTAH	4937 AMOS	MTL	438-8383994	\N	201902060127	\N	\N	\N	\N	\N	t	\N
+128	Yanni	FEKHAR	7881AV JEAN VINCENT	MTL	514-6046810	\N	202302260128	\N	\N	\N	\N	\N	t	\N
+129	Pasgualin	FRAGOLA	12085 CHARKS DIONNE	MTL	514-9491952	\N	202211010129	\N	\N	\N	\N	\N	t	\N
+130	Anthon	FRAGOLA	12085 CHARKS DIONNE	MTL	514-9491952	\N	202411010130	\N	\N	\N	\N	\N	t	\N
+131	Nour el houd	FREJ	9072 RUE DEL,AIGLAN	st leo	514-2508942	\N	202409280131	\N	\N	\N	\N	\N	t	\N
+132	Carmill	FRESCO	7380RAFPHAEL-BELLMARE	MTL	514-2421444	\N	202503310132	\N	\N	\N	\N	\N	t	\N
+133	Soni	FRESCO	7380RAFPHAEL-BELLMARE	MTL	514-2421444	\N	202303090133	\N	\N	\N	\N	\N	t	\N
+134	Noh	FRIKHA	12269 RUE MARCELL GOVEAUD	MTL	514-2094839	\N	202311100134	\N	\N	\N	\N	\N	t	\N
+135	Souleiman	GADIRI	6641 RUEFRONCOIS BOIVIN	MTL	514-9957313	\N	202311150135	\N	\N	\N	\N	\N	t	\N
+136	Ana	GADIRI	6641 RUEFRONCOIS BOIVIN	MTL	514-5617313	\N	202302180136	\N	\N	\N	\N	\N	t	\N
+137	Yacin	GAOUA	1617RUEPERCEVAL	REP	438-9901866	\N	202309210137	\N	\N	\N	\N	\N	t	\N
+138	Ada	GAROVALO	12290 J.A.ROULEAU	RDP	514-4944967	\N	201811150138	\N	\N	\N	\N	\N	t	\N
+139	Yassin	GARRAOUI	8262 RUE LEORD	SAT	514-4414609	\N	202309220139	\N	\N	\N	\N	\N	t	\N
+140	Mohame	GARRAOUI	8262 RUE LEVRARD	SAT	514-4414609	\N	202409010140	\N	\N	\N	\N	\N	t	\N
+141	Vite	GERMAN	9730 BOULPERRAS	MTL	514-4314401	\N	202406140141	\N	\N	\N	\N	\N	t	\N
+142	Don gerso	GERMINAL	9085 shabarouke est    n1	MTL	438-2330799	\N	202409010142	\N	\N	\N	\N	\N	t	\N
+143	Al	GHAIS	8332 AV NICOLAS LEBLANC	MTL	438-5078096	\N	202406210143	\N	\N	\N	\N	\N	t	\N
+144	Mari	GHARIANI	7515 MARIANA-JODIN	MTL	438-4016516	\N	201909230144	\N	\N	\N	\N	\N	t	\N
+145	Sirin	GHARIANI	7515 MARIANA-JODIN	MTL	438-4016516	\N	201909230145	\N	\N	\N	\N	\N	t	\N
+146	Domenic	GIUNTA			514-3286991	\N	200704010146	\N	\N	\N	\N	\N	t	\N
+147	Santiag	GRISELDA	12050 5E AVENUE	MTL	514-560-0087	\N	202301010147	\N	\N	\N	\N	\N	t	\N
+148	Mohamed amin	GUEMAUNI	8080RUE CHTAIGNIERS	LAV	438-4092724	\N	202302150148	\N	\N	\N	\N	\N	t	\N
+149	Wissam jona	GUEMMAH                           WISSAM	12093 AV PIERRE BLANCHET	MTL	2974734 /  4389924750	\N	202409210149	\N	\N	\N	\N	\N	t	\N
+150	Samir	HAGUI	12100 BLV LACOR	MN	514-6638519	\N	202301140150	\N	\N	\N	\N	\N	t	\N
+151	Ahme	HAMADENI	4669VALCOURT	SL	514-6492388	\N	202211200151	\N	\N	\N	\N	\N	t	\N
+152	Myria	HAMADENI	4669VALCOURT	SL	514-6492388	\N	202305100152	\N	\N	\N	\N	\N	t	\N
+153	Ait ahme	HAMID ABDELHAC	11740 FERNAND GAUTHIER 6	MTL	514-882-8080	\N	202209090153	\N	\N	\N	\N	\N	t	\N
+154	Dal	HAMMOUCHE	9710 3É RUE	MTL	438-4904983	\N	202310160154	\N	\N	\N	\N	\N	t	\N
+155	Mohame	HANINE	11991 AVE LAPENE	MTL	514-3295144	\N	201904140155	\N	\N	\N	\N	\N	t	\N
+156	Eba	HASSAN	8477DECLUY-	STL	514-4585541	\N	202309010156	\N	\N	\N	\N	\N	t	\N
+157	Zhacri	HAYA	2685RUE DES FAUCONS	MTL	514-2662695	\N	202306100157	\N	\N	\N	\N	\N	t	\N
+158	Maria	HIJAZI	6155BOUL LEGO N2	MTL	514-4312200	\N	202210150158	\N	\N	\N	\N	\N	t	\N
+159	Zeina	HIJAZI	6155BOUL LEGO N2	MTL	514-4312200	\N	202210150159	\N	\N	\N	\N	\N	t	\N
+160	Fatim	HIJAZI	6155BOUL LEGO N2	MTL	514-4312200	\N	202210150160	\N	\N	\N	\N	\N	t	\N
+161	Ada	HLEL	11426 Avenue Alfred	MNR	514-827-5578	\N	202201060161	\N	\N	\N	\N	\N	t	\N
+162	Neil	HLEL	11426 Avenue Alfred	MNR	514-827-5578	\N	202209250162	\N	\N	\N	\N	\N	t	\N
+163	Tra	HUNG VAN	12018 BOUL ARMAND BAMBARDIER	MTL	514-8828200	\N	202208280163	\N	\N	\N	\N	\N	t	\N
+164	Ann	IACONO	8235 NANETS	st leo	514-5020377	\N	202408010164	\N	\N	\N	\N	\N	t	\N
+165	Antoin	IACONO	12120PIERRE-BAILLARGEAN	MTL	9777235 /  5853294	\N	202410150165	\N	\N	\N	\N	\N	t	\N
+166	Luc	IAZURLO	3426AVE DESAMBASSADEUR	LAV	514-5919628	\N	202306160166	\N	\N	\N	\N	\N	t	\N
+167	Carl	IOANNONE	12114PIERRE BLANCHET	MTL	6485699 /  2125344	\N	202210100167	\N	\N	\N	\N	\N	t	\N
+168	Othman	JAAFOUR	11461 AVE ROME	MN	514-3272193	\N	202109180168	\N	\N	\N	\N	\N	t	\N
+169	Wassi	JELIDI	7842AVE PIGEON	MTL	438-8603048	\N	202410140169	\N	\N	\N	\N	\N	t	\N
+170	Ada	JULID	693 RUE BLAISE	MTL	514-7587963	\N	202203280170	\N	\N	\N	\N	\N	t	\N
+171	Mohame	KAHLI	8777RUE NARBONNE	MTL	438-8366194	\N	202208090171	\N	\N	\N	\N	\N	t	\N
+172	Hib	KAHLI	8777RUE NARBONNE	MTL	438-8366194	\N	202208090172	\N	\N	\N	\N	\N	t	\N
+173	Ale	KAREL	102DULUTH EST	MTL	514-6214747	\N	202306020173	\N	\N	\N	\N	\N	t	\N
+174	Ahmed ram	KETTOUCHE		MTL	514-7754416	\N	201904100174	\N	\N	\N	\N	\N	t	\N
+175	Moua	KHAIR	7478RUE JOSEP-MORIN	MTL	438-6805810	\N	202403010175	\N	\N	\N	\N	\N	t	\N
+176	Al	KHALAF	8840 MAURICE DUPLISSIS  8	MTL	4946634 /  9197766	\N	201810080176	\N	\N	\N	\N	\N	t	\N
+177	Mohame	KHALAF	8840 MAURICE DUPLISSIS  8	MTL	4946634 /  9197766	\N	201810080177	\N	\N	\N	\N	\N	t	\N
+178	Oma	KHLALBEL	4015SAINT-JOSEPH	MTL	438-7771015	\N	202001220178	\N	\N	\N	\N	\N	t	\N
+179	Beyre	KOBBI	12636 AV CORBEIL	MTL	514-8922565	\N	202210230179	\N	\N	\N	\N	\N	t	\N
+180	Bouberagi	LAETICIA	12047 ELIE-BEAUREGARD	MTL	438-9234208	\N	202205110180	\N	\N	\N	\N	\N	t	\N
+181	Lin	LAHLOLI	12454 BO.ROLLAND	MTL	5854313 /  2984039	\N	202211020181	\N	\N	\N	\N	\N	t	\N
+182	Lili	LAHLOLI	12454 BO.ROLLAND	MTL	4414542 /  2984039	\N	202211100182	\N	\N	\N	\N	\N	t	\N
+183	Lorenz	LAMOLINARA	3430 N-301 PIE IX	LAV	514-2428992	\N	202312010183	\N	\N	\N	\N	\N	t	\N
+184	Fadi skanda	LARIBI	12152 5É AVENU	MTL	514-466-9660	\N	202106140184	\N	\N	\N	\N	\N	t	\N
+185	Ja	LARIBI	12152 5É AVENU	MTL	514-4674675	\N	201901140185	\N	\N	\N	\N	\N	t	\N
+186	Aureli	LATELLA	8930 LAVERDIERE	st leo	514-9999666	\N	200709240186	\N	\N	\N	\N	\N	t	\N
+187	Bogi	LOICLE	11830LANGELIER	MN	438-5261170	\N	202306200187	\N	\N	\N	\N	\N	t	\N
+188	Jenna	MAHDI	6020 AV DES ANGEVINS	ANJOU	514-9425789	\N	202312020188	\N	\N	\N	\N	\N	t	\N
+189	Akra	MAKHLOUF	1061 rue noiseux	MTL	514-2344301	\N	202402080189	\N	\N	\N	\N	\N	t	\N
+190	Christia	MARINELLI	3830 MAJISTAT	LAV	514-9832100	\N	202202160190	\N	\N	\N	\N	\N	t	\N
+191	Dann	MARTINS	12215 ALEXIS CORROLL	MTL	514-889599	\N	202108110191	\N	\N	\N	\N	\N	t	\N
+192	Mali	MASNOUR TUIZO	12740	MTL	514-8721693	\N	202001120192	\N	\N	\N	\N	\N	t	\N
+193	Fabi	MATAS	12550 58 AVENU	MTL	514-8851442	\N	202209190193	\N	\N	\N	\N	\N	t	\N
+194	Arew	MAYOUF	12-12055 BOUL ARMAND BOMBA	MTL	514-8032633	\N	202311050194	\N	\N	\N	\N	\N	t	\N
+195	Mohamed yacou	MAYOUF	12-12055 BOUL ARMAND BOMBA	MTL	514-8032633	\N	202311050195	\N	\N	\N	\N	\N	t	\N
+196	Moamed luo	MAYOUF	12-12055 BOUL ARMAND BOMBA	MTL	514-8032633	\N	202311050196	\N	\N	\N	\N	\N	t	\N
+197	Mohame	MAYOUF	12-12055 BOUL ARMAND BOMBA	MTL	514-8032633	\N	202311050197	\N	\N	\N	\N	\N	t	\N
+198	Raya	MAZOUZ	6361 RUE NORMANDIE	MNR	3212515 /  5469141	\N	201810010198	\N	\N	\N	\N	\N	t	\N
+199	Syrin	MAZOUZ	6361 RUE NORMANDIE	MNR	3212515 /  5469141	\N	201810010199	\N	\N	\N	\N	\N	t	\N
+200	Pedr	MCKELVEY		MTL	514-4654054	\N	200704120200	\N	\N	\N	\N	\N	t	\N
+201	Jess	MECCIA	6014 MAURICE-DEPESSIS	MTL	514-9092368	\N	202310130201	\N	\N	\N	\N	\N	t	\N
+202	Mustaph	MERAD	12189 AV GILBERT-BARBIER	MTL	438-8711034	\N	202301100202	\N	\N	\N	\N	\N	t	\N
+203	Eanz	MERAD	12189 AV GILBERT-BARBIER	MTL	9681034 /  8711034	\N	202203150203	\N	\N	\N	\N	\N	t	\N
+204	Emm	MERAD	12189 AV GILBERT-BARBIER	MTL	9681034 /  8711034	\N	202203150204	\N	\N	\N	\N	\N	t	\N
+205	Mohamed djame	MERZOUG	12144 RUE ALLAND	MTL	8151492 /  4620019	\N	202210050205	\N	\N	\N	\N	\N	t	\N
+206	Ada	MEZARI	4515 RUE BOYA	SL	514-3460906	\N	202110190206	\N	\N	\N	\N	\N	t	\N
+207	Abdalla	MEZHOUD	5651JOSEPHE DUFRIME	M NO	8859260 /  3899160	\N	201903290207	\N	\N	\N	\N	\N	t	\N
+208	Yace	MEZHOUD	5651JOSEPHE DUFRIME	M NO	8859260 /  3899160	\N	202310020208	\N	\N	\N	\N	\N	t	\N
+209	Lu	MINH TUAN	12435 A 4É	MTL	514-7131502	\N	202211050209	\N	\N	\N	\N	\N	t	\N
+210	Jonatha	MIRARCHI	331 KINDERSLEY	MTL	7393270 /  916-1162	\N	201309250210	\N	\N	\N	\N	\N	t	\N
+211	Aima	MOKKADEM	11860AV BRUNET	MTL	438-4082018	\N	202208080211	\N	\N	\N	\N	\N	t	\N
+212	Mohamed sam	MOKRI	8010AVE JOLIOT CURIE	MTL	514-8819231	\N	202205010212	\N	\N	\N	\N	\N	t	\N
+213	Neill	MOKRI	8010AVE JOLIOT CURIE	MTL	514-8819231	\N	202205010213	\N	\N	\N	\N	\N	t	\N
+214	Sebasti	MORIN	6901RUE MARIE-VICTORIN	MTL	438-9858523	\N	202203090214	\N	\N	\N	\N	\N	t	\N
+215	Gabrie	MORIN-LAPORTE	7474MAURICE DEPLESSISE	MTL	514-7010348	\N	201911250215	\N	\N	\N	\N	\N	t	\N
+216	Brahi	MOUATIF	RUE BLEAU 1003	LAV	514-2599634	\N	201702080216	\N	\N	\N	\N	\N	t	\N
+217	Yasmin	MOUATIF	RUE BLEAU 1003	LAV	450-9368185	\N	201901050217	\N	\N	\N	\N	\N	t	\N
+218	Yacin	MOUSSAOUI	7020 RUE JARRY EST	MTL	438-5402686	\N	202305230218	\N	\N	\N	\N	\N	t	\N
+219	Raya	MOUZOUNI	11515 RUE LANGELIER AP4	MTL	438-8210188	\N	202401090219	\N	\N	\N	\N	\N	t	\N
+220	Achera	NAIT DAOUD	8841AVEUE GEORGES	ENJ	514-7796114	\N	202110090220	\N	\N	\N	\N	\N	t	\N
+221	Abdelmaji	NEGGAZI	11529 AV LAURIER	MTL	514-6192017	\N	202312230221	\N	\N	\N	\N	\N	t	\N
+222	Jahne	NEPTUNE	12245 56É AVENU	RDP	514-8355439	\N	202410300222	\N	\N	\N	\N	\N	t	\N
+223	Tyra	NEPTUNE	12245 56É AVENU	RDP	514-8355439	\N	202410300223	\N	\N	\N	\N	\N	t	\N
+224	Kenn	NGUYEN	12577GERTRUDE GENDREAU	MTL	514-4738438	\N	201711090224	\N	\N	\N	\N	\N	t	\N
+225	Vincen	NGUYEN	11725 ALLARD	MTL	514-8368850	\N	202308280225	\N	\N	\N	\N	\N	t	\N
+226	L	NICK	12445 4É AVE	MTL	514-2338809	\N	202210150226	\N	\N	\N	\N	\N	t	\N
+227	Novee	NOROZI ALLAM	24É AVE 12607	MTL	514-5789102	\N	202202280227	\N	\N	\N	\N	\N	t	\N
+228	Oha	OCAMP	7500ANDRE-AMPERE	MTL	438-7776527	\N	202311060228	\N	\N	\N	\N	\N	t	\N
+229	Alejandr	OCVIL-GALVEZ	7800 Maurice Duplessis	MTL	438-8873282	\N	202401020229	\N	\N	\N	\N	\N	t	\N
+230	Tatian	OSMAN	12396 ELIE BEOUREGARD	MTL	514-2674723	\N	202308140230	\N	\N	\N	\N	\N	t	\N
+231		OTHMAN ALAOUI			514-	\N	202307120231	\N	\N	\N	\N	\N	t	\N
+232	Massi	OUHEB	6090 REMOIR	MTL	438-7652929	\N	202404150232	\N	\N	\N	\N	\N	t	\N
+233	Anis elya	OULD ALI	5978RUEPORTEL	LAV	514-9630211	\N	202301120233	\N	\N	\N	\N	\N	t	\N
+234	Cerin	OUSSADA	10991L,ACHEVEQUE	MTL	514-5887467	\N	202001150234	\N	\N	\N	\N	\N	t	\N
+235	Emm	PELUSO	12164 REU ANNA-PAQUIN	MTL	514-8810345	\N	202403110235	\N	\N	\N	\N	\N	t	\N
+236	Ann-sara	PERDRIEL	12077 6È AVENUE	MTL	3189315 /  4472966	\N	202309190236	\N	\N	\N	\N	\N	t	\N
+237	Angell	PHAN	12480 54ÉAVENU	MTL	438-7251982	\N	202002160237	\N	\N	\N	\N	\N	t	\N
+238	Rick	PHAN	12480 54ÉAVENU	MTL	438-7251982	\N	202002160238	\N	\N	\N	\N	\N	t	\N
+239	Jayle	PHANORD	7525 BV PERRAS	MTL	438-8841542	\N	201810080239	\N	\N	\N	\N	\N	t	\N
+240	Marle	PHANORD	6533ROI RENEÉ	ANJ	514-7915839	\N	201908200240	\N	\N	\N	\N	\N	t	\N
+241	Cipeiiet	PHILIPPE	9676GALERIES D,ANJOU	ANJOU	514-5707980	\N	202001200241	\N	\N	\N	\N	\N	t	\N
+242	Djahmee	PHILOSCA	1250 PHILIPPE-LEBON	MTL	514-297-3759	\N	202107150242	\N	\N	\N	\N	\N	t	\N
+243	Damian	PICCOLI	9247LAUIS LUMMIER	MTL	438-4920873	\N	202002030243	\N	\N	\N	\N	\N	t	\N
+244	Giordan	PICCOLI	9247LAUIS LUMMIER	MTL	438-4920873	\N	202002030244	\N	\N	\N	\N	\N	t	\N
+245	St-for	PIERRE	9151BOUL DES GALERIES  806	ANJOU	514-5507560	\N	202301050245	\N	\N	\N	\N	\N	t	\N
+246	Cristia	PINTO	12050ARMAND BOMBADIER	MTL	514-7558804	\N	202310040246	\N	\N	\N	\N	\N	t	\N
+247	Fabric	POULIN	6472 AV PERDDERO	MTL	418-5585106	\N	202310090247	\N	\N	\N	\N	\N	t	\N
+248	Ilia	RACHID	4606BDGIN EST	MTL	514-5134298	\N	202301270248	\N	\N	\N	\N	\N	t	\N
+249	Michae	RAFFAELE	8080PHILIPPE DE CARION	MTL	6431832 /  7181832	\N	202211250249	\N	\N	\N	\N	\N	t	\N
+250	Kaei aiss	RAMY	10178 KARL LEVEQUE	MTL	438-464-2108	\N	202309110250	\N	\N	\N	\N	\N	t	\N
+251	Fira	REKDAL	12550 EDMONT	MTL	514-4517756	\N	202409090251	\N	\N	\N	\N	\N	t	\N
+252	Oma	REKDAL	12550 EDMONT	MTL	514-4517756	\N	202409090252	\N	\N	\N	\N	\N	t	\N
+253	Abde rm	SAAD-M	11792 AV NICOLAS	MTL	514-2550319	\N	202311240253	\N	\N	\N	\N	\N	t	\N
+254	Wassi	SAAD-M	11792 AV NICOLAS	MTL	514-2550319	\N	202311240254	\N	\N	\N	\N	\N	t	\N
+255	Marw	SAHAL	6390 LEGER   N9	MTL	438-4023350	\N	201812120255	\N	\N	\N	\N	\N	t	\N
+256	Mohamed amin	SAHAL	6390 LEGER   N9	MTL	438-4023350	\N	201812120256	\N	\N	\N	\N	\N	t	\N
+257	Amin	SAHIL	7705 RUE SHERBROOKE. EST	MTL	514-889-1986	\N	201904090257	\N	\N	\N	\N	\N	t	\N
+258	Ismae	SAHLI	7705 RUE SHERBROOKE.EST	MTL	514-889-1986	\N	201904090258	\N	\N	\N	\N	\N	t	\N
+259	Ahme	SAIDI	5083 RUE DECASTILLE	MTL	514-6912512	\N	202108250259	\N	\N	\N	\N	\N	t	\N
+260	Wassi	SALHI	11720FERNAND GAUTHIER	MTL	514-5185005	\N	202305040260	\N	\N	\N	\N	\N	t	\N
+261	Wassi	SALHI	11720FERNAND GAUTHIER	MTL	514-5185005	\N	202305040261	\N	\N	\N	\N	\N	t	\N
+262	Wassi	SALHI	11720FERNAND GAUTHIER	MTL	514-5185005	\N	202305040262	\N	\N	\N	\N	\N	t	\N
+263	Eberso	SALVANT	12305 54E   AVENU	MTL	9833697 /  6489313	\N	202303100263	\N	\N	\N	\N	\N	t	\N
+264	Eberss	SALVANT	12305 54E   AVENU	MTL	9833697 /  6489313	\N	201809050264	\N	\N	\N	\N	\N	t	\N
+265	Lucely	SALVANT	12305 54E   AVENU	MTL	9833697 /  6489313	\N	201801240265	\N	\N	\N	\N	\N	t	\N
+266	Marc	SANELLI	5621 AUBIN	MTL	3238034 /  8954100	\N	201006150266	\N	\N	\N	\N	\N	t	\N
+267	Alessi	SANTONE	12255 42É AVENU	MTL	514-4975694	\N	202405170267	\N	\N	\N	\N	\N	t	\N
+268	Vaness	SARACINO	6619BOUL LEVESQUE	LAV	514-7121065	\N	202110210268	\N	\N	\N	\N	\N	t	\N
+269	Mickae	SERGERIE	12732 26E AVENU	MTL	8130205 /  8272981	\N	201906090269	\N	\N	\N	\N	\N	t	\N
+270	Oma	SHARIF			514-	\N	202109010270	\N	\N	\N	\N	\N	t	\N
+271	Douny	SHEIKH	12740 27É AVENU	MTL	514-2983099	\N	202105250271	\N	\N	\N	\N	\N	t	\N
+272	Zachari	SHEIKH	12740 27É AVENU	MTL	514-2983099	\N	201801120272	\N	\N	\N	\N	\N	t	\N
+273	Hassa	SHEIKH	12250 41È AVE	MTL	514-7812451	\N	202205020273	\N	\N	\N	\N	\N	t	\N
+274	Samue	SILVA	12090BOUL-RDP	MTL	514-8028776	\N	202306020274	\N	\N	\N	\N	\N	t	\N
+275	Adolf	SIMEONE	10705 DRAPEAU	MTL	514-8986556	\N	202402140275	\N	\N	\N	\N	\N	t	\N
+276	Emili	SIMEONE	10705 DRAPEAU	MTL	514-8986556	\N	202402140276	\N	\N	\N	\N	\N	t	\N
+277	Soni	SIMEONE	10705 DRAPEAU	MTL	514-8986556	\N	202403200277	\N	\N	\N	\N	\N	t	\N
+278	Davi	SOGORE	12379AVENU CLEMENT-ADER	MTL	514-5619044	\N	202210120278	\N	\N	\N	\N	\N	t	\N
+279	Mate	SPERANO	8658 TIBIDEAU	MTL	514-9735865	\N	202305010279	\N	\N	\N	\N	\N	t	\N
+280	Hussei	TAHA	10-6950 AVENUDE CHAMPCHERRIER	ANJOU	514-7463090	\N	202001100280	\N	\N	\N	\N	\N	t	\N
+281	Anger	TAHANI	3869 MONSELET	MTL	438-8601212	\N	202311220281	\N	\N	\N	\N	\N	t	\N
+282	Rani	TAHIRI	12530AV PAUL-DUFAULT	MTL	514-7223810	\N	202209200282	\N	\N	\N	\N	\N	t	\N
+283	Yacin	TAHIRI	12530AV PAUL-DUFAULT	MTL	514-7223810	\N	202209200283	\N	\N	\N	\N	\N	t	\N
+284	An	TAHIRI	12530AV PAUL-DUFAULT	MTL	514-7223810	\N	202209200284	\N	\N	\N	\N	\N	t	\N
+285	Jose	TALBOT			514-	\N	202305010285	\N	\N	\N	\N	\N	t	\N
+286	Achraf rost	TOUIL	11517 AV ALLARD	MTL	438-3892750	\N	202212110286	\N	\N	\N	\N	\N	t	\N
+287	Cioban	TUDOR	9212BOUL-GOUIN	MTL	514-6055872	\N	202203020287	\N	\N	\N	\N	\N	t	\N
+288	Angel mirell	URBAN	3-6100 MAURICE-DUPLESSIS	MN	438-9983455	\N	202311230288	\N	\N	\N	\N	\N	t	\N
+289	Rebecc	URBAN	3-6100 MAURICE-DUPLESSIS	MN	438-9983455	\N	202311230289	\N	\N	\N	\N	\N	t	\N
+290	Isabell	VACCARO	72 BOUL-ST-ELZEAR	LAV	450-4904705	\N	202302010290	\N	\N	\N	\N	\N	t	\N
+291	Juleeana jo	VALERY	9159 BOUL. PERRA	MTL	514-649-0640	\N	202111020291	\N	\N	\N	\N	\N	t	\N
+292	Lyonnel evry	VALERY	9156 BOUL .PERRA	MTL	514-649-0640	\N	202111020292	\N	\N	\N	\N	\N	t	\N
+293	Salvator	VARODARO	12529 VOLTAIRE	MTL	5449409 /  8042375	\N	202206300293	\N	\N	\N	\N	\N	t	\N
+294	Jeremia	VERNELUS	12034 BOUL LOCORDAIRE	MTL	3779960 /  2678908	\N	202210060294	\N	\N	\N	\N	\N	t	\N
+295	Bebecc	VERNELUS	12034 BOUL LOCORDAIRE	MTL	3779960 /  2678908	\N	202210060295	\N	\N	\N	\N	\N	t	\N
+296	L	WINSTON	12445 4É AVE	MTL	514-2338809	\N	202210150296	\N	\N	\N	\N	\N	t	\N
+297	Mehd	YAHYOUI	7762 BOU PERRAS	MTL	438-9284890	\N	202408300297	\N	\N	\N	\N	\N	t	\N
+298	Ank	YELYAN	7051 AVE BARDWIN	MTL	514-5135429	\N	202111020298	\N	\N	\N	\N	\N	t	\N
+299	Mess	YANI	12395 RUE	MTL	438-9896251	\N	202309010299	\N	\N	\N	\N	\N	t	\N
+300	Rayan	YOUBI	5844 RUEDES TULIPES	MTL	438-9942305	\N	201905020300	\N	\N	\N	\N	\N	t	\N
+301	Bile	ZEMZEMI	UUUUUUUT	TU	514-7777777	\N	200307230301	\N	\N	\N	\N	\N	t	\N
+302	Mohamed  azi	ZEMZEMI	UUUUUUUT	TU	514-7777777	\N	200307230302	\N	\N	\N	\N	\N	t	\N
+303	Mon	ZEMZEMI	7238 Maurice Duplessis	MTL	514-7777777	\N	202409200303	\N	\N	\N	\N	\N	t	\N
+304	Bad	ZINDINE	190 MURRAY	MTL	514-9242272	\N	202106040304	\N	\N	\N	\N	\N	t	\N
+305	Ada	ZORDANE	6351 BOUL MAURICE-DUPLESSI	MTL	514-5018058	\N	202309280305	\N	\N	\N	\N	\N	t	\N
+306	Lily	ZORDANE	6351 BOUL MAURICE-DUPLESSI	MTL	514-5018058	\N	202309280306	\N	\N	\N	\N	\N	t	\N
+307	Neyli arezk	ZOUAOUI	12310 62É AVENU	MTL	438-9225585	\N	201909170307	\N	\N	\N	\N	\N	t	\N
+308	Jonatha	BUFFONO	7540MAURICE-DUPLESSIS	MTL	514-2490304	\N	202311300308	\N	\N	\N	\N	\N	t	\N
+309	Yacin	EL MAATAOUI		MTL	514-45162	\N	202411290309	\N	\N	\N	\N	\N	t	\N
+310	Edouar	GAGNÉ	11865 RUE MAUDE-ABBOTT	MTL	514-2666127	\N	202312010310	\N	\N	\N	\N	\N	t	\N
+311	Cristian	MATUES	2203LEPAILLEUVE	MTL	514-8040186	\N	202403040311	\N	\N	\N	\N	\N	t	\N
+312	Natali	MATUES	2203LEPAILLEUVE	MTL	514-8040186	\N	202403040312	\N	\N	\N	\N	\N	t	\N
+313	Alperen ane	BOLAT	6463 RUEDE NORMANDIE	MTL	514-6387953	\N	202312130313	\N	\N	\N	\N	\N	t	\N
+314	Kuzey-ce	BARDAKCI	6463 RUEDE NORMANDIE	MTL	514-6387953	\N	202312130314	\N	\N	\N	\N	\N	t	\N
+315	Mohamed-haithe	BENHOCINE	7375RUEMOURICE COURTOI	MTL	438-3547493	\N	202403120315	\N	\N	\N	\N	\N	t	\N
+316	Game	RUDY	12072 AV COPERNIC	MTL	514-7951209	\N	202312190316	\N	\N	\N	\N	\N	t	\N
+317	Pap	TRAN	11529 RUE ALLARD	MTL	514-8273378	\N	202301010317	\N	\N	\N	\N	\N	t	\N
+318	Ani	OUHADJ	4455 RUE DOMIENS	MTN	438-6998383	\N	202401170318	\N	\N	\N	\N	\N	t	\N
+319	Vincenz	VACCARO	11793 AV NICOLAS-APPERT	MTL	514-4750784	\N	202401150319	\N	\N	\N	\N	\N	t	\N
+320	Alessandr	VACCARO	11793 AV NICOLAS-APPERT	MTL	514-4750784	\N	202401150320	\N	\N	\N	\N	\N	t	\N
+321	Sofhi	JARROUCHE	12753 AV PIERRE-BAILLGER	MTL	514-2961679	\N	202401140321	\N	\N	\N	\N	\N	t	\N
+322	Alexande	JARROUCHE	12753 AV PIERRE-BAILLGER	MTL	514-2961679	\N	202401140322	\N	\N	\N	\N	\N	t	\N
+323	Safy	DIBS	8893RUE MARITAIN	MTL	438-5093236	\N	202401200323	\N	\N	\N	\N	\N	t	\N
+324	Cssaendr	GRENIER	527  111ÉAV	ST-JÉ	438-8801043	\N	202406150324	\N	\N	\N	\N	\N	t	\N
+325	Kari	BACHAND	11482 AV OLIER	MTL	438-4676170	\N	202401110325	\N	\N	\N	\N	\N	t	\N
+326	Ada	MEEIDJI	7380 RUE DES ORMEAUT	MTL	438-4027301	\N	202402040326	\N	\N	\N	\N	\N	t	\N
+327	Giann	QUATTROCIOCCHI	8885 RUE D'ARRAS	MTL	514-2204399	\N	202501130327	\N	\N	\N	\N	\N	t	\N
+328	Rober	GRENIER	527  111ÉAV	ST-JÉ	514-222986	\N	202402050328	\N	\N	\N	\N	\N	t	\N
+329	Adrian	LO BIANCO	8656 RUE LUIS-HAINAULL	MTL	6621686 /  M8869896	\N	202501010329	\N	\N	\N	\N	\N	t	\N
+330	Germina	DON GERSON	9085 RUE SHERBROOK-EST	MTL	438-2330799	\N	202403140330	\N	\N	\N	\N	\N	t	\N
+331	Errouiss	MICHAEL	2215 RUE MONTE	LAV	514-834-6300	\N	202402160331	\N	\N	\N	\N	\N	t	\N
+332	Yassin	MEHDI	15555 RUE SHERBROOK-EST	MTL	514-709-1086	\N	202402240332	\N	\N	\N	\N	\N	t	\N
+333	Alexi	LARA SOHO	2-11980LUNGELIER	MTL	514-4495433	\N	202403050333	\N	\N	\N	\N	\N	t	\N
+334	Fernand	LARA SOHO	2-11980LUNGELIER	MTL	514-4495433	\N	202406030334	\N	\N	\N	\N	\N	t	\N
+335	Ada	BOURAGBI	12019 BOUL SAINTE-COLETTE	MTL	514-8063801	\N	202403060335	\N	\N	\N	\N	\N	t	\N
+336	Ayou	SABIR	12330 BOUL RODOLPHE FORGET	MTL	438-9243930	\N	202404050336	\N	\N	\N	\N	\N	t	\N
+337	Gristia	PELUSO	12164 REU ANNA-PAQUIN	MTL	514-8810345	\N	202403110337	\N	\N	\N	\N	\N	t	\N
+338	Albert	DI BUONO	4516 SOLIDANOS	MTL	514-2457332	\N	202403250338	\N	\N	\N	\N	\N	t	\N
+339	Jenna	PISCOPO	9280RUE GABRIELLE ROY	MTL	514-8382802	\N	202404110339	\N	\N	\N	\N	\N	t	\N
+340	Samanth	PISCOPO	9280RUE GABRIELLE ROY	MTL	514-8382802	\N	202404110340	\N	\N	\N	\N	\N	t	\N
+341	Antoni	GUEUARA	1802 RENE DESCARTES	MTL	514-5576569	\N	202404180341	\N	\N	\N	\N	\N	t	\N
+342	Moua	YAHIAOUI	11571 BOU ROLLANT	MN	514-4623453	\N	202404240342	\N	\N	\N	\N	\N	t	\N
+343	Djen	RAMDANE-BEY	11700 AVE DAMASE-POTVIN	MTL	514-2964782	\N	202404290343	\N	\N	\N	\N	\N	t	\N
+344	Ange-wilfri	KANGA	11478 AVE ALLARD	MTL	438-4653801	\N	202404130344	\N	\N	\N	\N	\N	t	\N
+345	Aksi	CHERIFI	5592 RUE MARCEL MONETTE	MTL	438-5219527	\N	202403060345	\N	\N	\N	\N	\N	t	\N
+346	Fatim	KHALIL	11872 MARCEL SAVARY	MTL	 /  5465504	\N	202405090346	\N	\N	\N	\N	\N	t	\N
+347	Tal	KHALIL	11872 MARCEL-SAVARY	MTL	 /  5465504	\N	202405090347	\N	\N	\N	\N	\N	t	\N
+348	Mahmou	EL-ASSAAD	1972 BOUL DES LAERENTIDES	LAV	514-7126179	\N	202404100348	\N	\N	\N	\N	\N	t	\N
+349	Al	JOUDAD	10649 AV DE LONDON	MTL	514-9123768	\N	202404100349	\N	\N	\N	\N	\N	t	\N
+350	Nicola	LEMIEUX	9191AVTOURELLES	ANJ	438-4931306	\N	202408020350	\N	\N	\N	\N	\N	t	\N
+351	Tah	ALHYAN	8165 RUE DNENT	MTL	514-5707735	\N	202404100351	\N	\N	\N	\N	\N	t	\N
+352	Fernand	FVATAUCANGELI	12642 24 AVENUE	MTL	514-8817207	\N	202408230352	\N	\N	\N	\N	\N	t	\N
+353	Isabell	LO DICO	12070 42É AVE	MTL	438-7645024	\N	202406140353	\N	\N	\N	\N	\N	t	\N
+354	Mala	KHOUDARI	11782 AVENUE MATTE	MTL	438-6993862	\N	202409110354	\N	\N	\N	\N	\N	t	\N
+355	Ahme	BELAID	7457 RUE DOLLIER	MTL	514-4415924	\N	202406190355	\N	\N	\N	\N	\N	t	\N
+356	Ouway	TOUMI	20 AVENIE QUWTAL	LAV	514-9432407	\N	202406240356	\N	\N	\N	\N	\N	t	\N
+357	Yousse	EL HABIBI	8235PIERRE MAGUET	MTL	514-8158987	\N	202406250357	\N	\N	\N	\N	\N	t	\N
+358	Huji	HOPE	12473RUEVOLTAIRE	MTL	514-7744105	\N	202406250358	\N	\N	\N	\N	\N	t	\N
+359	Sebastie	PEROMBELON	11635 5È AVENUE	MTL	514-4398152	\N	202408240359	\N	\N	\N	\N	\N	t	\N
+360	Dyla	ALLEN	12534 PIER BLANCHETE	MTL	514-7430955	\N	202410060360	\N	\N	\N	\N	\N	t	\N
+361	Chiar	TUTINO	40 JEAN PIERRE FERLAND	BOIS BRIAND	514-7818846	\N	202408190361	\N	\N	\N	\N	\N	t	\N
+362	Dor	TUTINO	40 JEAN PIERRE FERLAND	BOIS BRIAND	514-7818846	\N	202408190362	\N	\N	\N	\N	\N	t	\N
+363	Elizabet	TRIASSI	40 JEAN PIERRE FERLAND	BOIS BRIAND	514-7818846	\N	202408190363	\N	\N	\N	\N	\N	t	\N
+364	Ram	BELKHOUJA	12291 LEPOL-HOULE	MTL	6550109 /  5733232	\N	202411240364	\N	\N	\N	\N	\N	t	\N
+365	Mohamed kali	LENGLIZ	12260 64É AVENU	MTL	514-5763126	\N	202409120365	\N	\N	\N	\N	\N	t	\N
+366	Ty	AL,HAJJM	VENU CHRARL GEE	MTL	514-6411104	\N	202409120366	\N	\N	\N	\N	\N	t	\N
+367	Le	AL,HAJJM	VENU CHRARL GEE	MTL	514-6411104	\N	202409120367	\N	\N	\N	\N	\N	t	\N
+368	Nazim raya	HAFINNE	8543 AVENUE DANIEL DOUY	MTL	514-5865384	\N	202409110368	\N	\N	\N	\N	\N	t	\N
+369	Alessi	DISCIULLO	10289 RUE DES EGANTIERS	RDP	514-8146195	\N	202409160369	\N	\N	\N	\N	\N	t	\N
+370	Alexande	VISUONE	91 33É BOIS-DES-FILON	MTL	514-4674299	\N	202409170370	\N	\N	\N	\N	\N	t	\N
+371	Alou	ADDIME	602 RUE MON PETIT	LONG	514-4310568	\N	202409180371	\N	\N	\N	\N	\N	t	\N
+372	Henr	DAYAIN	6710 RUE TERDIF APP 8	MTL	438-6994511	\N	202409180372	\N	\N	\N	\N	\N	t	\N
+373	Saa	LYASSAMI	8053 RUE PHILLIPE-DE-CARION	MTL	438-4029970	\N	202409200373	\N	\N	\N	\N	\N	t	\N
+374	Pasqual	DOS SANTOS	12210 JEN-YVES BIGIAS	MTL	514-8380444	\N	202408080374	\N	\N	\N	\N	\N	t	\N
+375	Samue	CELESTIN	9322 GABRIELLE-ROY	MTL	438-9921050	\N	202409260375	\N	\N	\N	\N	\N	t	\N
+376	Waae	KEKAGHEL	12385 AVENUE-MATTE	MTL	 /  462-7020	\N	202503300376	\N	\N	\N	\N	\N	t	\N
+377	Mezhou	ABDALLAH	5657 JOSEPH DUFORESN	MTL-N	 /  578-6572	\N	202410020377	\N	\N	\N	\N	\N	t	\N
+378	Imen	AMAKOUCHE			 /  836-3964	\N	202410020378	\N	\N	\N	\N	\N	t	\N
+379	Fadi	GOUDA			 /  823-8985	\N	202410020379	\N	\N	\N	\N	\N	t	\N
+380	Oma	BELKHOUJA	12291 AV LEOPOLD HOULÉ	MTL	514-5733232	\N	202410030380	\N	\N	\N	\N	\N	t	\N
+381	Foua	ATMANI	10151 RUE KARL LÉVEQUE	MTL	438-9909351	\N	202410030381	\N	\N	\N	\N	\N	t	\N
+382	Youse	ATMANI	10151 RUE KARL LÉVEQUE	MTL	438-9909351	\N	202410030382	\N	\N	\N	\N	\N	t	\N
+383	Anas ahme	ATMANI	10151 RUE KARL LÉVEQUE	MTL	438-9909351	\N	202410030383	\N	\N	\N	\N	\N	t	\N
+384	Dalto	DANY			514-4488006	\N	202411130384	\N	\N	\N	\N	\N	t	\N
+385	Datilm	VRONSKY	7550 JACQUES ROUSSENU		514-7727206	\N	202410150385	\N	\N	\N	\N	\N	t	\N
+386	Emil	LAURIER	8545 ERNEST OUINNET	MTL	514-6258377	\N	202502240386	\N	\N	\N	\N	\N	t	\N
+387	Jerr	TEGUIMDJE ZEBA	6369ANTHUR CHEVRIER	MTL	819-5986436	\N	202410160387	\N	\N	\N	\N	\N	t	\N
+388	Rache	TARHOUI	7415BAUDELAIRE	ST-JÉ	514-9296025	\N	202501130388	\N	\N	\N	\N	\N	t	\N
+389	Amin maile	OUAJDI	263 RUE DE PIGALLE	REP	514-2669558	\N	202410230389	\N	\N	\N	\N	\N	t	\N
+390	Sar	MOR	8771 AVENUE LOUIS-LUMIERE	MTL	514-9689428	\N	202501290390	\N	\N	\N	\N	\N	t	\N
+391	Mohamed-amen	ABALLOUL	9224 RUE DUSGUENAY	MTL	514-9981604	\N	202410290391	\N	\N	\N	\N	\N	t	\N
+392	Ahmed-tare	ABALLOUL	9224 RUE DUSGUENAY	MTL	514-9981604	\N	202410290392	\N	\N	\N	\N	\N	t	\N
+393	Marya	ABALLOUL	9224 RUE DUSGUENAY	MTL	514-9981604	\N	202410290393	\N	\N	\N	\N	\N	t	\N
+394	Ayoub-nabi	ABALLOUL	9224 RUE DUSGUENAY	MTL	514-9981604	\N	202410290394	\N	\N	\N	\N	\N	t	\N
+395	Ade	BENCHEIKH	2447RUEYOLD	MTL	514-2492518	\N	202411050395	\N	\N	\N	\N	\N	t	\N
+396	Ay	MARZAQ	11894AV LARCHEVÉQUE	MTL	438-9883989	\N	202411140396	\N	\N	\N	\N	\N	t	\N
+397	Nadi	ZID	7415BAUDELAIRE	MTL	514-9296025	\N	202411140397	\N	\N	\N	\N	\N	t	\N
+398	Yasmin	TARHOUNI	7415BAUDELAIRE	MTL	514-9296025	\N	202411140398	\N	\N	\N	\N	\N	t	\N
+399	Sirin	TARHOUNI	7415BAUDELAIRE	MTL	514-9296025	\N	202411140399	\N	\N	\N	\N	\N	t	\N
+400	Sohai	BOUCEKKINE	12112 27ÉAVENU	MTL	514-4730849	\N	202411180400	\N	\N	\N	\N	\N	t	\N
+401	Sale	NAZIM	12186EMMANELBRIFFA	MTL	514-3188485	\N	202501010401	\N	\N	\N	\N	\N	t	\N
+402	Ada	OUALI	7225 MICHELET   N29	MTL	514-7138081	\N	202501140402	\N	\N	\N	\N	\N	t	\N
+403	Kayde	PETIT-TRERE	7585BOULPERRES	MTL	438-2237379	\N	202501240403	\N	\N	\N	\N	\N	t	\N
+404	Ayman	BENJELLOUN	11497 BOUL  LANGELIER N 1	MTL	514-4732991	\N	202501310404	\N	\N	\N	\N	\N	t	\N
+405	Mala	BENJELLOUN	11497 BOUL  LANGELIER N 1	MTL	514-4732991	\N	202501310405	\N	\N	\N	\N	\N	t	\N
+406	Yehi	HALAWA	12132AV FERNARD-GOUTHIER	MTL	514-5180273	\N	202502260406	\N	\N	\N	\N	\N	t	\N
+407	Mirk	VENDITTI	12391 VOLTAIRE	MTL	514-9933469	\N	202502200407	\N	\N	\N	\N	\N	t	\N
+408	Alessandr	BOZZO	12245 RUE DES IRIS	MTL	438-4908000	\N	202502260408	\N	\N	\N	\N	\N	t	\N
+409	Christophe	BOZZO	12245 RUE DES IRIS	MTL	438-4908000	\N	202502260409	\N	\N	\N	\N	\N	t	\N
+410	Pineaul	VERONIQUE		MTL	514-4388359376	\N	202503290410	\N	\N	\N	\N	\N	t	\N
+411	Ildris	REMY	8855 BOUL PERRAS	MTL	438-8880420	\N	202502260411	\N	\N	\N	\N	\N	t	\N
+412	Benjami	FILARISMA	11610 AVE ALLARD	MTL	438-4018703	\N	202503180412	\N	\N	\N	\N	\N	t	\N
+413	Ney	ZOIAOUI	12556 CROISSANT ALICE-GUY	MTL	438-9248888	\N	202504010413	\N	\N	\N	\N	\N	t	\N
+414	Matte	PICCOLI	12391  94 AVENU	MTL	514-9136314	\N	202503250414	\N	\N	\N	\N	\N	t	\N
+415	Giulian	PICCOLI	12391  94 AVENU	MTL	514-9136314	\N	202503250415	\N	\N	\N	\N	\N	t	\N
+416	Abderrahi	BOUDOUMA	8814 DIARRAS	MTL	514-8161835	\N	202504020416	\N	\N	\N	\N	\N	t	\N
 \.
 
 
 --
--- TOC entry 3493 (class 0 OID 73964)
--- Dependencies: 219
+-- TOC entry 4931 (class 0 OID 19933)
+-- Dependencies: 230
 -- Data for Name: event; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.event (id, event_name, event_type, event_date, end_date, amount) FROM stdin;
-1	Compétition Taekwondo	Compétition	2025-04-24	2025-04-25	25
-2	Rendez-vous LEVY World Kobudo	Festival - Congrès - Rassemblement	2025-05-02	2025-05-04	0
-3	Séminaire Taekibodo - France	Formation à l'étranger	2025-05-18	2025-05-21	0
-5	Royal Night Fight 6	Compétition	2025-09-12	\N	0
-4	Gala Kickboxing ICEMAN Gatineau	Compétition	2025-06-21	\N	0
+1	Taekwondo - Examen passage de ceinture	Passage de grade	2025-05-10	\N	40
 \.
 
 
 --
--- TOC entry 3494 (class 0 OID 73970)
--- Dependencies: 220
+-- TOC entry 4932 (class 0 OID 19939)
+-- Dependencies: 231
 -- Data for Name: event_attendee; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.event_attendee (id, event_id, customer_id, payed, amount) FROM stdin;
-1	1	247	t	25
-2	1	142	t	25
-3	2	386	t	0
-4	2	247	t	0
-5	4	142	t	0
-7	4	386	t	0
-8	5	330	f	0
-9	5	41	f	0
-10	5	47	f	0
-11	5	157	f	0
-12	4	387	t	0
+3	1	247	t	40
+4	1	386	t	40
+5	1	302	t	40
 \.
 
 
 --
--- TOC entry 3497 (class 0 OID 73975)
--- Dependencies: 223
+-- TOC entry 4935 (class 0 OID 19944)
+-- Dependencies: 234
 -- Data for Name: member; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1535,8 +1721,8 @@ COPY public.member (id, firstname, lastname, email, password, active) FROM stdin
 
 
 --
--- TOC entry 3499 (class 0 OID 73982)
--- Dependencies: 225
+-- TOC entry 4937 (class 0 OID 19951)
+-- Dependencies: 236
 -- Data for Name: payment; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -1961,8 +2147,22 @@ COPY public.payment (id, subscription_id, amount, payment_date) FROM stdin;
 
 
 --
--- TOC entry 3501 (class 0 OID 73986)
--- Dependencies: 227
+-- TOC entry 4948 (class 0 OID 20050)
+-- Dependencies: 247
+-- Data for Name: purchase; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.purchase (id, customer_id, article_id, number, discount, purchase_date) FROM stdin;
+1	416	2	3	0	2025-05-15 11:40:10.114526
+2	247	2	1	0	2025-05-15 00:00:00
+3	28	4	1	0	2025-05-15 00:00:00
+4	14	2	1	0	2025-05-15 00:00:00
+\.
+
+
+--
+-- TOC entry 4939 (class 0 OID 19955)
+-- Dependencies: 238
 -- Data for Name: subscription; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -2383,13 +2583,46 @@ COPY public.subscription (id, customer_id, duration, taekwondo, kickboxing, taek
 414	414	90	f	t	f	350	2025-03-25
 415	415	90	f	t	f	350	2025-03-25
 416	416	90	f	t	f	350	2025-04-02
-417	417	365	t	f	f	0	2025-04-27
 \.
 
 
 --
--- TOC entry 3524 (class 0 OID 0)
--- Dependencies: 216
+-- TOC entry 4944 (class 0 OID 20032)
+-- Dependencies: 243
+-- Data for Name: weight_category; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.weight_category (id, name, gender, sport, federation, above_limit, below_limit) FROM stdin;
+1	FEATHERWEIGHT	Homme	Kickboxing	ISKA	104.1	108
+2	LIGHTWEIGHT	Homme	Kickboxing	ISKA	108.1	112
+3	SUPERLIGHTWEIGHT	Homme	Kickboxing	ISKA	112.1	116
+4	LIGHT WELTERWEIGHT	Homme	Kickboxing	ISKA	116.1	120
+5	WELTERWEIGHT	Homme	Kickboxing	ISKA	120.1	125
+6	SUPERWELTERWEIGHT	Homme	Kickboxing	ISKA	125.1	130
+7	LIGHT MIDDLEWEIGHT	Homme	Kickboxing	ISKA	130.1	136
+8	MIDDLEWEIGHT	Homme	Kickboxing	ISKA	136.1	142
+9	SUPERMIDDLEWEIGHT	Homme	Kickboxing	ISKA	142.1	149
+10	LIGHT HEAVYWEIGHT	Homme	Kickboxing	ISKA	149.1	156
+11	LIGHT CRUISERWEIGHT	Homme	Kickboxing	ISKA	156.1	164
+12	CRUISERWEIGHT	Homme	Kickboxing	ISKA	164.1	172
+13	SUPERCRUISERWEIGHT	Homme	Kickboxing	ISKA	172.1	182
+14	HEAVYWEIGHT	Homme	Kickboxing	ISKA	182.1	195
+15	SUPERHEAVYWEIGHT	Homme	Kickboxing	ISKA	195.1	1000
+\.
+
+
+--
+-- TOC entry 4965 (class 0 OID 0)
+-- Dependencies: 240
+-- Name: accesslog_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.accesslog_id_seq', 1, true);
+
+
+--
+-- TOC entry 4966 (class 0 OID 0)
+-- Dependencies: 218
 -- Name: alldata_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2397,8 +2630,17 @@ SELECT pg_catalog.setval('public.alldata_id_seq', 416, true);
 
 
 --
--- TOC entry 3525 (class 0 OID 0)
--- Dependencies: 236
+-- TOC entry 4967 (class 0 OID 0)
+-- Dependencies: 244
+-- Name: article_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.article_id_seq', 5, true);
+
+
+--
+-- TOC entry 4968 (class 0 OID 0)
+-- Dependencies: 222
 -- Name: batch_job_execution_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2406,8 +2648,8 @@ SELECT pg_catalog.setval('public.batch_job_execution_seq', 1, true);
 
 
 --
--- TOC entry 3526 (class 0 OID 0)
--- Dependencies: 237
+-- TOC entry 4969 (class 0 OID 0)
+-- Dependencies: 224
 -- Name: batch_job_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2415,8 +2657,8 @@ SELECT pg_catalog.setval('public.batch_job_seq', 1, true);
 
 
 --
--- TOC entry 3527 (class 0 OID 0)
--- Dependencies: 235
+-- TOC entry 4970 (class 0 OID 0)
+-- Dependencies: 227
 -- Name: batch_step_execution_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2424,35 +2666,35 @@ SELECT pg_catalog.setval('public.batch_step_execution_seq', 4, true);
 
 
 --
--- TOC entry 3528 (class 0 OID 0)
--- Dependencies: 218
+-- TOC entry 4971 (class 0 OID 0)
+-- Dependencies: 229
 -- Name: customer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.customer_id_seq', 417, true);
+SELECT pg_catalog.setval('public.customer_id_seq', 1, false);
 
 
 --
--- TOC entry 3529 (class 0 OID 0)
--- Dependencies: 221
+-- TOC entry 4972 (class 0 OID 0)
+-- Dependencies: 232
 -- Name: event_attendee_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.event_attendee_id_seq', 12, true);
+SELECT pg_catalog.setval('public.event_attendee_id_seq', 5, true);
 
 
 --
--- TOC entry 3530 (class 0 OID 0)
--- Dependencies: 222
+-- TOC entry 4973 (class 0 OID 0)
+-- Dependencies: 233
 -- Name: event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.event_id_seq', 5, true);
+SELECT pg_catalog.setval('public.event_id_seq', 1, true);
 
 
 --
--- TOC entry 3531 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 4974 (class 0 OID 0)
+-- Dependencies: 235
 -- Name: member_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2460,8 +2702,8 @@ SELECT pg_catalog.setval('public.member_id_seq', 1, true);
 
 
 --
--- TOC entry 3532 (class 0 OID 0)
--- Dependencies: 226
+-- TOC entry 4975 (class 0 OID 0)
+-- Dependencies: 237
 -- Name: payment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -2469,16 +2711,43 @@ SELECT pg_catalog.setval('public.payment_id_seq', 416, true);
 
 
 --
--- TOC entry 3533 (class 0 OID 0)
--- Dependencies: 228
+-- TOC entry 4976 (class 0 OID 0)
+-- Dependencies: 246
+-- Name: purchase_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.purchase_id_seq', 4, true);
+
+
+--
+-- TOC entry 4977 (class 0 OID 0)
+-- Dependencies: 239
 -- Name: subscription_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.subscription_id_seq', 417, true);
+SELECT pg_catalog.setval('public.subscription_id_seq', 416, true);
 
 
 --
--- TOC entry 3316 (class 2606 OID 73998)
+-- TOC entry 4978 (class 0 OID 0)
+-- Dependencies: 242
+-- Name: weight_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.weight_category_id_seq', 15, true);
+
+
+--
+-- TOC entry 4761 (class 2606 OID 20030)
+-- Name: accesslog accesslog_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.accesslog
+    ADD CONSTRAINT accesslog_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4735 (class 2606 OID 19967)
 -- Name: alldata alldata_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2487,7 +2756,16 @@ ALTER TABLE ONLY public.alldata
 
 
 --
--- TOC entry 3340 (class 2606 OID 74070)
+-- TOC entry 4765 (class 2606 OID 20048)
+-- Name: article article_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.article
+    ADD CONSTRAINT article_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4739 (class 2606 OID 19969)
 -- Name: batch_job_execution_context batch_job_execution_context_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2496,7 +2774,7 @@ ALTER TABLE ONLY public.batch_job_execution_context
 
 
 --
--- TOC entry 3334 (class 2606 OID 74024)
+-- TOC entry 4737 (class 2606 OID 19971)
 -- Name: batch_job_execution batch_job_execution_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2505,7 +2783,7 @@ ALTER TABLE ONLY public.batch_job_execution
 
 
 --
--- TOC entry 3330 (class 2606 OID 74015)
+-- TOC entry 4741 (class 2606 OID 19973)
 -- Name: batch_job_instance batch_job_instance_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2514,7 +2792,7 @@ ALTER TABLE ONLY public.batch_job_instance
 
 
 --
--- TOC entry 3338 (class 2606 OID 74058)
+-- TOC entry 4747 (class 2606 OID 19975)
 -- Name: batch_step_execution_context batch_step_execution_context_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2523,7 +2801,7 @@ ALTER TABLE ONLY public.batch_step_execution_context
 
 
 --
--- TOC entry 3336 (class 2606 OID 74046)
+-- TOC entry 4745 (class 2606 OID 19977)
 -- Name: batch_step_execution batch_step_execution_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2532,7 +2810,7 @@ ALTER TABLE ONLY public.batch_step_execution
 
 
 --
--- TOC entry 3318 (class 2606 OID 74000)
+-- TOC entry 4749 (class 2606 OID 19979)
 -- Name: customer customer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2541,7 +2819,7 @@ ALTER TABLE ONLY public.customer
 
 
 --
--- TOC entry 3322 (class 2606 OID 74002)
+-- TOC entry 4753 (class 2606 OID 19981)
 -- Name: event_attendee event_attendee_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2550,7 +2828,7 @@ ALTER TABLE ONLY public.event_attendee
 
 
 --
--- TOC entry 3320 (class 2606 OID 74004)
+-- TOC entry 4751 (class 2606 OID 19983)
 -- Name: event event_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2559,7 +2837,7 @@ ALTER TABLE ONLY public.event
 
 
 --
--- TOC entry 3332 (class 2606 OID 74017)
+-- TOC entry 4743 (class 2606 OID 19985)
 -- Name: batch_job_instance job_inst_un; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2568,7 +2846,7 @@ ALTER TABLE ONLY public.batch_job_instance
 
 
 --
--- TOC entry 3324 (class 2606 OID 74006)
+-- TOC entry 4755 (class 2606 OID 19987)
 -- Name: member member_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2577,7 +2855,7 @@ ALTER TABLE ONLY public.member
 
 
 --
--- TOC entry 3326 (class 2606 OID 74008)
+-- TOC entry 4757 (class 2606 OID 19989)
 -- Name: payment payment_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2586,7 +2864,16 @@ ALTER TABLE ONLY public.payment
 
 
 --
--- TOC entry 3328 (class 2606 OID 74010)
+-- TOC entry 4767 (class 2606 OID 20056)
+-- Name: purchase purchase_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.purchase
+    ADD CONSTRAINT purchase_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4759 (class 2606 OID 19991)
 -- Name: subscription subscription_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2595,7 +2882,16 @@ ALTER TABLE ONLY public.subscription
 
 
 --
--- TOC entry 3345 (class 2606 OID 74071)
+-- TOC entry 4763 (class 2606 OID 20039)
+-- Name: weight_category weight_category_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.weight_category
+    ADD CONSTRAINT weight_category_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4769 (class 2606 OID 19992)
 -- Name: batch_job_execution_context job_exec_ctx_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2604,7 +2900,7 @@ ALTER TABLE ONLY public.batch_job_execution_context
 
 
 --
--- TOC entry 3342 (class 2606 OID 74035)
+-- TOC entry 4770 (class 2606 OID 19997)
 -- Name: batch_job_execution_params job_exec_params_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2613,7 +2909,7 @@ ALTER TABLE ONLY public.batch_job_execution_params
 
 
 --
--- TOC entry 3343 (class 2606 OID 74047)
+-- TOC entry 4771 (class 2606 OID 20002)
 -- Name: batch_step_execution job_exec_step_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2622,7 +2918,7 @@ ALTER TABLE ONLY public.batch_step_execution
 
 
 --
--- TOC entry 3341 (class 2606 OID 74025)
+-- TOC entry 4768 (class 2606 OID 20007)
 -- Name: batch_job_execution job_inst_exec_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2631,7 +2927,7 @@ ALTER TABLE ONLY public.batch_job_execution
 
 
 --
--- TOC entry 3344 (class 2606 OID 74059)
+-- TOC entry 4772 (class 2606 OID 20012)
 -- Name: batch_step_execution_context step_exec_ctx_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2639,7 +2935,7 @@ ALTER TABLE ONLY public.batch_step_execution_context
     ADD CONSTRAINT step_exec_ctx_fk FOREIGN KEY (step_execution_id) REFERENCES public.batch_step_execution(step_execution_id);
 
 
--- Completed on 2025-05-09 13:06:55
+-- Completed on 2025-05-15 21:07:21
 
 --
 -- PostgreSQL database dump complete
